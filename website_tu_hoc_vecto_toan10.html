@@ -7,18 +7,39 @@
 <style>
 :root{--ink:#172554;--blue:#2563eb;--blue2:#dbeafe;--green:#16a34a;--bg:#f4f7fb;--card:#fff;--muted:#64748b;--border:#e2e8f0;--orange:#f59e0b}
 *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:#1e293b}
-button,input,select,textarea{font:inherit}button{border:0;border-radius:12px;padding:10px 14px;background:var(--blue);color:white;cursor:pointer;font-weight:650}button:hover{filter:brightness(.95)}button.secondary{background:#e2e8f0;color:#1e293b}button.green{background:var(--green)}button.warn{background:#fff7ed;color:#9a3412}button.small{padding:7px 10px;font-size:13px}button:disabled{opacity:.45;cursor:not-allowed;filter:none}
+button,input,select,textarea{font:inherit}button{border:0;border-radius:12px;padding:10px 14px;background:var(--blue);color:white;cursor:pointer;font-weight:650}button:hover{filter:brightness(.95)}button.secondary{background:#e2e8f0;color:#1e293b}button.green{background:var(--green)}button.warn{background:#fff7ed;color:#9a3412}button.danger{background:#fff1f2;color:#be123c}button.small{padding:7px 10px;font-size:13px}button:disabled{opacity:.45;cursor:not-allowed;filter:none}
 .login{min-height:100vh;display:grid;place-items:center;padding:20px;background:linear-gradient(135deg,#dbeafe,#eff6ff 50%,#dcfce7)}
 .login-card{max-width:460px;width:100%;background:white;border-radius:24px;padding:30px;box-shadow:0 20px 60px #1e40af22}
 .logo{font-size:44px;text-align:center}.login-card h1{text-align:center;color:#1d4ed8;margin:5px 0}.login-card p{text-align:center;color:var(--muted)}
-label{display:block;font-size:14px;font-weight:650;margin:12px 0 6px}input,select,textarea{width:100%;padding:11px;border:1px solid var(--border);border-radius:12px;background:white;color:#1e293b}textarea{min-height:85px;resize:vertical}
+label{display:block;font-size:14px;font-weight:650;margin:12px 0 6px}input,select,textarea{width:100%;padding:11px;border:1px solid var(--border);border-radius:12px;background:white;color:#1e293b}textarea{min-height:85px;resize:vertical}input:focus,textarea:focus,select:focus{outline:2px solid #93c5fd;border-color:#93c5fd}
 .app{display:none;min-height:100vh}.sidebar{position:fixed;left:0;top:0;bottom:0;width:260px;background:#102a56;color:white;padding:20px;overflow:auto}.brand{font-size:18px;font-weight:800;margin-bottom:20px}.brand span{display:block;color:#93c5fd;font-size:12px;font-weight:500;margin-top:3px}
 .navbtn{display:block;width:100%;text-align:left;background:transparent;color:#dbeafe;padding:12px;margin:4px 0;border-radius:12px;font-weight:550}.navbtn:hover,.navbtn.active{background:#244778;color:white}.sidebar .mode{margin-top:20px;background:#fbbf24;color:#422006;width:100%}
 .main{margin-left:260px;padding:28px;max-width:1500px}.top{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:22px}.top h2{margin:0;color:var(--ink)}.userchip{background:white;border:1px solid var(--border);border-radius:999px;padding:9px 13px;font-size:14px}
-.hero{position:relative;background:linear-gradient(120deg,#1d4ed8,#2563eb,#0f766e);color:white;border-radius:22px;padding:38px 25px 25px;margin-bottom:22px}.hero-author{position:absolute;top:12px;right:20px;font-size:12px;color:#dbeafe;opacity:.9;font-style:italic}.hero-title{font-size:20px;font-weight:800;letter-spacing:1.5px;color:#fde68a;margin-bottom:10px;text-transform:uppercase}.hero h1{margin:0 0 8px}.hero p{margin:0;color:#dbeafe}
+.hero{position:relative;background:linear-gradient(120deg,#1d4ed8,#2563eb,#0f766e);color:white;border-radius:22px;padding:38px 25px 25px;margin-bottom:22px}.hero-author{position:absolute;top:12px;right:20px;font-size:12px;color:#dbeafe;opacity:.9;font-style:italic}.hero-title{font-size:20px;font-weight:800;letter-spacing:1.5px;color:#fde68a;margin-bottom:10px;text-transform:uppercase}.hero h1{margin:0 0 8px}.hero p{margin:0;color:#dbeafe}.hero.teach{background:linear-gradient(120deg,#92400e,#d97706,#0f766e)}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}.card{background:var(--card);border:1px solid var(--border);border-radius:18px;padding:18px;box-shadow:0 4px 15px #0f172a05}.lesson{cursor:pointer;transition:.15s}.lesson:hover{transform:translateY(-2px);border-color:#93c5fd}.lesson .num{font-size:12px;color:var(--blue);font-weight:800}.lesson h3{margin:8px 0}.muted{color:var(--muted);font-size:14px}.stat{font-size:28px;color:var(--blue);font-weight:800}.pill{display:inline-block;background:#eff6ff;color:#1d4ed8;border-radius:999px;padding:5px 9px;font-size:12px;font-weight:700}
-.section{margin:20px 0}.section h3{color:var(--ink)}.hidden{display:none!important}.contentbox{background:white;border:1px solid var(--border);border-radius:18px;padding:22px;margin:15px 0}.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}.tabs button{background:#e2e8f0;color:#334155}.tabs button.active{background:var(--blue);color:white}.option{display:block;border:1px solid var(--border);border-radius:12px;padding:12px;margin:9px 0;cursor:pointer}.option:hover{border-color:#93c5fd;background:#f8fbff}.feedback{border-radius:14px;padding:14px;margin-top:12px}.feedback.good{background:#dcfce7;color:#166534}.feedback.help{background:#fef3c7;color:#92400e}.feedback.explain{background:#e0f2fe;color:#075985}.teacher{border:2px solid #fbbf24}.table{width:100%;border-collapse:collapse;background:white}.table th,.table td{padding:10px;border-bottom:1px solid var(--border);text-align:left;font-size:14px}.table th{background:#eff6ff;color:#1e40af}.actions{display:flex;gap:8px;flex-wrap:wrap}.foot{font-size:12px;color:var(--muted);margin-top:20px}.teacher>button{margin:14px 8px 0 0}.qrow{display:flex;justify-content:space-between;align-items:center;gap:12px}
-@media(max-width:850px){.hero-title{font-size:16px}.hero{padding-top:36px}.sidebar{position:relative;width:auto;bottom:auto}.main{margin-left:0;padding:16px}.top{align-items:flex-start;flex-direction:column}.sidebar nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}.brand{margin-bottom:8px}}
+.section{margin:20px 0}.section h3{color:var(--ink)}.hidden{display:none!important}.contentbox{background:white;border:1px solid var(--border);border-radius:18px;padding:22px;margin:15px 0}.contentbox h3:first-child{margin-top:0}.tabs{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}.tabs button{background:#e2e8f0;color:#334155}.tabs button.active{background:var(--blue);color:white}.option{display:block;border:1px solid var(--border);border-radius:12px;padding:12px;margin:9px 0;cursor:pointer}.option:hover{border-color:#93c5fd;background:#f8fbff}.feedback{border-radius:14px;padding:14px;margin-top:12px}.feedback.good{background:#dcfce7;color:#166534}.feedback.help{background:#fef3c7;color:#92400e}.table{width:100%;border-collapse:collapse;background:white}.table th,.table td{padding:10px;border-bottom:1px solid var(--border);text-align:left;font-size:14px}.table th{background:#eff6ff;color:#1e40af}.actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+/* Tài liệu (học sinh) */
+.mview{border:1px solid var(--border);border-radius:16px;padding:14px;margin:12px 0}.mview-h{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}.mview-h .spacer{flex:1}.mview img{max-width:100%;border-radius:10px;display:block}.mview video{width:100%;max-height:70vh;border-radius:10px;background:#000}.mview iframe{width:100%;border:0;border-radius:10px;background:#f1f5f9}.pdfview{height:680px;max-height:80vh}.ytview{aspect-ratio:16/9}.note{white-space:pre-wrap;line-height:1.65}
+a.btnlink{display:inline-block;background:#eff6ff;color:#1d4ed8;padding:7px 11px;border-radius:10px;font-size:13px;font-weight:650;text-decoration:none}a.btnlink:hover{background:#dbeafe}
+/* Chế độ giáo viên */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 6px}.chip{background:white;color:#1e293b;border:1px solid var(--border);display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:9px 14px;min-width:112px}.chip small{color:var(--muted);font-weight:500;font-size:12px}.chip.active{background:var(--blue);color:white;border-color:var(--blue)}.chip.active small{color:#dbeafe}
+.studio-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:16px}.studio-head h3{margin:0;color:var(--ink)}
+.drop{border:2px dashed #93c5fd;border-radius:16px;background:#f8fbff;padding:28px 16px;text-align:center;cursor:pointer;transition:.15s}.drop:hover,.drop.drag{background:#eff6ff;border-color:var(--blue)}.drop b{display:block;margin:6px 0 4px;color:var(--ink)}
+.quick{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}.quick button{flex:1;min-width:220px}
+.addbox{margin-top:14px;padding:16px;border:1px solid #bfdbfe;border-radius:14px;background:#f8fbff}.addbox h4{margin:0 0 4px}
+.mitem{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid var(--border);border-radius:14px;margin:8px 0}.micon{font-size:26px;width:34px;text-align:center}.mname{flex:1;min-width:0}.mname b{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.mname .muted{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px}
+.iconbtn{background:#f1f5f9;color:#334155;padding:6px 10px;font-size:13px;border-radius:9px;font-weight:600}.iconbtn.del{background:#fff1f2;color:#be123c}
+.qgrid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px;align-items:start}.qgrid>.contentbox{margin:0}.sticky{position:sticky;top:16px}
+.seg{display:flex;flex-wrap:wrap;gap:6px;background:#f1f5f9;padding:5px;border-radius:14px}.seg button{flex:1;background:transparent;color:#334155;min-width:118px}.seg button.active{background:white;color:var(--blue);box-shadow:0 1px 4px #0f172a22}.seg.tf button.active.t{color:#15803d}.seg.tf button.active.f{color:#be123c}
+.optrow{display:flex;align-items:center;gap:8px;margin:6px 0;padding:6px 8px;border-radius:12px;border:1px solid transparent}.optrow.correct{background:#dcfce7;border-color:#86efac}.optrow .radio{display:flex;align-items:center;gap:6px;margin:0;cursor:pointer;white-space:nowrap}.optrow .radio input{width:18px;height:18px;accent-color:var(--green)}.optrow>input{flex:1}.optrow .tag{font-size:11px;color:#15803d;font-weight:700;white-space:nowrap}
+details{margin-top:14px;border:1px solid var(--border);border-radius:12px;padding:10px 14px}details summary{cursor:pointer;font-weight:650}
+.qitem{border:1px solid var(--border);border-radius:14px;padding:12px;margin:9px 0}.qitem.editing{border-color:var(--orange);background:#fffbeb}.qtop{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.qtext{margin:8px 0 6px;font-weight:600}.qans{font-size:13px;color:#166534}
+.guide{background:#f8fafc;border:1px solid var(--border);border-radius:12px;padding:12px 14px;font-size:14px;line-height:1.6}.guide code,.mono{font-family:ui-monospace,Consolas,monospace}.guide code{background:#e2e8f0;padding:1px 5px;border-radius:5px}
+.errline{color:#b45309;font-size:14px;margin:4px 0}.okline{color:#166534;font-weight:650}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}.grid2>.contentbox{margin:0}.check{display:flex;gap:8px;align-items:center;font-weight:500}.check input{width:auto}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:#0f172a;color:white;padding:12px 18px;border-radius:12px;opacity:0;pointer-events:none;transition:.25s;z-index:99;max-width:90vw;box-shadow:0 10px 30px #0f172a44}.toast.show{opacity:1;transform:translateX(-50%)}.toast.err{background:#b91c1c}
+@media(max-width:1100px){.qgrid{grid-template-columns:1fr}.sticky{position:static}}
+@media(max-width:850px){.hero-title{font-size:16px}.hero{padding-top:36px}.sidebar{position:relative;width:auto;bottom:auto}.main{margin-left:0;padding:16px}.top{align-items:flex-start;flex-direction:column}.sidebar nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}.brand{margin-bottom:8px}.mitem{flex-wrap:wrap}.pdfview{height:520px}}
 </style>
 </head>
 <body>
@@ -26,7 +47,7 @@ label{display:block;font-size:14px;font-weight:650;margin:12px 0 6px}input,selec
  <div class="login-card">
   <div class="logo">🧭</div><h1>KHÁM PHÁ VECTƠ</h1><p>Chương IV · Toán học lớp 10</p>
   <label for="studentName">Họ và tên</label><input id="studentName" placeholder="Nhập họ và tên của em">
-  <label for="studentClass">Lớp</label><input id="studentClass" placeholder="Ví dụ: 10A1">
+  <label for="studentClass">Lớp</label><input id="studentClass" placeholder="Ví dụ: 10A1" onkeydown="if(event.key==='Enter')loginStudent()">
   <button class="green" style="width:100%;margin-top:18px" onclick="loginStudent()">Bắt đầu học</button>
   <p style="font-size:12px">Thông tin được lưu trên trình duyệt trong bản thử nghiệm.</p>
  </div>
@@ -35,7 +56,7 @@ label{display:block;font-size:14px;font-weight:650;margin:12px 0 6px}input,selec
  <aside class="sidebar">
   <div class="brand">🧭 VECTƠ 10<span>Hệ thống tự học Toán</span></div>
   <nav id="nav"></nav>
-  <button class="mode" onclick="toggleTeacher()">⚙ Chế độ giáo viên</button>
+  <button class="mode" id="modeBtn" onclick="toggleTeacher()">⚙ Chế độ giáo viên</button>
   <button class="navbtn" onclick="logout()">↩ Đăng xuất</button>
  </aside>
  <main class="main">
@@ -43,7 +64,13 @@ label{display:block;font-size:14px;font-weight:650;margin:12px 0 6px}input,selec
   <div id="view"></div>
  </main>
 </div>
+<div id="toast" class="toast"></div>
+<input type="file" id="fileIn" multiple class="hidden" onchange="addFiles(this.files);this.value=''">
+<input type="file" id="restoreIn" accept=".json,application/json" class="hidden" onchange="importData(this.files[0]);this.value=''">
+<!-- Dữ liệu nhúng: được điền tự động khi giáo viên "Tải về trang web cho học sinh". Không sửa tay. -->
+<script id="vec-data" type="application/json">null</script>
 <script>
+const ORIGINAL_HTML="<!DOCTYPE html>\n"+document.documentElement.outerHTML;
 const lessons=[
  {id:7,title:"Các khái niệm mở đầu",pages:"46–50",icon:"➡️"},
  {id:8,title:"Tổng và hiệu của hai vectơ",pages:"51–54",icon:"➕"},
@@ -60,34 +87,266 @@ const defaultQuestions=[
  {lesson:10,type:"short",question:"Vectơ a có tọa độ (3; 4). Độ dài của vectơ a bằng bao nhiêu?",answerText:"5",hints:["Dùng công thức độ dài vectơ trong mặt phẳng tọa độ.","Tính căn bậc hai của tổng bình phương hai tọa độ."],explanation:"|a| = √(3² + 4²) = 5."},
  {lesson:11,type:"mc",question:"Hai vectơ khác vectơ 0 vuông góc thì tích vô hướng bằng:",options:["1","-1","0","Tích độ dài"],answer:2,hints:["Nhớ công thức tích vô hướng theo góc giữa hai vectơ.","Cos 90° bằng 0."],explanation:"Hai vectơ vuông góc có tích vô hướng bằng 0."}
 ];
-let questions=JSON.parse(localStorage.getItem("vec_questions")||"null")||defaultQuestions;
-let student=null,teacher=false,currentLesson=7,section="home",qIndex=0,attempts={},scores=JSON.parse(localStorage.getItem("vec_scores")||"[]");
-function hero(h,p){return `<div class="hero"><div class="hero-author">Tác giả: Phạm Thu Hường</div><div class="hero-title">HỖ TRỢ TỰ HỌC CHỦ ĐỀ VECTƠ</div><h1>${h}</h1><p>${p}</p></div>`}
-function setActive(key){document.querySelectorAll('#nav .navbtn').forEach(b=>b.classList.toggle('active',b.dataset.key===String(key)))}
-function saveQ(){localStorage.setItem("vec_questions",JSON.stringify(questions))}
-function loginStudent(){let n=document.getElementById("studentName").value.trim(),c=document.getElementById("studentClass").value.trim();if(!n||!c){alert("Vui lòng nhập họ tên và lớp.");return}student={name:n,class:c};document.getElementById("login").style.display="none";document.getElementById("app").style.display="block";document.getElementById("userchip").textContent=n+" · "+c;buildNav();home()}
-function logout(){student=null;teacher=false;document.getElementById("app").style.display="none";document.getElementById("login").style.display="grid"}
-function buildNav(){let n=document.getElementById("nav");n.innerHTML=`<button class="navbtn" data-key="home" onclick="home()">🏠 Trang chủ</button>`+lessons.map(l=>`<button class="navbtn" data-key="${l.id}" onclick="openLesson(${l.id})">${l.icon} Bài ${l.id===12?"Ôn tập":l.id} · ${l.title}</button>`).join("")+`<button class="navbtn" data-key="report" onclick="report()">📊 Kết quả của em</button>`}
-function home(){section="home";setActive("home");document.getElementById("pageTitle").textContent="Trang học tập";let done=JSON.parse(localStorage.getItem("vec_done_"+student.name)||"[]");document.getElementById("view").innerHTML=`${hero(`Xin chào, ${esc(student.name)}! 👋`,"Hãy chọn bài học và khám phá thế giới vectơ.")}<div class="grid"><div class="card"><div class="muted">Bài học trong chương</div><div class="stat">6</div></div><div class="card"><div class="muted">Bài đã hoàn thành</div><div class="stat">${done.length}/6</div></div><div class="card"><div class="muted">Lớp học</div><div class="stat">${esc(student.class)}</div></div></div><div class="section"><h3>📚 Các bài học</h3><div class="grid">${lessons.map(l=>`<div class="card lesson" onclick="openLesson(${l.id})"><div class="num">BÀI ${l.id===12?"ÔN TẬP":l.id}</div><h3>${l.icon} ${l.title}</h3><div class="muted">SGK trang ${l.pages}</div><div style="margin-top:14px"><span class="pill">Học · Luyện tập · Kiểm tra</span></div></div>`).join("")}</div></div>${teacher?teacherPanel():""}`}
-function openLesson(id){currentLesson=id;section="lesson";setActive(id);let l=lessons.find(x=>x.id===id);document.getElementById("pageTitle").textContent="Bài "+(id===12?"ôn tập":id)+": "+l.title;document.getElementById("view").innerHTML=`${hero(`${l.icon} Bài ${id===12?"Ôn tập cuối chương IV":id+". "+l.title}`,`SGK trang ${l.pages} · Tự học theo tiến trình`)}<div class="tabs"><button class="active" onclick="lessonTab('materials',this)">📖 Tài liệu</button><button onclick="lessonTab('practice',this)">✍️ Luyện tập</button><button onclick="lessonTab('test',this)">📝 Kiểm tra</button></div><div id="lessonBody"></div>${teacher?teacherPanel():""}`;lessonTab("materials")}
-function lessonTab(which,btn){section=which;document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));if(!btn)btn=document.querySelector(`.tabs button[onclick*="${which}"]`);if(btn)btn.classList.add("active");let b=document.getElementById("lessonBody");if(!b)return;if(which==="materials"){b.innerHTML=`<div class="contentbox"><h3>📖 Tài liệu học tập</h3><p>Giáo viên có thể bổ sung tài liệu PDF, hình ảnh, video hoặc nội dung hướng dẫn tại chế độ thiết kế.</p><div class="card"><h4>🧠 Nội dung cần học</h4><p>Đọc nội dung SGK trang ${lessons.find(x=>x.id===currentLesson).pages}, ghi lại kiến thức trọng tâm và xem tài liệu giáo viên cung cấp.</p></div><div class="card" style="margin-top:12px"><h4>🎯 Mục tiêu tự học</h4><p>Hiểu kiến thức trọng tâm, hoàn thành luyện tập và tự kiểm tra mức độ nắm bài.</p></div></div>`}else if(which==="practice"){renderPractice()}else if(which==="test"){renderTest()}}
-function getLessonQs(id){return questions.filter(q=>q.lesson===id||id===12)}
-function renderPractice(){let b=document.getElementById("lessonBody");let qs=getLessonQs(currentLesson);if(!qs.length){b.innerHTML=`<div class="contentbox">Chưa có câu hỏi luyện tập cho bài này. Giáo viên có thể thêm câu hỏi trong chế độ thiết kế.</div>`;return}qIndex=0;renderQuestion(qs,0)}
-function renderQuestion(qs,i){let q=qs[i],key=currentLesson+"_"+i,tries=attempts[key]||0;let b=document.getElementById("lessonBody");b.innerHTML=`<div class="contentbox"><div class="pill">Câu ${i+1}/${qs.length} · ${q.type==="mc"?"Trắc nghiệm":q.type==="tf"?"Đúng/Sai":"Trả lời ngắn"}</div><h3>${esc(q.question)}</h3>${q.type==="short"?`<input id="answer" placeholder="Nhập câu trả lời">`:q.options.map((o,j)=>`<label class="option"><input type="radio" name="ans" value="${j}" style="width:auto;margin-right:9px"> ${esc(o)}</label>`).join("")}<div class="actions" style="margin-top:12px"><button onclick="checkAnswer(${i})">Kiểm tra câu trả lời</button><button class="secondary" onclick="renderQuestion(getLessonQs(currentLesson),${i+1})" ${i>=qs.length-1?"disabled":""}>Câu tiếp theo →</button></div><div id="feedback"></div></div>`}
-function checkAnswer(i){let qs=getLessonQs(currentLesson),q=qs[i],key=currentLesson+"_"+i,tries=attempts[key]||0,correct=false;if(q.type==="short"){let val=(document.getElementById("answer").value||"").trim().toLowerCase().replace(/\s/g,"");correct=val===String(q.answerText||"").trim().toLowerCase().replace(/\s/g,"")}else{let selected=document.querySelector('input[name="ans"]:checked');correct=selected&&Number(selected.value)===q.answer}let f=document.getElementById("feedback");if(correct){f.innerHTML=`<div class="feedback good"><b>🎉 Chính xác!</b><br>${esc(q.explanation||"Em đã trả lời đúng.")}</div>`;attempts[key]=0;recordResponse(currentLesson,q,true,tries+1)}else{tries++;attempts[key]=tries;let hint=tries<=2?(q.hints?.[tries-1]||"Em hãy xem lại nội dung kiến thức liên quan."):(q.explanation||"Hãy xem lại phần lý thuyết và thử lại.");f.innerHTML=`<div class="feedback help"><b>Chưa chính xác – hãy thử lại!</b><br>${esc(hint)}${tries>=3?`<div style="margin-top:8px"><b>Giải thích:</b> ${esc(q.explanation||"")}</div>`:""}</div>`;recordResponse(currentLesson,q,false,tries)}}
-function recordResponse(id,q,correct,attempt){scores.push({name:student.name,class:student.class,lesson:id,question:q.question,correct,attempt,date:new Date().toLocaleString()});localStorage.setItem("vec_scores",JSON.stringify(scores))}
-function renderTest(){let qs=getLessonQs(currentLesson);if(!qs.length){document.getElementById("lessonBody").innerHTML=`<div class="contentbox">Chưa có câu hỏi kiểm tra cho bài này. Giáo viên hãy thêm câu hỏi.</div>`;return}document.getElementById("lessonBody").innerHTML=`<div class="contentbox"><h3>📝 Bài kiểm tra</h3><p>Phiên bản thử nghiệm: kiểm tra sử dụng câu hỏi đã có trong ngân hàng. Gợi ý không hiển thị trong chế độ kiểm tra.</p><button onclick="startTest()">Bắt đầu kiểm tra (${qs.length} câu)</button></div>`}
-function startTest(){let qs=getLessonQs(currentLesson);let html=`<div class="contentbox"><h3>📝 Bài kiểm tra</h3><form id="testForm">`;qs.forEach((q,i)=>{html+=`<div class="section"><b>Câu ${i+1}. ${esc(q.question)}</b>${q.type==="short"?`<input name="q${i}" placeholder="Câu trả lời">`:q.options.map((o,j)=>`<label class="option"><input type="radio" name="q${i}" value="${j}" style="width:auto;margin-right:8px"> ${esc(o)}</label>`).join("")}</div>`});html+=`</form><button onclick="submitTest()">Nộp bài</button><div id="testResult"></div></div>`;document.getElementById("lessonBody").innerHTML=html}
-function submitTest(){let qs=getLessonQs(currentLesson),correct=0;qs.forEach((q,i)=>{let val;if(q.type==="short"){val=(document.querySelector(`[name="q${i}"]`)?.value||"").trim().toLowerCase().replace(/\s/g,"");correct+=val===String(q.answerText||"").toLowerCase().replace(/\s/g,"")?1:0}else{let selected=document.querySelector(`[name="q${i}"]:checked`);correct+=selected&&Number(selected.value)===q.answer?1:0}});let pct=Math.round(correct/qs.length*100);document.getElementById("testResult").innerHTML=`<div class="feedback good"><h3>Kết quả: ${correct}/${qs.length} câu (${pct}%)</h3><p>Hãy xem lại những câu chưa đúng ở phần luyện tập.</p></div>`;let done=JSON.parse(localStorage.getItem("vec_done_"+student.name)||"[]");if(!done.includes(currentLesson)){done.push(currentLesson);localStorage.setItem("vec_done_"+student.name,JSON.stringify(done))}scores.push({name:student.name,class:student.class,lesson:currentLesson,test:true,correct,total:qs.length,pct,date:new Date().toLocaleString()});localStorage.setItem("vec_scores",JSON.stringify(scores))}
-function report(){setActive("report");document.getElementById("pageTitle").textContent="Kết quả học tập";let mine=scores.filter(s=>s.name===student.name);document.getElementById("view").innerHTML=`${hero("📊 Kết quả học tập","Thông tin ghi nhận trên trình duyệt hiện tại")}<div class="contentbox"><h3>Lịch sử hoạt động</h3>${mine.length?`<table class="table"><thead><tr><th>Thời điểm</th><th>Bài</th><th>Hoạt động</th><th>Kết quả</th></tr></thead><tbody>${mine.map(s=>`<tr><td>${esc(s.date||"")}</td><td>${s.lesson}</td><td>${s.test?"Kiểm tra": "Luyện tập"}</td><td>${s.test?`${s.correct}/${s.total} (${s.pct}%)`:s.correct?"Đúng":"Sai"}</td></tr>`).join("")}</tbody></table>`:"Chưa có dữ liệu hoạt động."}</div>`}
-function toggleTeacher(){teacher=!teacher;home();if(teacher)document.getElementById("pageTitle").textContent="Chế độ giáo viên – thiết kế"}
-function teacherPanel(){return `<div class="contentbox teacher"><h3>⚙ Chế độ giáo viên – thiết kế nội dung</h3><p class="muted">Thêm câu hỏi cho bài đang chọn. Dữ liệu câu hỏi được lưu trên trình duyệt này.</p><label>Dạng câu hỏi</label><select id="newType" onchange="toggleFields()"><option value="mc">Trắc nghiệm</option><option value="tf">Đúng/Sai</option><option value="short">Trả lời ngắn</option></select><label>Nội dung câu hỏi</label><textarea id="newQuestion" placeholder="Nhập nội dung câu hỏi"></textarea><div id="newOptions"><label>Đáp án A</label><input id="opt0"><label>Đáp án B</label><input id="opt1"><label>Đáp án C</label><input id="opt2"><label>Đáp án D</label><input id="opt3"><label>Đáp án đúng (0=A, 1=B, 2=C, 3=D)</label><input id="newAnswer" type="number" min="0" max="3" value="0"></div><div id="shortBox" class="hidden"><label>Đáp án ngắn</label><input id="newAnswerText"></div><label>Gợi ý lần 1</label><textarea id="hint1"></textarea><label>Gợi ý lần 2</label><textarea id="hint2"></textarea><label>Giải thích</label><textarea id="newExplain"></textarea><button class="green" onclick="addQuestion()">Lưu câu hỏi</button><button class="secondary" onclick="exportData()">Xuất dữ liệu JSON</button><label>Nhập dữ liệu câu hỏi JSON</label><input type="file" accept=".json" onchange="importData(event)"><h4>Câu hỏi hiện có trong bài</h4><div id="teacherQs">${questions.filter(q=>q.lesson===currentLesson).map(q=>`<div class="card qrow" style="margin:8px 0"><b>${esc(q.question)}</b><button class="warn small" onclick="deleteQuestion(${questions.indexOf(q)})">Xóa</button></div>`).join("")||"Chưa có câu hỏi"}</div></div>`}
-function toggleFields(){let t=document.getElementById('newType').value;document.getElementById('shortBox').classList.toggle('hidden',t!=='short');document.getElementById('newOptions').classList.toggle('hidden',t==='short');[0,1,2,3].forEach(i=>{let el=document.getElementById('opt'+i);el.classList.toggle('hidden',t==='tf');el.previousElementSibling.classList.toggle('hidden',t==='tf')});let n=document.getElementById('newAnswer');n.max=t==='tf'?1:3;n.previousElementSibling.textContent=t==='tf'?'Đáp án đúng (0 = Đúng, 1 = Sai)':'Đáp án đúng (0=A, 1=B, 2=C, 3=D)'}
-function addQuestion(){let type=document.getElementById("newType").value,q={lesson:currentLesson,type,question:document.getElementById("newQuestion").value.trim(),hints:[document.getElementById("hint1").value,document.getElementById("hint2").value],explanation:document.getElementById("newExplain").value};if(!q.question){alert("Nhập nội dung câu hỏi");return}if(type==="mc"){q.options=[0,1,2,3].map(i=>document.getElementById("opt"+i).value);q.answer=Number(document.getElementById("newAnswer").value)}else if(type==="tf"){q.options=["Đúng","Sai"];q.answer=Number(document.getElementById("newAnswer").value||0)}else{q.answerText=document.getElementById("newAnswerText").value.trim();if(!q.answerText){alert("Nhập đáp án ngắn");return}}questions.push(q);saveQ();openLesson(currentLesson);alert("Đã lưu câu hỏi!")}
-function deleteQuestion(index){if(confirm("Xóa câu hỏi này?")){questions.splice(index,1);saveQ();openLesson(currentLesson)}}
-function exportData(){let blob=new Blob([JSON.stringify(questions,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="ngan-hang-cau-hoi-vecto.json";a.click();URL.revokeObjectURL(a.href)}
-function importData(e){let file=e.target.files[0];if(!file)return;let reader=new FileReader();reader.onload=()=>{try{let data=JSON.parse(reader.result);if(Array.isArray(data)){questions=data;saveQ();openLesson(currentLesson);alert("Đã nhập dữ liệu")}else alert("Tệp không đúng định dạng")}catch{alert("Không đọc được JSON")}};reader.readAsText(file)}
+const L="ABCDEF",MB=1024*1024;
+const typeName={mc:"Trắc nghiệm",tf:"Đúng/Sai",short:"Trả lời ngắn"};
+
+/* ===== Lưu trữ: câu hỏi trong localStorage, tài liệu (tệp lớn) trong IndexedDB ===== */
+let dbp=null;
+function db(){if(!dbp)dbp=new Promise((res,rej)=>{let r=indexedDB.open("vec10",1);r.onupgradeneeded=()=>r.result.createObjectStore("materials",{keyPath:"id"});r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});return dbp}
+async function idb(mode,fn){let d=await db();return new Promise((res,rej)=>{let tx=d.transaction("materials",mode),st=tx.objectStore("materials"),r=fn(st);tx.oncomplete=()=>res(r&&r.result);tx.onerror=()=>rej(tx.error);tx.onabort=()=>rej(tx.error)})}
+const idbAll=()=>idb("readonly",s=>s.getAll()),idbPut=m=>idb("readwrite",s=>s.put(m)),idbDel=id=>idb("readwrite",s=>s.delete(id)),idbClear=()=>idb("readwrite",s=>s.clear());
+async function idbReplaceAll(list){await idbClear();for(const m of list)await idbPut(m)}
+
+const EMB=(()=>{try{return JSON.parse(document.getElementById("vec-data").textContent)}catch(e){return null}})();
+const STUDENT_ONLY=!!(EMB&&EMB.studentOnly)&&location.hash!=="#giaovien";
+let questions=[],materials=[];
+function cleanMats(list){return (list||[]).map(m=>({...m,id:String(m.id||newId()).replace(/[^\w-]/g,"")}))}
+const ready=(async()=>{
+ let localAt=Number(localStorage.getItem("vec_savedAt")||0);
+ if(EMB&&EMB.savedAt>localAt){
+  questions=EMB.questions||[];materials=cleanMats(EMB.materials);
+  localStorage.setItem("vec_questions",JSON.stringify(questions));localStorage.setItem("vec_savedAt",String(EMB.savedAt));
+  try{await idbReplaceAll(materials)}catch(e){console.warn(e)}
+ }else{
+  questions=JSON.parse(localStorage.getItem("vec_questions")||"null")||defaultQuestions.map(q=>({...q}));
+  try{materials=cleanMats(await idbAll())}catch(e){materials=[]}
+ }
+})();
+function touch(){localStorage.setItem("vec_savedAt",String(Date.now()))}
+function saveQ(){localStorage.setItem("vec_questions",JSON.stringify(questions));touch()}
+
+let student=null,teacher=false,currentLesson=7,section="home",attempts={},scores=JSON.parse(localStorage.getItem("vec_scores")||"[]");
+let stLesson=7,stTab="materials",editIdx=null,draft=null,bulkText="";
+
+/* ===== Tiện ích chung ===== */
 function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function hero(h,p,cls){return `<div class="hero ${cls||""}"><div class="hero-author">Tác giả: Phạm Thu Hường</div><div class="hero-title">HỖ TRỢ TỰ HỌC CHỦ ĐỀ VECTƠ</div><h1>${h}</h1><p>${p}</p></div>`}
+function setActive(key){document.querySelectorAll('#nav .navbtn').forEach(b=>b.classList.toggle('active',b.dataset.key===String(key)))}
+let toastTimer;function toast(msg,type){let t=document.getElementById("toast");t.textContent=msg;t.className="toast show "+(type||"");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.className="toast",3200)}
+function newId(){return "m"+Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function lessonById(id){return lessons.find(x=>x.id===id)}
+function lessonLabel(id){return id===12?"Ôn tập":"Bài "+id}
+function matsOf(id){return materials.filter(m=>m.lesson===id).sort((a,b)=>a.order-b.order)}
+function qCount(id){return questions.filter(q=>q.lesson===id).length}
+function fmtSize(b){b=b||0;return b>=MB?(b/MB).toFixed(1)+" MB":Math.max(1,Math.round(b/1024))+" KB"}
+function download(blob,name){let a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000)}
+function norm(s){return String(s??"").normalize("NFC").toLowerCase().replace(/vectơ|vecto|vector/g,"").replace(/[\s→⃗]/g,"").replace(/,/g,".")}
+function matchShort(q,v){let n=norm(v);return !!n&&String(q.answerText||"").split("|").some(a=>norm(a)===n)}
+function safeUrl(u){u=String(u||"").trim();if(!/^https?:\/\//i.test(u))u="https://"+u.replace(/^\/+/,"");return u}
+function ytId(u){let m=String(u||"").match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([\w-]{11})/);return m&&m[1]}
+function driveId(u){let m=String(u||"").match(/drive\.google\.com\/(?:file\/d\/|open\?id=)([\w-]{10,})/);return m&&m[1]}
+const EXT_MIME={pdf:"application/pdf",png:"image/png",jpg:"image/jpeg",jpeg:"image/jpeg",gif:"image/gif",webp:"image/webp",svg:"image/svg+xml",mp4:"video/mp4",webm:"video/webm",mov:"video/quicktime",mp3:"audio/mpeg",wav:"audio/wav",m4a:"audio/mp4"};
+function ext(name){return (String(name).split(".").pop()||"").toLowerCase()}
+function fkind(m){let t=m.mime||"",e=ext(m.name);
+ if(t.startsWith("image/")||/^(png|jpe?g|gif|webp|svg|bmp)$/.test(e))return"image";
+ if(t==="application/pdf"||e==="pdf")return"pdf";
+ if(t.startsWith("video/")||/^(mp4|webm|ogv|mov|m4v)$/.test(e))return"video";
+ if(t.startsWith("audio/")||/^(mp3|wav|ogg|m4a|aac)$/.test(e))return"audio";
+ if(/^(docx?|odt|rtf)$/.test(e))return"word";if(/^(pptx?|odp)$/.test(e))return"ppt";if(/^(xlsx?|ods|csv)$/.test(e))return"excel";return"other"}
+const ICON={image:"🖼️",pdf:"📕",video:"🎬",audio:"🎧",word:"📘",ppt:"📙",excel:"📗",other:"📎",link:"🔗",yt:"▶️",drive:"📁",note:"📝"};
+const KNAME={image:"Ảnh",pdf:"PDF",video:"Video",audio:"Âm thanh",word:"Word",ppt:"PowerPoint",excel:"Bảng tính",other:"Tệp"};
+function micon(m){if(m.kind==="note")return ICON.note;if(m.kind==="link")return ytId(m.url)?ICON.yt:driveId(m.url)?ICON.drive:ICON.link;return ICON[fkind(m)]}
+function mdesc(m){if(m.kind==="note")return"Ghi chú · "+(m.text||"").length+" ký tự";if(m.kind==="link")return ytId(m.url)?"Video YouTube":driveId(m.url)?"Google Drive":m.url;return KNAME[fkind(m)]+" · "+fmtSize(m.size)}
+const urlCache={};
+function blobUrl(m){if(urlCache[m.id])return urlCache[m.id];let [h,b]=String(m.data||",").split(","),bin=atob(b||""),arr=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)arr[i]=bin.charCodeAt(i);return urlCache[m.id]=URL.createObjectURL(new Blob([arr],{type:m.mime||EXT_MIME[ext(m.name)]||"application/octet-stream"}))}
+
+/* ===== Phần học sinh ===== */
+function loginStudent(){let n=document.getElementById("studentName").value.trim(),c=document.getElementById("studentClass").value.trim();if(!n||!c){alert("Vui lòng nhập họ tên và lớp.");return}student={name:n,class:c};document.getElementById("login").style.display="none";document.getElementById("app").style.display="block";document.getElementById("userchip").textContent=n+" · "+c;buildNav();home()}
+function logout(){student=null;teacher=false;updateModeBtn();document.getElementById("app").style.display="none";document.getElementById("login").style.display="grid"}
+function buildNav(){let n=document.getElementById("nav");n.innerHTML=`<button class="navbtn" data-key="home" onclick="home()">🏠 Trang chủ</button>`+lessons.map(l=>`<button class="navbtn" data-key="${l.id}" onclick="navLesson(${l.id})">${l.icon} Bài ${l.id===12?"Ôn tập":l.id} · ${l.title}</button>`).join("")+`<button class="navbtn" data-key="report" onclick="report()">📊 Kết quả của em</button>`}
+function navLesson(id){if(teacher){stLesson=id;editIdx=null;draft=null;studio()}else openLesson(id)}
+function home(){if(teacher)return studio();section="home";setActive("home");document.getElementById("pageTitle").textContent="Trang học tập";let done=JSON.parse(localStorage.getItem("vec_done_"+student.name)||"[]");document.getElementById("view").innerHTML=`${hero(`Xin chào, ${esc(student.name)}! 👋`,"Hãy chọn bài học và khám phá thế giới vectơ.")}<div class="grid"><div class="card"><div class="muted">Bài học trong chương</div><div class="stat">6</div></div><div class="card"><div class="muted">Bài đã hoàn thành</div><div class="stat">${done.length}/6</div></div><div class="card"><div class="muted">Lớp học</div><div class="stat">${esc(student.class)}</div></div></div><div class="section"><h3>📚 Các bài học</h3><div class="grid">${lessons.map(l=>`<div class="card lesson" onclick="openLesson(${l.id})"><div class="num">BÀI ${l.id===12?"ÔN TẬP":l.id}</div><h3>${l.icon} ${l.title}</h3><div class="muted">SGK trang ${l.pages}</div><div style="margin-top:14px"><span class="pill">Học · Luyện tập · Kiểm tra</span></div></div>`).join("")}</div></div>`}
+function openLesson(id){currentLesson=id;section="lesson";setActive(id);let l=lessonById(id);document.getElementById("pageTitle").textContent="Bài "+(id===12?"ôn tập":id)+": "+l.title;document.getElementById("view").innerHTML=`${hero(`${l.icon} Bài ${id===12?"Ôn tập cuối chương IV":id+". "+l.title}`,`SGK trang ${l.pages} · Tự học theo tiến trình`)}<div class="tabs"><button onclick="lessonTab('materials',this)">📖 Tài liệu</button><button onclick="lessonTab('practice',this)">✍️ Luyện tập</button><button onclick="lessonTab('test',this)">📝 Kiểm tra</button></div><div id="lessonBody"></div>`;lessonTab("materials")}
+function lessonTab(which,btn){section=which;document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));if(!btn)btn=document.querySelector(`.tabs button[onclick*="${which}"]`);if(btn)btn.classList.add("active");let b=document.getElementById("lessonBody");if(!b)return;if(which==="materials"){b.innerHTML=`<div class="contentbox muted">Đang tải tài liệu…</div>`;ready.then(()=>{let el=document.getElementById("lessonBody");if(el&&section==="materials")el.innerHTML=materialsHTML(currentLesson)})}else if(which==="practice"){renderPractice()}else if(which==="test"){renderTest()}}
+function materialsHTML(id){let mats=matsOf(id),l=lessonById(id);return `<div class="contentbox"><h3>📖 Tài liệu học tập</h3>${mats.length?mats.map(materialView).join(""):`<p class="muted">Giáo viên chưa thêm tài liệu cho bài này.</p>`}<div class="grid" style="margin-top:14px"><div class="card"><h4 style="margin-top:0">🧠 Nội dung cần học</h4><p style="margin-bottom:0">Đọc nội dung SGK trang ${l.pages}, ghi lại kiến thức trọng tâm và xem tài liệu giáo viên cung cấp.</p></div><div class="card"><h4 style="margin-top:0">🎯 Mục tiêu tự học</h4><p style="margin-bottom:0">Hiểu kiến thức trọng tâm, hoàn thành luyện tập và tự kiểm tra mức độ nắm bài.</p></div></div></div>`}
+function materialView(m){
+ let head=extra=>`<div class="mview-h"><span style="font-size:22px">${micon(m)}</span><b>${esc(m.name)}</b><span class="spacer"></span>${extra||""}</div>`;
+ if(m.kind==="note")return `<div class="mview">${head()}<div class="note">${esc(m.text)}</div></div>`;
+ if(m.kind==="link"){let u=safeUrl(m.url),y=ytId(u),d=driveId(u),open=`<a class="btnlink" href="${esc(u)}" target="_blank" rel="noopener">Mở trong tab mới ↗</a>`;
+  if(y)return `<div class="mview">${head(open)}<iframe class="ytview" src="https://www.youtube-nocookie.com/embed/${y}" allow="accelerometer; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe><div class="muted" style="margin-top:6px">Nếu video không phát được, em bấm “Mở trong tab mới”.</div></div>`;
+  if(d)return `<div class="mview">${head(open)}<iframe class="ytview" src="https://drive.google.com/file/d/${d}/preview" allow="autoplay; fullscreen" allowfullscreen></iframe></div>`;
+  return `<div class="mview">${head(open)}<div class="muted" style="word-break:break-all">${esc(u)}</div></div>`}
+ let u,k=fkind(m);try{u=blobUrl(m)}catch(e){return `<div class="mview">${head()}<div class="muted">Không mở được tệp này.</div></div>`}
+ let dl=`<a class="btnlink" href="${u}" download="${esc(m.name)}">⬇ Tải về</a>`;
+ if(k==="image")return `<div class="mview">${head(dl)}<img src="${u}" alt="${esc(m.name)}"></div>`;
+ if(k==="pdf")return `<div class="mview">${head(`<a class="btnlink" href="${u}" target="_blank">Mở toàn màn hình ↗</a> ${dl}`)}<iframe class="pdfview" src="${u}"></iframe></div>`;
+ if(k==="video")return `<div class="mview">${head(dl)}<video src="${u}" controls preload="metadata"></video></div>`;
+ if(k==="audio")return `<div class="mview">${head(dl)}<audio src="${u}" controls style="width:100%"></audio></div>`;
+ return `<div class="mview">${head(dl)}<div class="muted">${esc(mdesc(m))} — em tải về để mở bằng phần mềm phù hợp.</div></div>`}
+function getLessonQs(id){return questions.filter(q=>q.lesson===id||id===12)}
+function renderPractice(){let b=document.getElementById("lessonBody");let qs=getLessonQs(currentLesson);if(!qs.length){b.innerHTML=`<div class="contentbox">Chưa có câu hỏi luyện tập cho bài này.</div>`;return}renderQuestion(qs,0)}
+function renderQuestion(qs,i){let q=qs[i];let b=document.getElementById("lessonBody");b.innerHTML=`<div class="contentbox"><div class="pill">Câu ${i+1}/${qs.length} · ${typeName[q.type]}</div><h3>${esc(q.question)}</h3>${q.type==="short"?`<input id="answer" placeholder="Nhập câu trả lời" onkeydown="if(event.key==='Enter')checkAnswer(${i})">`:q.options.map((o,j)=>`<label class="option"><input type="radio" name="ans" value="${j}" style="width:auto;margin-right:9px"> ${esc(o)}</label>`).join("")}<div class="actions" style="margin-top:12px"><button onclick="checkAnswer(${i})">Kiểm tra câu trả lời</button><button class="secondary" onclick="renderQuestion(getLessonQs(currentLesson),${i+1})" ${i>=qs.length-1?"disabled":""}>Câu tiếp theo →</button></div><div id="feedback"></div></div>`}
+function checkAnswer(i){let qs=getLessonQs(currentLesson),q=qs[i],key=currentLesson+"_"+i,tries=attempts[key]||0,correct=false;if(q.type==="short"){correct=matchShort(q,document.getElementById("answer").value)}else{let selected=document.querySelector('input[name="ans"]:checked');correct=!!selected&&Number(selected.value)===q.answer}let f=document.getElementById("feedback");if(correct){f.innerHTML=`<div class="feedback good"><b>🎉 Chính xác!</b><br>${esc(q.explanation||"Em đã trả lời đúng.")}</div>`;attempts[key]=0;recordResponse(currentLesson,q,true,tries+1)}else{tries++;attempts[key]=tries;let hint=tries<=2?(q.hints?.[tries-1]||"Em hãy xem lại nội dung kiến thức liên quan."):(q.explanation||"Hãy xem lại phần lý thuyết và thử lại.");f.innerHTML=`<div class="feedback help"><b>Chưa chính xác – hãy thử lại!</b><br>${esc(hint)}${tries>=3&&q.explanation?`<div style="margin-top:8px"><b>Giải thích:</b> ${esc(q.explanation)}</div>`:""}</div>`;recordResponse(currentLesson,q,false,tries)}}
+function recordResponse(id,q,correct,attempt){scores.push({name:student.name,class:student.class,lesson:id,question:q.question,correct,attempt,date:new Date().toLocaleString()});localStorage.setItem("vec_scores",JSON.stringify(scores))}
+function renderTest(){let qs=getLessonQs(currentLesson);if(!qs.length){document.getElementById("lessonBody").innerHTML=`<div class="contentbox">Chưa có câu hỏi kiểm tra cho bài này.</div>`;return}document.getElementById("lessonBody").innerHTML=`<div class="contentbox"><h3>📝 Bài kiểm tra</h3><p>Kiểm tra sử dụng câu hỏi đã có trong ngân hàng. Gợi ý không hiển thị trong chế độ kiểm tra.</p><button onclick="startTest()">Bắt đầu kiểm tra (${qs.length} câu)</button></div>`}
+function startTest(){let qs=getLessonQs(currentLesson);let html=`<div class="contentbox"><h3>📝 Bài kiểm tra</h3><form id="testForm" onsubmit="return false">`;qs.forEach((q,i)=>{html+=`<div class="section"><b>Câu ${i+1}. ${esc(q.question)}</b>${q.type==="short"?`<input name="q${i}" placeholder="Câu trả lời">`:q.options.map((o,j)=>`<label class="option"><input type="radio" name="q${i}" value="${j}" style="width:auto;margin-right:8px"> ${esc(o)}</label>`).join("")}</div>`});html+=`</form><button onclick="submitTest()">Nộp bài</button><div id="testResult"></div></div>`;document.getElementById("lessonBody").innerHTML=html}
+function submitTest(){let qs=getLessonQs(currentLesson),correct=0;qs.forEach((q,i)=>{if(q.type==="short"){correct+=matchShort(q,document.querySelector(`[name="q${i}"]`)?.value)?1:0}else{let selected=document.querySelector(`[name="q${i}"]:checked`);correct+=selected&&Number(selected.value)===q.answer?1:0}});let pct=Math.round(correct/qs.length*100);document.getElementById("testResult").innerHTML=`<div class="feedback good"><h3>Kết quả: ${correct}/${qs.length} câu (${pct}%)</h3><p>Hãy xem lại những câu chưa đúng ở phần luyện tập.</p></div>`;let done=JSON.parse(localStorage.getItem("vec_done_"+student.name)||"[]");if(!done.includes(currentLesson)){done.push(currentLesson);localStorage.setItem("vec_done_"+student.name,JSON.stringify(done))}scores.push({name:student.name,class:student.class,lesson:currentLesson,test:true,correct,total:qs.length,pct,date:new Date().toLocaleString()});localStorage.setItem("vec_scores",JSON.stringify(scores))}
+function report(){section="report";setActive("report");document.getElementById("pageTitle").textContent="Kết quả học tập";let mine=scores.filter(s=>s.name===student.name);document.getElementById("view").innerHTML=`${hero("📊 Kết quả học tập","Thông tin ghi nhận trên trình duyệt hiện tại")}<div class="contentbox"><h3>Lịch sử hoạt động</h3>${mine.length?`<table class="table"><thead><tr><th>Thời điểm</th><th>Bài</th><th>Hoạt động</th><th>Kết quả</th></tr></thead><tbody>${mine.map(s=>`<tr><td>${esc(s.date||"")}</td><td>${lessonLabel(s.lesson)}</td><td>${s.test?"Kiểm tra":"Luyện tập"}</td><td>${s.test?`${s.correct}/${s.total} (${s.pct}%)`:s.correct?"Đúng":"Sai"}</td></tr>`).join("")}</tbody></table>`:"Chưa có dữ liệu hoạt động."}</div>`}
+
+/* ===== CHẾ ĐỘ GIÁO VIÊN ===== */
+function updateModeBtn(){document.getElementById("modeBtn").textContent=teacher?"← Về chế độ học sinh":"⚙ Chế độ giáo viên"}
+function toggleTeacher(){teacher=!teacher;updateModeBtn();if(teacher){stLesson=currentLesson||7;editIdx=null;draft=null;studio()}else home()}
+function previewLesson(){teacher=false;updateModeBtn();openLesson(stLesson);toast("Đang xem như học sinh. Bấm “⚙ Chế độ giáo viên” để quay lại thiết kế.")}
+async function studio(){await ready;section="studio";setActive(stLesson);document.getElementById("pageTitle").textContent="Chế độ giáo viên – Thiết kế bài học";
+ let l=lessonById(stLesson),nm=matsOf(stLesson).length,nq=qCount(stLesson);
+ let tabs=[["materials",`📖 Tài liệu (${nm})`],["questions",`❓ Câu hỏi (${nq})`],["bulk","⚡ Nhập nhanh nhiều câu"],["share","💾 Sao lưu & gửi học sinh"]];
+ document.getElementById("view").innerHTML=`${hero("⚙ Thiết kế bài học","① Chọn bài &nbsp;→&nbsp; ② Thêm tài liệu &nbsp;→&nbsp; ③ Tạo câu hỏi &nbsp;→&nbsp; ④ Gửi cho học sinh. Mọi thay đổi được lưu tự động.","teach")}
+ <div class="chips">${lessons.map(x=>`<button class="chip ${x.id===stLesson?"active":""}" onclick="navLesson(${x.id})"><b>${x.icon} ${lessonLabel(x.id)}</b><small>📄 ${matsOf(x.id).length} tài liệu · ❓ ${qCount(x.id)} câu</small></button>`).join("")}</div>
+ <div class="studio-head"><h3>${l.icon} ${lessonLabel(stLesson)}: ${esc(l.title)}</h3><button class="secondary small" onclick="previewLesson()">👁 Xem thử như học sinh</button></div>
+ <div class="tabs">${tabs.map(([k,t])=>`<button class="${stTab===k?"active":""}" onclick="stTab='${k}';studio()">${t}</button>`).join("")}</div>
+ <div id="studioBody"></div>`;
+ ({materials:stMaterials,questions:stQuestions,bulk:stBulk,share:stShare})[stTab]()}
+
+/* --- Tài liệu --- */
+function stMaterials(){let mats=matsOf(stLesson);
+ document.getElementById("studioBody").innerHTML=`<div class="contentbox">
+  <div class="drop" id="drop" onclick="document.getElementById('fileIn').click()"><div style="font-size:36px">📤</div><b>Kéo thả tệp vào đây hoặc bấm để chọn tệp</b><div class="muted">PDF, ảnh, video, âm thanh, Word, PowerPoint… Chọn được nhiều tệp cùng lúc.</div></div>
+  <div class="quick"><button class="secondary" onclick="showAdd('link')">🔗 Thêm link (YouTube, Google Drive, trang web)</button><button class="secondary" onclick="showAdd('note')">📝 Viết ghi chú / tóm tắt kiến thức</button></div>
+  <div id="addBox"></div></div>
+  <div class="contentbox"><h3>Tài liệu của ${lessonLabel(stLesson)} (${mats.length})</h3><p class="muted">Học sinh sẽ thấy tài liệu theo đúng thứ tự này. Dùng ↑ ↓ để sắp xếp.</p>
+  ${mats.length?mats.map((m,i)=>`<div class="mitem"><span class="micon">${micon(m)}</span><div class="mname"><b>${esc(m.name)}</b><div class="muted">${esc(mdesc(m))}</div></div><div class="actions"><button class="iconbtn" title="Lên" onclick="moveMat('${m.id}',-1)" ${i===0?"disabled":""}>↑</button><button class="iconbtn" title="Xuống" onclick="moveMat('${m.id}',1)" ${i===mats.length-1?"disabled":""}>↓</button><button class="iconbtn" onclick="showAdd('${m.kind}','${m.id}')">✏ Sửa</button><button class="iconbtn del" onclick="delMat('${m.id}')">🗑 Xóa</button></div></div>`).join(""):`<p class="muted">Chưa có tài liệu nào. Kéo thả tệp vào ô phía trên để bắt đầu.</p>`}</div>`;
+ let d=document.getElementById("drop");
+ ["dragenter","dragover"].forEach(ev=>d.addEventListener(ev,e=>{e.preventDefault();d.classList.add("drag")}));
+ ["dragleave","drop"].forEach(ev=>d.addEventListener(ev,e=>{e.preventDefault();d.classList.remove("drag")}));
+ d.addEventListener("drop",e=>addFiles(e.dataTransfer.files))}
+function readDataURL(f){return new Promise((res,rej)=>{let r=new FileReader();r.onload=()=>res(r.result);r.onerror=()=>rej(r.error);r.readAsDataURL(f)})}
+function nextOrder(){return materials.reduce((a,m)=>Math.max(a,m.order||0),0)+1}
+async function addFiles(fileList){let files=[...(fileList||[])];if(!files.length)return;
+ let big=files.filter(f=>f.size>15*MB);
+ if(big.length&&!confirm(`Có ${big.length} tệp lớn hơn 15 MB:\n${big.map(f=>"• "+f.name+" ("+fmtSize(f.size)+")").join("\n")}\n\nTệp lớn sẽ làm trang gửi học sinh rất nặng. Với video, nên tải lên YouTube hoặc Google Drive rồi dùng nút “Thêm link”.\n\nVẫn thêm các tệp này?`))return;
+ toast(`Đang tải ${files.length} tệp…`);let ord=nextOrder(),ok=0;
+ for(const f of files){try{let data=await readDataURL(f),m={id:newId(),lesson:stLesson,kind:"file",name:f.name,mime:f.type||EXT_MIME[ext(f.name)]||"",size:f.size,data,order:ord++,added:Date.now()};await idbPut(m);materials.push(m);ok++}catch(e){console.error(e);toast("Không lưu được “"+f.name+"” – bộ nhớ trình duyệt có thể đã đầy.","err")}}
+ if(ok){touch();toast(`✅ Đã thêm ${ok} tệp vào ${lessonLabel(stLesson)}`)}studio()}
+function showAdd(kind,id){let m=id?materials.find(x=>x.id===id):null,box=document.getElementById("addBox"),cancel=`<button class="secondary" onclick="document.getElementById('addBox').innerHTML=''">Hủy</button>`,save=`<button class="green" onclick="saveAdd('${kind}','${id||""}')">💾 Lưu</button>`;
+ if(kind==="link")box.innerHTML=`<div class="addbox"><h4>🔗 ${m?"Sửa":"Thêm"} đường link</h4><div class="muted">Video YouTube và tệp Google Drive sẽ hiện trực tiếp trên trang; các link khác hiện thành nút bấm.</div><label>Đường link</label><input id="aUrl" placeholder="Dán link vào đây, ví dụ https://youtu.be/…" value="${esc(m?.url||"")}"><label>Tiêu đề hiển thị <span class="muted">(không bắt buộc)</span></label><input id="aName" placeholder="Ví dụ: Video bài giảng quy tắc ba điểm" value="${esc(m?.name||"")}"><div class="actions" style="margin-top:12px">${save}${cancel}</div></div>`;
+ else if(kind==="note")box.innerHTML=`<div class="addbox"><h4>📝 ${m?"Sửa":"Viết"} ghi chú</h4><label>Tiêu đề</label><input id="aName" placeholder="Ví dụ: Tóm tắt kiến thức trọng tâm" value="${esc(m?.name||"")}"><label>Nội dung</label><textarea id="aText" style="min-height:170px" placeholder="Gõ hoặc dán nội dung. Xuống dòng sẽ được giữ nguyên.&#10;Ví dụ: Quy tắc ba điểm: AB + BC = AC">${esc(m?.text||"")}</textarea><div class="actions" style="margin-top:12px">${save}${cancel}</div></div>`;
+ else box.innerHTML=`<div class="addbox"><h4>✏ Đổi tên tệp</h4><label>Tên hiển thị cho học sinh</label><input id="aName" value="${esc(m?.name||"")}"><div class="actions" style="margin-top:12px">${save}${cancel}</div></div>`;
+ box.scrollIntoView({behavior:"smooth",block:"nearest"});let first=box.querySelector("input,textarea");if(first)first.focus()}
+async function saveAdd(kind,id){let m=id?materials.find(x=>x.id===id):null,v=x=>(document.getElementById(x)?.value||"").trim();
+ if(kind==="link"){let url=v("aUrl");if(!url)return toast("Hãy dán đường link","err");url=safeUrl(url);let name=v("aName")||(ytId(url)?"Video YouTube":driveId(url)?"Tài liệu Google Drive":url);m=m?Object.assign(m,{url,name}):{id:newId(),lesson:stLesson,kind,url,name,order:nextOrder(),added:Date.now()}}
+ else if(kind==="note"){let text=document.getElementById("aText").value;if(!text.trim())return toast("Hãy nhập nội dung ghi chú","err");let name=v("aName")||"Ghi chú";m=m?Object.assign(m,{name,text}):{id:newId(),lesson:stLesson,kind,name,text,order:nextOrder(),added:Date.now()}}
+ else{if(!m)return;let name=v("aName");if(!name)return toast("Tên không được để trống","err");m.name=name}
+ if(!materials.includes(m))materials.push(m);
+ try{await idbPut(m);touch();toast("✅ Đã lưu tài liệu")}catch(e){toast("Không lưu được – bộ nhớ trình duyệt có thể đã đầy.","err")}studio()}
+async function delMat(id){let m=materials.find(x=>x.id===id);if(!m||!confirm(`Xóa tài liệu “${m.name}”?`))return;materials=materials.filter(x=>x!==m);try{await idbDel(id)}catch(e){}touch();toast("Đã xóa tài liệu");studio()}
+async function moveMat(id,dir){let list=matsOf(stLesson),i=list.findIndex(m=>m.id===id),j=i+dir;if(j<0||j>=list.length)return;let a=list[i],b=list[j],t=a.order;a.order=b.order;b.order=t;if(a.order===b.order)a.order+=dir;try{await idbPut(a);await idbPut(b)}catch(e){}touch();studio()}
+
+/* --- Câu hỏi --- */
+function blankDraft(){return{type:"mc",question:"",options:["","","",""],answer:0,answerText:"",hints:["",""],explanation:""}}
+function stQuestions(){if(!draft)draft=blankDraft();
+ document.getElementById("studioBody").innerHTML=`<div class="qgrid"><div class="contentbox sticky" id="qForm"></div><div class="contentbox" id="qList"></div></div>`;renderQForm();renderQList()}
+function renderQForm(){let d=draft,isEdit=editIdx!=null,el=document.getElementById("qForm");if(!el)return;let ans="";
+ if(d.type==="mc")ans=`<label>Các phương án <span class="muted" style="font-weight:500">— bấm vào vòng tròn để chọn đáp án đúng</span></label>${d.options.map((o,i)=>`<div class="optrow ${d.answer===i?"correct":""}"><label class="radio" title="Chọn làm đáp án đúng"><input type="radio" name="dAns" ${d.answer===i?"checked":""} onchange="draft.answer=${i};renderQForm()"><b>${L[i]}</b></label><input value="${esc(o)}" placeholder="Nhập phương án ${L[i]}" oninput="draft.options[${i}]=this.value">${d.answer===i?`<span class="tag">✔ Đúng</span>`:""}${d.options.length>2?`<button class="iconbtn" title="Xóa phương án" onclick="rmOpt(${i})">✕</button>`:""}</div>`).join("")}${d.options.length<6?`<button class="secondary small" style="margin-top:4px" onclick="addOpt()">+ Thêm phương án</button>`:""}`;
+ else if(d.type==="tf")ans=`<label>Phát biểu trên là</label><div class="seg tf"><button class="${d.answer===0?"active t":""}" onclick="draft.answer=0;renderQForm()">✔ Đúng</button><button class="${d.answer===1?"active f":""}" onclick="draft.answer=1;renderQForm()">✘ Sai</button></div>`;
+ else ans=`<label>Đáp án đúng</label><input value="${esc(d.answerText)}" placeholder="Ví dụ: AC" oninput="draft.answerText=this.value"><div class="muted" style="margin-top:6px">Nhiều cách viết đều đúng? Ngăn cách bằng dấu <b>|</b>, ví dụ <span class="mono">AC | CA ngược</span>. Hệ thống tự bỏ qua chữ hoa/thường, dấu cách, chữ “vectơ”, và coi 2,5 = 2.5.</div>`;
+ let extra=d.hints[0]||d.hints[1]||d.explanation;
+ el.innerHTML=`<h3>${isEdit?"✏ Sửa câu hỏi":"➕ Tạo câu hỏi mới"} <span class="muted" style="font-weight:500">· ${lessonLabel(stLesson)}</span></h3>
+ <label>Dạng câu hỏi</label><div class="seg">${[["mc","🔘 Trắc nghiệm"],["tf","✔ Đúng / Sai"],["short","✏ Trả lời ngắn"]].map(([k,t])=>`<button class="${d.type===k?"active":""}" onclick="setType('${k}')">${t}</button>`).join("")}</div>
+ <label>${d.type==="tf"?"Phát biểu":"Nội dung câu hỏi"}</label><textarea id="dQ" placeholder="${d.type==="tf"?"Ví dụ: Hai vectơ cùng phương thì luôn cùng hướng.":"Nhập câu hỏi…"}" oninput="draft.question=this.value">${esc(d.question)}</textarea>
+ ${ans}
+ <details ${extra?"open":""}><summary>💡 Gợi ý & giải thích <span class="muted" style="font-weight:500">(không bắt buộc – hiện cho học sinh khi trả lời sai)</span></summary>
+ <label>Gợi ý lần 1 <span class="muted" style="font-weight:500">(sai lần đầu)</span></label><input value="${esc(d.hints[0])}" oninput="draft.hints[0]=this.value">
+ <label>Gợi ý lần 2 <span class="muted" style="font-weight:500">(sai lần hai)</span></label><input value="${esc(d.hints[1])}" oninput="draft.hints[1]=this.value">
+ <label>Giải thích đáp án</label><textarea style="min-height:70px" oninput="draft.explanation=this.value">${esc(d.explanation)}</textarea></details>
+ <div class="actions" style="margin-top:16px"><button class="green" onclick="saveDraft()">💾 ${isEdit?"Cập nhật câu hỏi":"Lưu câu hỏi"}</button><button class="secondary" onclick="resetDraft()">${isEdit?"Hủy sửa":"Làm mới"}</button></div>`}
+function setType(k){draft.type=k;if(k==="tf"&&draft.answer>1)draft.answer=0;if(k==="mc"&&draft.options.length<2)draft.options=["","","",""];renderQForm()}
+function addOpt(){draft.options.push("");renderQForm()}
+function rmOpt(i){draft.options.splice(i,1);if(draft.answer===i)draft.answer=0;else if(draft.answer>i)draft.answer--;renderQForm()}
+function resetDraft(){draft=blankDraft();editIdx=null;renderQForm();renderQList()}
+function saveDraft(){let d=draft,q={lesson:editIdx!=null?questions[editIdx].lesson:stLesson,type:d.type,question:d.question.trim(),hints:d.hints.map(h=>h.trim()),explanation:d.explanation.trim()};
+ if(!q.question)return toast("Hãy nhập nội dung câu hỏi","err");
+ if(d.type==="mc"){let filled=d.options.map((o,i)=>({o:o.trim(),i})).filter(x=>x.o);if(filled.length<2)return toast("Cần ít nhất 2 phương án","err");let a=filled.findIndex(x=>x.i===d.answer);if(a<0)return toast("Phương án được chọn làm đáp án đúng đang để trống","err");q.options=filled.map(x=>x.o);q.answer=a}
+ else if(d.type==="tf"){q.options=["Đúng","Sai"];q.answer=d.answer}
+ else{q.answerText=d.answerText.trim();if(!q.answerText)return toast("Hãy nhập đáp án đúng","err")}
+ if(editIdx!=null){questions[editIdx]=q;toast("✅ Đã cập nhật câu hỏi")}else{questions.push(q);toast(`✅ Đã lưu – ${lessonLabel(stLesson)} hiện có ${qCount(stLesson)} câu`)}
+ saveQ();editIdx=null;let keepType=d.type;draft=blankDraft();draft.type=keepType;studio().then(()=>document.getElementById("dQ")?.focus())}
+function ansText(q){if(q.type==="mc")return `${L[q.answer]}. ${q.options?.[q.answer]??""}`;if(q.type==="tf")return q.answer===0?"Đúng":"Sai";return q.answerText}
+function renderQList(){let el=document.getElementById("qList");if(!el)return;let list=questions.map((q,i)=>({q,i})).filter(x=>x.q.lesson===stLesson);
+ el.innerHTML=`<h3>Danh sách câu hỏi (${list.length})</h3>${stLesson===12?`<p class="muted">Bài Ôn tập tự động dùng câu hỏi của tất cả các bài, cộng thêm các câu riêng dưới đây.</p>`:""}${list.length?list.map(({q,i},k)=>`<div class="qitem ${editIdx===i?"editing":""}"><div class="qtop"><span class="pill">Câu ${k+1} · ${typeName[q.type]}</span><div class="actions"><button class="iconbtn" title="Lên" onclick="moveQ(${i},-1)" ${k===0?"disabled":""}>↑</button><button class="iconbtn" title="Xuống" onclick="moveQ(${i},1)" ${k===list.length-1?"disabled":""}>↓</button><button class="iconbtn" onclick="editQ(${i})">✏ Sửa</button><button class="iconbtn" title="Nhân bản" onclick="dupQ(${i})">⧉</button><button class="iconbtn del" title="Xóa" onclick="delQ(${i})">🗑</button></div></div><div class="qtext">${esc(q.question)}</div><div class="qans">✔ ${esc(ansText(q))}${q.hints?.some(h=>h)||q.explanation?` <span class="muted">· 💡 có gợi ý/giải thích</span>`:""}</div></div>`).join(""):`<p class="muted">Chưa có câu hỏi. Tạo ở khung bên cạnh, hoặc dùng tab “⚡ Nhập nhanh nhiều câu”.</p>`}`}
+function editQ(i){let q=questions[i];editIdx=i;draft={type:q.type,question:q.question||"",options:q.type==="mc"?q.options.slice():["","","",""],answer:q.answer??0,answerText:q.answerText||"",hints:[q.hints?.[0]||"",q.hints?.[1]||""],explanation:q.explanation||""};stTab="questions";stQuestions();document.getElementById("qForm").scrollIntoView({behavior:"smooth",block:"start"})}
+function dupQ(i){questions.splice(i+1,0,JSON.parse(JSON.stringify(questions[i])));if(editIdx!=null&&editIdx>i)editIdx++;saveQ();toast("Đã nhân bản câu hỏi");studio()}
+function delQ(i){if(!confirm("Xóa câu hỏi này?\n\n“"+questions[i].question+"”"))return;questions.splice(i,1);if(editIdx===i){editIdx=null;draft=null}else if(editIdx!=null&&editIdx>i)editIdx--;saveQ();toast("Đã xóa câu hỏi");studio()}
+function moveQ(i,dir){let idx=questions.map((q,k)=>k).filter(k=>questions[k].lesson===questions[i].lesson),p=idx.indexOf(i),j=idx[p+dir];if(j==null)return;[questions[i],questions[j]]=[questions[j],questions[i]];if(editIdx===i)editIdx=j;else if(editIdx===j)editIdx=i;saveQ();renderQList()}
+
+/* --- Nhập nhanh nhiều câu --- */
+const SAMPLE=`Câu 1: Hai vectơ được gọi là bằng nhau khi nào?
+A. Có cùng độ dài
+*B. Cùng hướng và cùng độ dài
+C. Cùng phương
+D. Có chung điểm đầu
+Gợi ý: Xét cả độ dài và hướng của vectơ.
+Giải thích: Hai vectơ bằng nhau khi cùng hướng và cùng độ dài.
+
+Câu 2: Hai vectơ cùng phương thì luôn cùng hướng.
+Đáp án: Sai
+
+Câu 3: Vectơ a = (3; 4). Độ dài của vectơ a bằng bao nhiêu?
+Đáp án: 5
+Gợi ý: |a| = √(x² + y²)`;
+const RX_HEAD=/^\s*(?:câu|cau|question)\s*\d+\s*[:.)\-–]?\s*/i,RX_OPT=/^\s*(\*)?\s*([A-F])\s*[.)]\s*(.+?)\s*(\*)?\s*$/,RX_ANS=/^\s*(?:đáp án|dap an|đ\/a|answer)(?:\s*đúng)?\s*[:：]\s*(.+)$/i,RX_HINT=/^\s*(?:gợi ý|goi y|hint)\s*\d*\s*[:：]\s*(.*)$/i,RX_EXP=/^\s*(?:giải thích|giai thich|lời giải|loi giai|explanation)\s*[:：]\s*(.*)$/i;
+function cut(s){return s.length>50?s.slice(0,50)+"…":s}
+function parseBulk(text){let lines=String(text||"").normalize("NFC").replace(/\r/g,"").split("\n"),blocks=[],cur=[],hasHead=lines.some(l=>RX_HEAD.test(l));
+ for(const l of lines){if(hasHead){if(RX_HEAD.test(l)){if(cur.length)blocks.push(cur);cur=[l.replace(RX_HEAD,"")]}else if(cur.length||l.trim())cur.push(l)}else{if(!l.trim()){if(cur.length)blocks.push(cur);cur=[]}else cur.push(l)}}
+ if(cur.length)blocks.push(cur);
+ let qs=[],errors=[];
+ blocks.forEach((bl,bi)=>{let qL=[],opts=[],star=-1,ans=null,hints=[],expl=[],mode="q";
+  for(const raw of bl){let l=raw.trim(),m;if(!l)continue;
+   if(m=l.match(RX_ANS)){ans=m[1].trim();mode="meta"}
+   else if(m=l.match(RX_HINT)){hints.push(m[1].trim());mode="hint"}
+   else if(m=l.match(RX_EXP)){expl.push(m[1].trim());mode="exp"}
+   else if((mode==="q"||mode==="opt")&&(m=l.match(RX_OPT))&&(mode==="opt"||qL.length)){if(m[1]||m[4])star=opts.length;opts.push(m[3].trim());mode="opt"}
+   else if(mode==="q")qL.push(l);else if(mode==="exp")expl.push(l);else if(mode==="hint")hints[hints.length-1]+=" "+l;else if(mode==="opt")opts[opts.length-1]+=" "+l}
+  let question=qL.join(" ").trim(),label=question?`“${cut(question)}”`:`Khối ${bi+1}`;
+  if(!question){if(opts.length||ans)errors.push(`${label}: không tìm thấy nội dung câu hỏi.`);return}
+  let q={type:"",question,hints:hints.slice(0,2),explanation:expl.join(" ").trim()};
+  if(opts.length>=2){q.type="mc";q.options=opts.slice(0,6);let a=star;
+   if(a<0&&ans){let s=ans.replace(/[.)\s]/g,"");a=/^[A-F]$/i.test(s)?L.indexOf(s.toUpperCase()):opts.findIndex(o=>norm(o)===norm(ans))}
+   if(a<0||a>=q.options.length){errors.push(`${label}: chưa đánh dấu đáp án đúng (thêm dấu * trước phương án đúng).`);return}q.answer=a}
+  else if(opts.length===1){errors.push(`${label}: chỉ có 1 phương án, cần ít nhất 2.`);return}
+  else{if(!ans){errors.push(`${label}: thiếu dòng “Đáp án: …”.`);return}
+   if(/^(đúng|dung|đ|true)$/i.test(ans)){q.type="tf";q.options=["Đúng","Sai"];q.answer=0}
+   else if(/^(sai|s|false)$/i.test(ans)){q.type="tf";q.options=["Đúng","Sai"];q.answer=1}
+   else{q.type="short";q.answerText=ans}}
+  qs.push(q)});
+ return{qs,errors}}
+function stBulk(){document.getElementById("studioBody").innerHTML=`<div class="qgrid"><div class="contentbox"><h3>⚡ Nhập nhanh nhiều câu hỏi</h3><p class="muted">Gõ hoặc dán (copy từ Word được) nhiều câu cùng lúc theo mẫu. Kết quả nhận diện hiện ngay bên cạnh.</p>
+ <div class="guide">• Mỗi câu bắt đầu bằng <code>Câu 1:</code>, <code>Câu 2:</code>… (hoặc cách nhau bằng một dòng trống)<br>• <b>Trắc nghiệm:</b> các dòng <code>A.</code> <code>B.</code> <code>C.</code> <code>D.</code>, thêm dấu <code>*</code> trước đáp án đúng (hoặc dòng <code>Đáp án: B</code>)<br>• <b>Đúng/Sai:</b> viết phát biểu, thêm dòng <code>Đáp án: Đúng</code> hoặc <code>Đáp án: Sai</code><br>• <b>Trả lời ngắn:</b> thêm dòng <code>Đáp án: 5</code><br>• Không bắt buộc: <code>Gợi ý: …</code> (tối đa 2 dòng) và <code>Giải thích: …</code></div>
+ <textarea id="bulkIn" class="mono" style="min-height:330px;margin-top:12px;font-size:14px;line-height:1.5" placeholder="Câu 1: …&#10;A. …&#10;*B. …&#10;C. …&#10;D. …" oninput="bulkText=this.value;bulkPreview()">${esc(bulkText)}</textarea>
+ <div class="actions" style="margin-top:10px"><button class="secondary small" onclick="bulkText=SAMPLE;stBulk()">Chèn ví dụ mẫu</button><button class="secondary small" onclick="bulkText='';stBulk()">Xóa trắng</button></div></div>
+ <div class="contentbox sticky"><h3>Xem trước</h3><div id="bulkPrev"></div></div></div>`;bulkPreview()}
+function bulkPreview(){let el=document.getElementById("bulkPrev");if(!el)return;if(!bulkText.trim()){el.innerHTML=`<p class="muted">Dán câu hỏi vào khung bên trái. Bấm “Chèn ví dụ mẫu” để xem cách viết.</p>`;return}
+ let{qs,errors}=parseBulk(bulkText),c=t=>qs.filter(q=>q.type===t).length;
+ el.innerHTML=`<p class="okline">Nhận diện được ${qs.length} câu <span class="muted" style="font-weight:500">(${c("mc")} trắc nghiệm · ${c("tf")} đúng/sai · ${c("short")} trả lời ngắn)</span></p>${errors.map(e=>`<div class="errline">⚠ ${esc(e)}</div>`).join("")}
+ ${qs.map((q,k)=>`<div class="qitem"><span class="pill">Câu ${k+1} · ${typeName[q.type]}</span><div class="qtext">${esc(q.question)}</div>${q.type==="mc"?`<div class="muted">${q.options.map((o,j)=>`${j===q.answer?"<b style='color:#166534'>✔ ":""}${L[j]}. ${esc(o)}${j===q.answer?"</b>":""}`).join("<br>")}</div>`:`<div class="qans">✔ ${esc(ansText(q))}</div>`}</div>`).join("")}
+ <button class="green" style="margin-top:10px;width:100%" onclick="addBulk()" ${qs.length?"":"disabled"}>➕ Thêm ${qs.length} câu vào ${lessonLabel(stLesson)}</button>`}
+function addBulk(){let{qs,errors}=parseBulk(bulkText);if(!qs.length)return;if(errors.length&&!confirm(`Có ${errors.length} câu bị lỗi sẽ không được thêm. Vẫn thêm ${qs.length} câu hợp lệ?`))return;qs.forEach(q=>{q.lesson=stLesson;questions.push(q)});saveQ();bulkText="";stTab="questions";toast(`✅ Đã thêm ${qs.length} câu vào ${lessonLabel(stLesson)}`);studio()}
+
+/* --- Sao lưu & gửi học sinh --- */
+function totalSize(){return materials.reduce((a,m)=>a+(m.data?m.data.length*0.75:0),0)}
+function stShare(){let sz=totalSize();
+ document.getElementById("studioBody").innerHTML=`<div class="grid2">
+ <div class="contentbox" style="border:2px solid #86efac"><h3>📤 Tạo trang web gửi học sinh</h3><p>Tải về <b>một tệp .html duy nhất</b> chứa sẵn toàn bộ tài liệu và câu hỏi của 6 bài. Gửi tệp này cho học sinh qua Zalo, Google Drive, Classroom…; học sinh mở bằng Chrome/Edge là học được ngay, không cần mạng (trừ video YouTube/Drive).</p>
+ <label class="check"><input type="checkbox" id="hideTeacher" checked> Ẩn nút “Chế độ giáo viên” trong bản của học sinh</label>
+ <div class="muted" style="margin:6px 0 14px">Dung lượng ước tính: <b>${fmtSize(ORIGINAL_HTML.length+sz*1.34)}</b>${sz>40*MB?` · <span style="color:#b45309">khá nặng, nên chuyển video sang link YouTube/Drive</span>`:""}</div>
+ <button class="green" onclick="exportHTML()">⬇ Tải về trang web cho học sinh</button></div>
+ <div class="contentbox"><h3>💾 Sao lưu dữ liệu</h3><p>Lưu toàn bộ câu hỏi và tài liệu ra một tệp để cất giữ, hoặc chuyển sang máy tính khác.</p><p class="muted">Dữ liệu hiện chỉ nằm trên trình duyệt này. Nếu xóa lịch sử duyệt web, dữ liệu có thể mất – nên sao lưu thường xuyên.</p>
+ <div class="actions"><button onclick="exportData()">⬇ Tải tệp sao lưu</button><button class="secondary" onclick="document.getElementById('restoreIn').click()">📂 Khôi phục từ tệp</button></div></div>
+ <div class="contentbox"><h3>📊 Tổng quan</h3><table class="table"><thead><tr><th>Bài</th><th>Tài liệu</th><th>Câu hỏi</th></tr></thead><tbody>${lessons.map(l=>`<tr><td>${l.icon} ${lessonLabel(l.id)}</td><td>${matsOf(l.id).length}</td><td>${qCount(l.id)}</td></tr>`).join("")}</tbody></table>
+ <div style="margin-top:16px"><button class="danger small" onclick="resetAll()">↺ Xóa hết, quay về câu hỏi mẫu ban đầu</button></div></div></div>`}
+function bundle(extra){return Object.assign({app:"vecto10",savedAt:Date.now(),questions,materials},extra||{})}
+function exportHTML(){let data=bundle({studentOnly:document.getElementById("hideTeacher").checked}),json=JSON.stringify(data).replace(/</g,"\\u003c");
+ let html=ORIGINAL_HTML.replace(/(<script id="vec-data" type="application\/json">)[\s\S]*?(<\/script>)/,(m,a,b)=>a+json+b);
+ download(new Blob([html],{type:"text/html;charset=utf-8"}),"Vecto10-ban-hoc-sinh.html");
+ toast(data.studentOnly?"✅ Đã tạo bản cho học sinh. Nếu cần mở lại chế độ giáo viên, thêm #giaovien vào cuối địa chỉ.":"✅ Đã tạo trang web")}
+function exportData(){download(new Blob([JSON.stringify(bundle(),null,1)],{type:"application/json"}),"sao-luu-vecto10-"+new Date().toISOString().slice(0,10)+".json");toast("✅ Đã tải tệp sao lưu")}
+function importData(file){if(!file)return;let r=new FileReader();r.onload=async()=>{try{let d=JSON.parse(r.result),qs,mats=null;
+  if(Array.isArray(d))qs=d;else if(d&&Array.isArray(d.questions)){qs=d.questions;mats=cleanMats(d.materials)}else return toast("Tệp không đúng định dạng","err");
+  if(!confirm(`Tệp có ${qs.length} câu hỏi${mats?` và ${mats.length} tài liệu`:""}.\nKhôi phục sẽ THAY THẾ dữ liệu hiện tại. Tiếp tục?`))return;
+  questions=qs;saveQ();if(mats){materials=mats;Object.keys(urlCache).forEach(k=>delete urlCache[k]);try{await idbReplaceAll(mats)}catch(e){toast("Không lưu được tài liệu – bộ nhớ trình duyệt có thể đã đầy.","err")}}
+  toast("✅ Đã khôi phục dữ liệu");studio()}catch(e){toast("Không đọc được tệp","err")}};r.readAsText(file)}
+async function resetAll(){if(!confirm("Xóa TẤT CẢ câu hỏi và tài liệu, quay về câu hỏi mẫu ban đầu?\nNên tải tệp sao lưu trước."))return;questions=defaultQuestions.map(q=>({...q}));materials=[];try{await idbClear()}catch(e){}saveQ();editIdx=null;draft=null;toast("Đã quay về dữ liệu mẫu");studio()}
+
+if(STUDENT_ONLY)document.getElementById("modeBtn").classList.add("hidden");
 </script>
 </body>
 </html>
