@@ -43,6 +43,8 @@ details{margin-top:14px;border:1px solid var(--border);border-radius:12px;paddin
 .drop.small{padding:18px;margin-top:8px}.tplbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.tplbtn{display:flex;align-items:center;gap:12px;text-align:left;background:white;color:#1e293b;border:1px solid var(--border);padding:12px 14px}.tplbtn:hover{border-color:#93c5fd;background:#f8fbff}.tplbtn .big{font-size:30px}.tplbtn small{display:block;color:var(--muted);font-weight:500;font-size:12px;margin-top:2px}.tplbtn.rec{border:2px solid #86efac}
 .imppreview{margin-top:18px;padding-top:16px;border-top:2px dashed #93c5fd}.lessonpill{background:#fef3c7;color:#92400e}
 .savebar{position:sticky;bottom:0;background:white;padding:12px 0 2px;border-top:1px solid var(--border);margin-top:10px;z-index:2}
+.modal{position:fixed;inset:0;background:#0f172a99;display:grid;place-items:center;z-index:100;padding:20px}.modal-card{background:white;border-radius:22px;padding:26px;max-width:420px;width:100%;box-shadow:0 30px 80px #0f172a55}.modal-card h3{margin:0 0 4px;color:var(--ink)}.pwrow{display:flex;gap:8px}.pwerr{color:#b91c1c;font-size:14px;min-height:20px;margin-top:8px}
+.adminlink{display:block;width:100%;margin-top:10px;background:transparent;color:#1d4ed8;font-weight:600;font-size:14px;padding:8px}.adminlink:hover{background:#eff6ff}
 .vec{display:inline-block;position:relative;padding-top:.5em;line-height:1;font-style:normal}.vec::before{content:"";position:absolute;left:.04em;right:.1em;top:.2em;border-top:.075em solid currentColor}.vec::after{content:"";position:absolute;right:.06em;top:.2em;width:.26em;height:.26em;border-top:.075em solid currentColor;border-right:.075em solid currentColor;transform:translateY(-50%) rotate(45deg);transform-origin:center}
 .qprev{margin-top:12px;padding:12px 14px;border:1px dashed #93c5fd;border-radius:12px;background:#f8fbff;font-size:15px;line-height:1.7}.qprev .lab{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:4px}
 .ckrow{display:flex;gap:10px;flex-wrap:wrap;margin:12px 0}.ckpill{padding:8px 12px;border-radius:12px;font-weight:650;font-size:14px}.ckpill.ok{background:#dcfce7;color:#166534}.ckpill.fix{background:#dbeafe;color:#1e40af}.ckpill.warn{background:#fef3c7;color:#92400e}.ckpill.err{background:#fee2e2;color:#991b1b}
@@ -72,6 +74,7 @@ details{margin-top:14px;border:1px solid var(--border);border-radius:12px;paddin
   <label for="studentName">Họ và tên</label><input id="studentName" placeholder="Nhập họ và tên của em">
   <label for="studentClass">Lớp</label><input id="studentClass" placeholder="Ví dụ: 10A1" onkeydown="if(event.key==='Enter')loginStudent()">
   <button class="green" style="width:100%;margin-top:18px" onclick="loginStudent()">Bắt đầu học</button>
+  <button class="adminlink" id="adminLink" onclick="askAdmin(adminFromLogin)">🔐 Đăng nhập quản trị (dành cho giáo viên)</button>
   <p style="font-size:12px">Thông tin được lưu trên trình duyệt trong bản thử nghiệm.</p>
  </div>
 </div>
@@ -88,6 +91,9 @@ details{margin-top:14px;border:1px solid var(--border);border-radius:12px;paddin
  </main>
 </div>
 <div id="toast" class="toast"></div>
+<div id="pwModal" class="modal hidden" onclick="if(event.target===this)closeAdmin()"><div class="modal-card"><div style="font-size:38px">🔐</div><h3>Đăng nhập quản trị</h3><p class="muted" style="margin-top:4px">Chế độ giáo viên chỉ dành cho người có mật khẩu quản trị.</p>
+ <label for="pwIn">Mật khẩu quản trị</label><div class="pwrow"><input id="pwIn" type="password" autocomplete="off" placeholder="Nhập mật khẩu" onkeydown="if(event.key==='Enter')checkAdmin();if(event.key==='Escape')closeAdmin()"><button class="iconbtn" type="button" title="Hiện/ẩn mật khẩu" onclick="let i=document.getElementById('pwIn');i.type=i.type==='password'?'text':'password'">👁</button></div>
+ <div class="pwerr" id="pwErr"></div><div class="actions" style="margin-top:8px"><button class="green" id="pwBtn" onclick="checkAdmin()">Đăng nhập</button><button class="secondary" onclick="closeAdmin()">Hủy</button></div></div></div>
 <input type="file" id="fileIn" multiple class="hidden" onchange="addFiles(this.files);this.value=''">
 <input type="file" id="impIn" accept=".xlsx,.docx,.csv,.txt" class="hidden" onchange="impFile(this.files[0]);this.value=''">
 <input type="file" id="restoreIn" accept=".json,application/json" class="hidden" onchange="importData(this.files[0]);this.value=''">
@@ -198,7 +204,7 @@ function blobUrl(m){if(urlCache[m.id])return urlCache[m.id];let [h,b]=String(m.d
 
 /* ===== Phần học sinh ===== */
 function loginStudent(){let n=document.getElementById("studentName").value.trim(),c=document.getElementById("studentClass").value.trim();if(!n||!c){alert("Vui lòng nhập họ tên và lớp.");return}student={name:n,class:c};document.getElementById("login").style.display="none";document.getElementById("app").style.display="block";document.getElementById("userchip").textContent=n+" · "+c;buildNav();home()}
-function logout(){if(!leaveTest())return;student=null;teacher=false;updateModeBtn();document.getElementById("app").style.display="none";document.getElementById("login").style.display="grid"}
+function logout(){if(!leaveTest())return;adminOK=false;try{sessionStorage.removeItem("vec_admin")}catch(e){}student=null;teacher=false;updateModeBtn();document.getElementById("app").style.display="none";document.getElementById("login").style.display="grid"}
 function buildNav(){let n=document.getElementById("nav");n.innerHTML=`<button class="navbtn" data-key="home" onclick="home()">🏠 Trang chủ</button>`+lessons.map(l=>`<button class="navbtn" data-key="${l.id}" onclick="navLesson(${l.id})">${l.icon} Bài ${l.id===12?"Ôn tập":l.id} · ${l.title}</button>`).join("")+`<button class="navbtn" data-key="report" onclick="report()">📊 Kết quả của em</button>`}
 function navLesson(id){if(teacher){stLesson=id;editIdx=null;draft=null;studio()}else openLesson(id)}
 function home(){if(!leaveTest())return;if(teacher)return studio();section="home";setActive("home");document.getElementById("pageTitle").textContent="Trang học tập";let done=JSON.parse(localStorage.getItem("vec_done_"+student.name)||"[]");document.getElementById("view").innerHTML=`${hero(`Xin chào, ${esc(student.name)}! 👋`,"Hãy chọn bài học và khám phá thế giới vectơ.")}<div class="grid"><div class="card"><div class="muted">Bài học trong chương</div><div class="stat">6</div></div><div class="card"><div class="muted">Bài đã hoàn thành</div><div class="stat">${done.length}/6</div></div><div class="card"><div class="muted">Lớp học</div><div class="stat">${esc(student.class)}</div></div></div><div class="section"><h3>📚 Các bài học</h3><div class="grid">${lessons.map(l=>`<div class="card lesson" onclick="openLesson(${l.id})"><div class="num">BÀI ${l.id===12?"ÔN TẬP":l.id}</div><h3>${l.icon} ${l.title}</h3><div class="muted">SGK trang ${l.pages}</div><div style="margin-top:14px"><span class="pill">Học · Luyện tập · Kiểm tra</span></div></div>`).join("")}</div></div>`}
@@ -295,16 +301,37 @@ function report(){if(!leaveTest())return;section="report";setActive("report");do
  let res=s=>s.test?(s.score!=null?`<b>${fmtPts(s.score)}/10</b> <span class="muted">(TN ${s.mcC}/${s.mcN} câu · ĐS ${s.tfC}/${s.tfN} ý)</span>`:`${s.correct}/${s.total} (${s.pct}%)`):s.correct?"Đúng":"Sai";
  document.getElementById("view").innerHTML=`${hero("📊 Kết quả học tập","Thông tin ghi nhận trên trình duyệt hiện tại")}<div class="contentbox"><h3>Lịch sử hoạt động</h3>${mine.length?`<table class="table"><thead><tr><th>Thời điểm</th><th>Bài</th><th>Hoạt động</th><th>Kết quả</th></tr></thead><tbody>${mine.slice().reverse().map(s=>`<tr><td>${esc(s.date||"")}</td><td>${lessonLabel(s.lesson)}</td><td>${s.test?`Kiểm tra${s.mins?` (${s.mins} phút)`:""}`:"Luyện tập"}</td><td>${res(s)}</td></tr>`).join("")}</tbody></table>`:"Chưa có dữ liệu hoạt động."}</div>`}
 
+/* ===== ĐĂNG NHẬP QUẢN TRỊ ===== */
+const ADMIN_HASH="6fd8ac6fd1e847d4655aaa703098a2e28be36e5296b809eb42f336cc3b4e484e";/* chỉ lưu mã băm SHA-256 của mật khẩu, không lưu mật khẩu */
+function sha256(msg){const P=[];for(let n=2;P.length<64;n++)if(P.every(q=>n%q))P.push(n);const fr=x=>Math.floor((x-Math.floor(x))*4294967296)>>>0,K=new Uint32Array(P.map(q=>fr(Math.cbrt(q)))),H=new Uint32Array(P.slice(0,8).map(q=>fr(Math.sqrt(q))));
+ const by=new TextEncoder().encode(msg),l=by.length,n=((l+9+63)>>6)<<6,m=new Uint8Array(n);m.set(by);m[l]=0x80;const dv=new DataView(m.buffer);dv.setUint32(n-4,(l*8)>>>0);dv.setUint32(n-8,Math.floor(l/0x20000000));
+ const w=new Uint32Array(64),r=(x,k)=>(x>>>k)|(x<<(32-k));
+ for(let o=0;o<n;o+=64){for(let i=0;i<16;i++)w[i]=dv.getUint32(o+i*4);for(let i=16;i<64;i++){const s0=r(w[i-15],7)^r(w[i-15],18)^(w[i-15]>>>3),s1=r(w[i-2],17)^r(w[i-2],19)^(w[i-2]>>>10);w[i]=(w[i-16]+s0+w[i-7]+s1)|0}
+  let a=H[0],b=H[1],c=H[2],d=H[3],e=H[4],f=H[5],g=H[6],h=H[7];
+  for(let i=0;i<64;i++){const t1=(h+(r(e,6)^r(e,11)^r(e,25))+((e&f)^(~e&g))+K[i]+w[i])|0,t2=((r(a,2)^r(a,13)^r(a,22))+((a&b)^(a&c)^(b&c)))|0;h=g;g=f;f=e;e=(d+t1)|0;d=c;c=b;b=a;a=(t1+t2)|0}
+  H[0]+=a;H[1]+=b;H[2]+=c;H[3]+=d;H[4]+=e;H[5]+=f;H[6]+=g;H[7]+=h}
+ return [...H].map(x=>x.toString(16).padStart(8,"0")).join("")}
+let adminOK=sessionStorage.getItem("vec_admin")===ADMIN_HASH,adminNext=null,pwFails=0,pwLockUntil=0;
+function askAdmin(next){if(adminOK)return next();adminNext=next;let m=document.getElementById("pwModal");m.classList.remove("hidden");document.getElementById("pwErr").textContent="";let i=document.getElementById("pwIn");i.value="";i.type="password";setTimeout(()=>i.focus(),30)}
+function closeAdmin(){document.getElementById("pwModal").classList.add("hidden");adminNext=null}
+function checkAdmin(){let err=document.getElementById("pwErr"),now=Date.now();
+ if(now<pwLockUntil){err.textContent=`Nhập sai quá nhiều lần. Vui lòng thử lại sau ${Math.ceil((pwLockUntil-now)/1000)} giây.`;return}
+ let v=document.getElementById("pwIn").value;if(!v){err.textContent="Hãy nhập mật khẩu.";return}
+ if(sha256("vecto10:"+v)===ADMIN_HASH){adminOK=true;pwFails=0;try{sessionStorage.setItem("vec_admin",ADMIN_HASH)}catch(e){}let next=adminNext;closeAdmin();toast("🔓 Đã đăng nhập quản trị");next&&next()}
+ else{pwFails++;document.getElementById("pwIn").select();if(pwFails>=5){pwLockUntil=now+30000;pwFails=0;err.textContent="Sai mật khẩu 5 lần. Tạm khóa 30 giây."}else err.textContent=`Mật khẩu không đúng (lần ${pwFails}/5).`}}
+function adminFromLogin(){student={name:"Giáo viên",class:"Quản trị"};document.getElementById("login").style.display="none";document.getElementById("app").style.display="block";document.getElementById("userchip").textContent="🔐 Giáo viên · Quản trị";buildNav();teacher=true;updateModeBtn();stLesson=7;editIdx=null;draft=null;studio()}
+function lockAdmin(){adminOK=false;try{sessionStorage.removeItem("vec_admin")}catch(e){}teacher=false;updateModeBtn();toast("🔒 Đã khóa chế độ giáo viên");if(student&&student.class==="Quản trị")logout();else home()}
+
 /* ===== CHẾ ĐỘ GIÁO VIÊN ===== */
 function updateModeBtn(){document.getElementById("modeBtn").textContent=teacher?"← Về chế độ học sinh":"⚙ Chế độ giáo viên"}
-function toggleTeacher(){if(!leaveTest())return;teacher=!teacher;updateModeBtn();if(teacher){stLesson=currentLesson||7;editIdx=null;draft=null;studio()}else home()}
+function toggleTeacher(){if(!leaveTest())return;if(teacher){teacher=false;updateModeBtn();home();return}askAdmin(()=>{teacher=true;updateModeBtn();stLesson=currentLesson||7;editIdx=null;draft=null;studio()})}
 function previewLesson(){teacher=false;updateModeBtn();openLesson(stLesson);toast("Đang xem như học sinh. Bấm “⚙ Chế độ giáo viên” để quay lại thiết kế.")}
-async function studio(){await ready;section="studio";setActive(stLesson);document.getElementById("pageTitle").textContent="Chế độ giáo viên – Thiết kế bài học";
+async function studio(){if(!adminOK){teacher=false;updateModeBtn();return home()}await ready;section="studio";setActive(stLesson);document.getElementById("pageTitle").textContent="Chế độ giáo viên – Thiết kế bài học";
  let l=lessonById(stLesson),nm=matsOf(stLesson).length,nq=qCount(stLesson);
  let ck=runCheck(null).sum,tabs=[["materials",`📖 Tài liệu (${nm})`],["questions",`❓ Câu hỏi (${nq})`],["check",`🔍 Kiểm tra${ck.fix+ck.err+ck.warn?` (${ck.fix+ck.err+ck.warn})`:" ✓"}`],["share","💾 Sao lưu & gửi học sinh"]];
  document.getElementById("view").innerHTML=`${hero("⚙ Thiết kế bài học","① Chọn bài &nbsp;→&nbsp; ② Thêm tài liệu &nbsp;→&nbsp; ③ Tạo câu hỏi &nbsp;→&nbsp; ④ Gửi cho học sinh. Mọi thay đổi được lưu tự động.","teach")}
  <div class="chips">${lessons.map(x=>`<button class="chip ${x.id===stLesson?"active":""}" onclick="navLesson(${x.id})"><b>${x.icon} ${lessonLabel(x.id)}</b><small>📄 ${matsOf(x.id).length} tài liệu · ❓ ${qCount(x.id)} câu</small></button>`).join("")}</div>
- <div class="studio-head"><h3>${l.icon} ${lessonLabel(stLesson)}: ${esc(l.title)}</h3><button class="secondary small" onclick="previewLesson()">👁 Xem thử như học sinh</button></div>
+ <div class="studio-head"><h3>${l.icon} ${lessonLabel(stLesson)}: ${esc(l.title)}</h3><div class="actions"><button class="secondary small" onclick="previewLesson()">👁 Xem thử như học sinh</button><button class="warn small" onclick="lockAdmin()" title="Thoát và yêu cầu mật khẩu cho lần sau">🔒 Khóa & thoát quản trị</button></div></div>
  <div class="tabs">${tabs.map(([k,t])=>`<button class="${stTab===k?"active":""}" onclick="stTab='${k}';studio()">${t}</button>`).join("")}</div>
  <div id="studioBody"></div>`;
  (({materials:stMaterials,questions:stQuestions,check:stCheck,share:stShare})[stTab]||stQuestions)()}
@@ -629,7 +656,7 @@ function stShare(){let sz=totalSize(),ck=runCheck("all").sum,bad=ck.fix+ck.err+c
  document.getElementById("studioBody").innerHTML=`<div class="grid2">
  <div class="contentbox" style="border:2px solid ${bad?"#fcd34d":"#86efac"}"><h3>🔍 Bước 1 · Kiểm tra câu hỏi</h3>${bad?`<p>Còn <b>${ck.fix}</b> câu cần sửa kí hiệu vectơ, <b>${ck.warn}</b> câu cần xem lại và <b>${ck.err}</b> câu có lỗi.</p><button onclick="stTab='check';studio()">🔍 Kiểm tra và sửa ngay</button>`:`<p class="okline">✅ Đã kiểm tra: tất cả ${questions.length} câu hỏi đều ổn.</p><button class="secondary" onclick="stTab='check';studio()">Xem chi tiết</button>`}</div>
  <div class="contentbox" style="border:2px solid #86efac"><h3>📤 Bước 2 · Tạo trang web gửi học sinh</h3><p>Tải về <b>một tệp .html duy nhất</b> chứa sẵn toàn bộ tài liệu và câu hỏi của 6 bài. Gửi tệp này cho học sinh qua Zalo, Google Drive, Classroom…; học sinh mở bằng Chrome/Edge là học được ngay, không cần mạng (trừ video YouTube/Drive).</p>
- <label class="check"><input type="checkbox" id="hideTeacher" checked> Ẩn nút “Chế độ giáo viên” trong bản của học sinh</label>
+ <label class="check"><input type="checkbox" id="hideTeacher" checked> Ẩn nút “Chế độ giáo viên” trong bản của học sinh <span class="muted">(dù hiện nút, vẫn phải có mật khẩu mới vào được)</span></label>
  <div class="muted" style="margin:6px 0 14px">Dung lượng ước tính: <b>${fmtSize(ORIGINAL_HTML.length+sz*1.34)}</b>${sz>40*MB?` · <span style="color:#b45309">khá nặng, nên chuyển video sang link YouTube/Drive</span>`:""}</div>
  <button class="green" onclick="exportHTML()">⬇ Tải về trang web cho học sinh</button></div>
  <div class="contentbox"><h3>💾 Sao lưu dữ liệu</h3><p>Lưu toàn bộ câu hỏi và tài liệu ra một tệp để cất giữ, hoặc chuyển sang máy tính khác.</p><p class="muted">Dữ liệu hiện chỉ nằm trên trình duyệt này. Nếu xóa lịch sử duyệt web, dữ liệu có thể mất – nên sao lưu thường xuyên.</p>
@@ -649,7 +676,7 @@ function importData(file){if(!file)return;let r=new FileReader();r.onload=async(
   toast("✅ Đã khôi phục dữ liệu");studio()}catch(e){toast("Không đọc được tệp","err")}};r.readAsText(file)}
 async function resetAll(){if(!confirm("Xóa TẤT CẢ câu hỏi và tài liệu, quay về câu hỏi mẫu ban đầu?\nNên tải tệp sao lưu trước."))return;questions=defaultQuestions.map(q=>({...q}));materials=[];try{await idbClear()}catch(e){}saveQ();editIdx=null;draft=null;toast("Đã quay về dữ liệu mẫu");studio()}
 
-if(STUDENT_ONLY)document.getElementById("modeBtn").classList.add("hidden");
+if(STUDENT_ONLY){document.getElementById("modeBtn").classList.add("hidden");document.getElementById("adminLink").classList.add("hidden")}
 </script>
 </body>
 </html>
