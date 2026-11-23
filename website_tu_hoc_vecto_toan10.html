@@ -38,7 +38,19 @@ details{margin-top:14px;border:1px solid var(--border);border-radius:12px;paddin
 .errline{color:#b45309;font-size:14px;margin:4px 0}.okline{color:#166534;font-weight:650}
 .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px}.grid2>.contentbox{margin:0}.check{display:flex;gap:8px;align-items:center;font-weight:500}.check input{width:auto}
 .toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(20px);background:#0f172a;color:white;padding:12px 18px;border-radius:12px;opacity:0;pointer-events:none;transition:.25s;z-index:99;max-width:90vw;box-shadow:0 10px 30px #0f172a44}.toast.show{opacity:1;transform:translateX(-50%)}.toast.err{background:#b91c1c}
-@media(max-width:1100px){.qgrid{grid-template-columns:1fr}.sticky{position:static}}
+button.ai{background:linear-gradient(90deg,#7c3aed,#2563eb)}button.ai:disabled{background:#94a3b8}
+.qgrid.wide{grid-template-columns:minmax(0,1.45fr) minmax(0,1fr)}
+.ai-head{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}.ai-head h3{margin:0}
+.step{display:flex;gap:12px;margin-top:18px}.stepn{flex:none;width:28px;height:28px;border-radius:50%;background:#ede9fe;color:#6d28d9;font-weight:800;display:grid;place-items:center}.stepb{flex:1;min-width:0}.stepb>b{color:var(--ink)}
+.drop.small{padding:16px;margin-top:8px}.srcitem{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border);border-radius:10px;margin-top:8px;font-size:14px}.srcitem .grow{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.aistatus{display:flex;align-items:center;gap:10px;margin-top:12px;padding:12px 14px;border-radius:12px;background:#f5f3ff;color:#5b21b6}
+.spin{width:16px;height:16px;border:2px solid #c4b5fd;border-top-color:#6d28d9;border-radius:50%;display:inline-block;animation:sp .8s linear infinite;flex:none}@keyframes sp{to{transform:rotate(360deg)}}
+.airesults{margin-top:18px;padding-top:16px;border-top:2px dashed #c4b5fd}.aicard.off{opacity:.45}.aicard textarea{min-height:58px}
+.savebar{position:sticky;bottom:0;background:white;padding:12px 0 2px;border-top:1px solid var(--border);margin-top:10px;z-index:2}
+.histline{margin-top:14px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}.pill.ok{background:#dcfce7;color:#166534}
+@media(max-width:1100px){.qgrid,.qgrid.wide{grid-template-columns:1fr}.sticky{position:static}}
+@media(max-width:600px){.row2{grid-template-columns:1fr}}
 @media(max-width:850px){.hero-title{font-size:16px}.hero{padding-top:36px}.sidebar{position:relative;width:auto;bottom:auto}.main{margin-left:0;padding:16px}.top{align-items:flex-start;flex-direction:column}.sidebar nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}.brand{margin-bottom:8px}.mitem{flex-wrap:wrap}.pdfview{height:520px}}
 </style>
 </head>
@@ -66,6 +78,7 @@ details{margin-top:14px;border:1px solid var(--border);border-radius:12px;paddin
 </div>
 <div id="toast" class="toast"></div>
 <input type="file" id="fileIn" multiple class="hidden" onchange="addFiles(this.files);this.value=''">
+<input type="file" id="aiIn" multiple accept=".pdf,.png,.jpg,.jpeg,.webp,.gif,.docx,.pptx,.txt,.md" class="hidden" onchange="aiAddFiles(this.files);this.value=''">
 <input type="file" id="restoreIn" accept=".json,application/json" class="hidden" onchange="importData(this.files[0]);this.value=''">
 <!-- Dữ liệu nhúng: được điền tự động khi giáo viên "Tải về trang web cho học sinh". Không sửa tay. -->
 <script id="vec-data" type="application/json">null</script>
@@ -154,7 +167,7 @@ function blobUrl(m){if(urlCache[m.id])return urlCache[m.id];let [h,b]=String(m.d
 function loginStudent(){let n=document.getElementById("studentName").value.trim(),c=document.getElementById("studentClass").value.trim();if(!n||!c){alert("Vui lòng nhập họ tên và lớp.");return}student={name:n,class:c};document.getElementById("login").style.display="none";document.getElementById("app").style.display="block";document.getElementById("userchip").textContent=n+" · "+c;buildNav();home()}
 function logout(){student=null;teacher=false;updateModeBtn();document.getElementById("app").style.display="none";document.getElementById("login").style.display="grid"}
 function buildNav(){let n=document.getElementById("nav");n.innerHTML=`<button class="navbtn" data-key="home" onclick="home()">🏠 Trang chủ</button>`+lessons.map(l=>`<button class="navbtn" data-key="${l.id}" onclick="navLesson(${l.id})">${l.icon} Bài ${l.id===12?"Ôn tập":l.id} · ${l.title}</button>`).join("")+`<button class="navbtn" data-key="report" onclick="report()">📊 Kết quả của em</button>`}
-function navLesson(id){if(teacher){stLesson=id;editIdx=null;draft=null;studio()}else openLesson(id)}
+function navLesson(id){if(teacher){if(id!==stLesson&&aiResults.length&&!confirm(`Còn ${aiResults.length} câu do AI tạo chưa lưu. Chuyển bài sẽ bỏ các câu này. Tiếp tục?`))return;if(id!==stLesson){aiResults=[];aiUseMats={};aiStatusHTML=""}stLesson=id;editIdx=null;draft=null;studio()}else openLesson(id)}
 function home(){if(teacher)return studio();section="home";setActive("home");document.getElementById("pageTitle").textContent="Trang học tập";let done=JSON.parse(localStorage.getItem("vec_done_"+student.name)||"[]");document.getElementById("view").innerHTML=`${hero(`Xin chào, ${esc(student.name)}! 👋`,"Hãy chọn bài học và khám phá thế giới vectơ.")}<div class="grid"><div class="card"><div class="muted">Bài học trong chương</div><div class="stat">6</div></div><div class="card"><div class="muted">Bài đã hoàn thành</div><div class="stat">${done.length}/6</div></div><div class="card"><div class="muted">Lớp học</div><div class="stat">${esc(student.class)}</div></div></div><div class="section"><h3>📚 Các bài học</h3><div class="grid">${lessons.map(l=>`<div class="card lesson" onclick="openLesson(${l.id})"><div class="num">BÀI ${l.id===12?"ÔN TẬP":l.id}</div><h3>${l.icon} ${l.title}</h3><div class="muted">SGK trang ${l.pages}</div><div style="margin-top:14px"><span class="pill">Học · Luyện tập · Kiểm tra</span></div></div>`).join("")}</div></div>`}
 function openLesson(id){currentLesson=id;section="lesson";setActive(id);let l=lessonById(id);document.getElementById("pageTitle").textContent="Bài "+(id===12?"ôn tập":id)+": "+l.title;document.getElementById("view").innerHTML=`${hero(`${l.icon} Bài ${id===12?"Ôn tập cuối chương IV":id+". "+l.title}`,`SGK trang ${l.pages} · Tự học theo tiến trình`)}<div class="tabs"><button onclick="lessonTab('materials',this)">📖 Tài liệu</button><button onclick="lessonTab('practice',this)">✍️ Luyện tập</button><button onclick="lessonTab('test',this)">📝 Kiểm tra</button></div><div id="lessonBody"></div>`;lessonTab("materials")}
 function lessonTab(which,btn){section=which;document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));if(!btn)btn=document.querySelector(`.tabs button[onclick*="${which}"]`);if(btn)btn.classList.add("active");let b=document.getElementById("lessonBody");if(!b)return;if(which==="materials"){b.innerHTML=`<div class="contentbox muted">Đang tải tài liệu…</div>`;ready.then(()=>{let el=document.getElementById("lessonBody");if(el&&section==="materials")el.innerHTML=materialsHTML(currentLesson)})}else if(which==="practice"){renderPractice()}else if(which==="test"){renderTest()}}
@@ -234,7 +247,7 @@ async function moveMat(id,dir){let list=matsOf(stLesson),i=list.findIndex(m=>m.i
 /* --- Câu hỏi --- */
 function blankDraft(){return{type:"mc",question:"",options:["","","",""],answer:0,answerText:"",hints:["",""],explanation:""}}
 function stQuestions(){if(!draft)draft=blankDraft();
- document.getElementById("studioBody").innerHTML=`<div class="qgrid"><div class="contentbox sticky" id="qForm"></div><div class="contentbox" id="qList"></div></div>`;renderQForm();renderQList()}
+ document.getElementById("studioBody").innerHTML=`<div class="seg" style="max-width:560px;margin-bottom:14px">${[["manual","✍ Tự soạn từng câu"],["ai","✨ Tạo bằng AI"+(aiResults.length?` (${aiResults.length} chưa lưu)`:"")]].map(([k,t])=>`<button class="${qMode===k?"active":""}" onclick="qMode='${k}';stQuestions()">${t}</button>`).join("")}</div><div class="qgrid ${qMode==="ai"?"wide":""}"><div class="contentbox ${qMode==="ai"?"":"sticky"}" id="qForm"></div><div class="contentbox" id="qList"></div></div>`;if(qMode==="ai")renderAI();else renderQForm();renderQList()}
 function renderQForm(){let d=draft,isEdit=editIdx!=null,el=document.getElementById("qForm");if(!el)return;let ans="";
  if(d.type==="mc")ans=`<label>Các phương án <span class="muted" style="font-weight:500">— bấm vào vòng tròn để chọn đáp án đúng</span></label>${d.options.map((o,i)=>`<div class="optrow ${d.answer===i?"correct":""}"><label class="radio" title="Chọn làm đáp án đúng"><input type="radio" name="dAns" ${d.answer===i?"checked":""} onchange="draft.answer=${i};renderQForm()"><b>${L[i]}</b></label><input value="${esc(o)}" placeholder="Nhập phương án ${L[i]}" oninput="draft.options[${i}]=this.value">${d.answer===i?`<span class="tag">✔ Đúng</span>`:""}${d.options.length>2?`<button class="iconbtn" title="Xóa phương án" onclick="rmOpt(${i})">✕</button>`:""}</div>`).join("")}${d.options.length<6?`<button class="secondary small" style="margin-top:4px" onclick="addOpt()">+ Thêm phương án</button>`:""}`;
  else if(d.type==="tf")ans=`<label>Phát biểu trên là</label><div class="seg tf"><button class="${d.answer===0?"active t":""}" onclick="draft.answer=0;renderQForm()">✔ Đúng</button><button class="${d.answer===1?"active f":""}" onclick="draft.answer=1;renderQForm()">✘ Sai</button></div>`;
@@ -268,6 +281,185 @@ function dupQ(i){questions.splice(i+1,0,JSON.parse(JSON.stringify(questions[i]))
 function delQ(i){if(!confirm("Xóa câu hỏi này?\n\n“"+questions[i].question+"”"))return;questions.splice(i,1);if(editIdx===i){editIdx=null;draft=null}else if(editIdx!=null&&editIdx>i)editIdx--;saveQ();toast("Đã xóa câu hỏi");studio()}
 function moveQ(i,dir){let idx=questions.map((q,k)=>k).filter(k=>questions[k].lesson===questions[i].lesson),p=idx.indexOf(i),j=idx[p+dir];if(j==null)return;[questions[i],questions[j]]=[questions[j],questions[i]];if(editIdx===i)editIdx=j;else if(editIdx===j)editIdx=i;saveQ();renderQList()}
 
+
+/* ===== TẠO CÂU HỎI BẰNG AI ===== */
+let qMode="manual",aiType="mc",aiResultType="mc",aiN=5,aiLevel="mix",aiExtra="",aiSources=[],aiUseMats={},aiPaste="",aiResults=[],aiHistory=[],aiBusy=null,aiShowManual=false,aiManualText="",aiShowSettings=false,aiStatusHTML="";
+const AI_MODELS={gemini:["gemini-3.7-flash","gemini-3.8-flash","gemini-3.5-flash-lite"],claude:["claude-sonnet-5-5","claude-haiku-5-5","claude-opus-5-5"]};
+const AI_NAME={gemini:"Google Gemini",claude:"Anthropic Claude"};
+function aiRaw(){try{return JSON.parse(localStorage.getItem("vec_ai")||"{}")}catch(e){return{}}}
+function aiCfg(){let r=aiRaw(),p=r.provider==="claude"?"claude":"gemini";return{provider:p,key:(r.keys||{})[p]||"",model:(r.models||{})[p]||AI_MODELS[p][0]}}
+function aiStore(p,key,model){let r=aiRaw();r.provider=p;r.keys=r.keys||{};r.models=r.models||{};if(key!=null)r.keys[p]=key.trim();if(model!=null)r.models[p]=model.trim()||AI_MODELS[p][0];localStorage.setItem("vec_ai",JSON.stringify(r))}
+function aiUsableMat(m){if(m.kind==="note")return true;if(m.kind!=="file")return false;let k=fkind(m),e=ext(m.name);return k==="pdf"||(k==="image"&&/^(png|jpe?g|webp|gif)$/.test(e))||e==="docx"||e==="pptx"}
+function setStatus(h){aiStatusHTML=h;let el=document.getElementById("aiStatus");if(el)el.innerHTML=h}
+
+function renderAI(){let el=document.getElementById("qForm");if(!el)return;let c=aiCfg(),mats=matsOf(stLesson).filter(aiUsableMat),pending=aiResults.length>0;
+ el.innerHTML=`<div class="ai-head"><h3>✨ Tạo câu hỏi bằng AI <span class="muted" style="font-weight:500">· ${lessonLabel(stLesson)}</span></h3><button class="iconbtn" onclick="aiShowSettings=!aiShowSettings;renderAI()">⚙ Cài đặt AI ${c.key?"✅":"⚠"}</button></div>
+ <div class="muted" style="margin-top:4px">${c.key?`Đang dùng ${AI_NAME[c.provider]} · <span class="mono">${esc(c.model)}</span>`:`Chưa có khóa API. Bấm <b>⚙ Cài đặt AI</b> để nhập khóa, hoặc dùng nút <b>📋 Sao chép lệnh</b> ở bước 3 (không cần khóa).`}</div>
+ ${aiShowSettings?aiSettingsHTML(c):""}
+ <div class="step"><div class="stepn">1</div><div class="stepb"><b>Tài liệu gốc</b> <span class="muted">— AI đọc tài liệu này để biên soạn câu hỏi</span>
+  <div class="drop small" id="aiDrop" onclick="document.getElementById('aiIn').click()"><b style="margin:0">📎 Kéo thả hoặc bấm để tải tài liệu gốc</b><div class="muted">PDF, ảnh chụp trang sách (JPG/PNG), Word (.docx), PowerPoint (.pptx), văn bản (.txt)</div></div>
+  ${aiSources.map((x,i)=>`<div class="srcitem"><span>${x.kind==="text"?"📄":x.mime==="application/pdf"?"📕":"🖼️"}</span><span class="grow">${esc(x.name)}</span><span class="muted">${x.kind==="text"?x.text.length.toLocaleString("vi")+" ký tự":fmtSize(x.size)}</span><button class="iconbtn" title="Bỏ tệp" onclick="aiSources.splice(${i},1);renderAI()">✕</button></div>`).join("")}
+  ${mats.length?`<div class="muted" style="margin-top:12px">Hoặc chọn tài liệu đã tải lên của ${lessonLabel(stLesson)}:</div>${mats.map(m=>`<label class="check" style="margin:6px 0"><input type="checkbox" ${aiUseMats[m.id]?"checked":""} onchange="aiUseMats['${m.id}']=this.checked"> ${micon(m)} ${esc(m.name)}</label>`).join("")}`:""}
+  <details ${aiPaste?"open":""}><summary>📝 Dán thêm nội dung <span class="muted" style="font-weight:500">(không bắt buộc)</span></summary><textarea style="margin-top:8px" placeholder="Dán nội dung bài học, đề cương, ví dụ mẫu…" oninput="aiPaste=this.value">${esc(aiPaste)}</textarea></details>
+ </div></div>
+ <div class="step"><div class="stepn">2</div><div class="stepb"><b>Yêu cầu biên soạn</b>
+  <label>Dạng câu hỏi</label><div class="seg">${[["mc","🔘 Trắc nghiệm"],["tf","✔ Đúng / Sai"],["short","✏ Trả lời ngắn"]].map(([k,t])=>`<button class="${aiType===k?"active":""}" onclick="aiType='${k}';renderAI()">${t}</button>`).join("")}</div>
+  <div class="row2"><div><label>Số câu (1–20)</label><input type="number" min="1" max="20" value="${aiN}" oninput="aiN=Math.max(1,Math.min(20,parseInt(this.value)||1));aiUpdBtn()"></div>
+  <div><label>Mức độ</label><select onchange="aiLevel=this.value">${[["mix","Kết hợp nhiều mức độ"],["nb","Nhận biết"],["th","Thông hiểu"],["vd","Vận dụng"]].map(([k,t])=>`<option value="${k}" ${aiLevel===k?"selected":""}>${t}</option>`).join("")}</select></div></div>
+  <label>Yêu cầu thêm <span class="muted" style="font-weight:500">(không bắt buộc)</span></label><input value="${esc(aiExtra)}" placeholder="Ví dụ: tập trung vào quy tắc hình bình hành; có 1–2 câu gắn với thực tế" oninput="aiExtra=this.value">
+ </div></div>
+ <div class="step"><div class="stepn">3</div><div class="stepb"><b>Tạo, kiểm tra và lưu</b>
+  ${pending?`<div class="feedback help" style="margin-top:8px">Lượt này còn <b>${aiResults.length} câu chưa lưu</b>. Hãy bấm <b>💾 Lưu</b> (hoặc <b>Bỏ kết quả</b>) ở cuối danh sách trước khi tạo dạng tiếp theo.</div>`:""}
+  <div class="actions" style="margin-top:10px"><button class="ai" id="aiGo" onclick="aiGenerate()" ${pending||aiBusy?"disabled":""}></button><button class="secondary" onclick="aiShowManual=!aiShowManual;renderAI()">📋 Sao chép lệnh sang ChatGPT / Gemini…</button></div>
+  <div id="aiStatus">${aiStatusHTML}</div>
+  ${aiShowManual?aiManualHTML(pending):""}
+ </div></div>
+ ${aiHistory.length?`<div class="histline"><span class="muted">Đã lưu trong phiên này:</span>${aiHistory.map((h,i)=>`<span class="pill ok">Lượt ${i+1}: ${h.n} câu ${typeName[h.type].toLowerCase()} · ${lessonLabel(h.lesson)}</span>`).join("")}</div>`:""}
+ <div id="aiResults"></div>`;
+ aiUpdBtn();
+ let d=document.getElementById("aiDrop");["dragenter","dragover"].forEach(ev=>d.addEventListener(ev,e=>{e.preventDefault();d.classList.add("drag")}));["dragleave","drop"].forEach(ev=>d.addEventListener(ev,e=>{e.preventDefault();d.classList.remove("drag")}));d.addEventListener("drop",e=>aiAddFiles(e.dataTransfer.files));
+ renderAIResults()}
+function aiUpdBtn(){let b=document.getElementById("aiGo");if(b)b.textContent=`✨ Tạo ${aiN} câu ${typeName[aiType].toLowerCase()}`}
+function aiSettingsHTML(c){return `<div class="addbox"><h4>⚙ Cài đặt AI</h4>
+ <label>Nhà cung cấp</label><div class="seg">${["gemini","claude"].map(p=>`<button class="${c.provider===p?"active":""}" onclick="aiStore('${p}');renderAI()">${p==="gemini"?"Google Gemini (có gói miễn phí)":"Anthropic Claude"}</button>`).join("")}</div>
+ <label>Khóa API</label><div style="display:flex;gap:8px"><input id="aiKey" type="password" autocomplete="off" value="${esc(c.key)}" placeholder="Dán khóa API vào đây"><button class="iconbtn" title="Hiện/ẩn" onclick="let i=document.getElementById('aiKey');i.type=i.type==='password'?'text':'password'">👁</button></div>
+ <div class="muted" style="margin-top:6px">${c.provider==="gemini"?`Lấy khóa miễn phí: vào <a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">aistudio.google.com/apikey</a> → đăng nhập Gmail → <b>Create API key</b> → sao chép.`:`Lấy khóa tại <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">console.anthropic.com</a> (cần nạp tiền vào tài khoản).`}</div>
+ <label>Model</label><input id="aiModel" list="aiModelList" value="${esc(c.model)}"><datalist id="aiModelList">${AI_MODELS[c.provider].map(m=>`<option value="${m}">`).join("")}</datalist>
+ <div class="muted" style="margin-top:8px">🔒 Khóa chỉ lưu trên trình duyệt của máy này, <b>không</b> nằm trong tệp sao lưu hay bản gửi học sinh. Không chia sẻ khóa cho người khác.</div>
+ <div class="actions" style="margin-top:12px"><button class="green" onclick="aiSaveCfg()">💾 Lưu cài đặt</button><button class="secondary" onclick="aiTest()">🔌 Kiểm tra kết nối</button><button class="secondary" onclick="aiShowSettings=false;renderAI()">Đóng</button></div></div>`}
+function aiSaveCfg(silent){let c=aiCfg();aiStore(c.provider,document.getElementById("aiKey")?.value||"",document.getElementById("aiModel")?.value||"");if(!silent){toast("✅ Đã lưu cài đặt AI");aiShowSettings=false;renderAI()}}
+async function aiTest(){aiSaveCfg(true);let c=aiCfg();if(!c.key)return toast("Hãy nhập khóa API","err");toast("Đang kiểm tra…");try{await callAI("Trả lời đúng một từ: OK",[],new AbortController().signal,200);toast("✅ Kết nối thành công với "+AI_NAME[c.provider])}catch(e){toast("❌ "+e.message,"err")}}
+function aiManualHTML(pending){return `<div class="addbox"><h4>📋 Cách không cần khóa API</h4><ol class="muted" style="margin:6px 0 10px;padding-left:20px;line-height:1.7"><li>Bấm <b>Sao chép lệnh</b> (lệnh đã gồm yêu cầu ở bước 2 và nội dung chữ của tài liệu).</li><li>Mở ChatGPT, Gemini hoặc Claude; nếu tài liệu gốc là PDF/ảnh thì <b>đính kèm tệp đó</b>; dán lệnh và gửi.</li><li>Sao chép toàn bộ câu trả lời của AI, dán vào ô dưới rồi bấm <b>Đọc kết quả</b>.</li></ol>
+ <button onclick="aiCopyPrompt()">📋 Sao chép lệnh</button>
+ <textarea class="mono" style="margin-top:10px;min-height:150px;font-size:13px" placeholder="Dán câu trả lời của AI vào đây…" oninput="aiManualText=this.value">${esc(aiManualText)}</textarea>
+ <button style="margin-top:8px" onclick="aiReadManual()" ${pending?"disabled":""}>📥 Đọc kết quả</button></div>`}
+
+/* Đọc tài liệu gốc */
+function b64ToBuf(b){let s=atob(b),a=new Uint8Array(s.length);for(let i=0;i<s.length;i++)a[i]=s.charCodeAt(i);return a.buffer}
+async function unzip(buf,filter){let dv=new DataView(buf),u8=new Uint8Array(buf),eocd=-1;for(let i=u8.length-22;i>=Math.max(0,u8.length-66000);i--){if(dv.getUint32(i,true)===0x06054b50){eocd=i;break}}if(eocd<0)throw new Error("Tệp không đúng định dạng");
+ let n=dv.getUint16(eocd+10,true),p=dv.getUint32(eocd+16,true),out={},td=new TextDecoder();
+ for(let k=0;k<n;k++){if(dv.getUint32(p,true)!==0x02014b50)break;let method=dv.getUint16(p+10,true),cs=dv.getUint32(p+20,true),nl=dv.getUint16(p+28,true),el=dv.getUint16(p+30,true),cl=dv.getUint16(p+32,true),lo=dv.getUint32(p+42,true),name=td.decode(u8.subarray(p+46,p+46+nl));p+=46+nl+el+cl;
+  if(!filter(name))continue;let ds=lo+30+dv.getUint16(lo+26,true)+dv.getUint16(lo+28,true),data=u8.slice(ds,ds+cs);
+  out[name]=method===0?td.decode(data):await new Response(new Blob([data]).stream().pipeThrough(new DecompressionStream("deflate-raw"))).text()}
+ return out}
+function xmlText(x,para){return x.replace(new RegExp("</"+para+">","g"),"\n").replace(/<w:tab\/>/g,"\t").replace(/<(w|a):br\/>/g,"\n").replace(/<[^>]+>/g,"").replace(/&lt;/g,"<").replace(/&gt;/g,">").replace(/&quot;/g,'"').replace(/&apos;/g,"'").replace(/&amp;/g,"&").replace(/\n{3,}/g,"\n\n").trim()}
+async function officeText(buf,e){if(e==="docx"){let o=await unzip(buf,n=>n==="word/document.xml");return xmlText(o["word/document.xml"]||"","w:p")}
+ let o=await unzip(buf,n=>/^ppt\/slides\/slide\d+\.xml$/.test(n));return Object.keys(o).sort((a,b)=>parseInt(a.match(/\d+/))-parseInt(b.match(/\d+/))).map((k,i)=>"[Slide "+(i+1)+"]\n"+xmlText(o[k],"a:p")).join("\n\n")}
+async function aiAddFiles(list){for(const f of [...(list||[])]){let e=ext(f.name),k=fkind({name:f.name,mime:f.type});
+ try{if(k==="pdf"||(k==="image"&&/^(png|jpe?g|webp|gif)$/.test(e))){let d=await readDataURL(f);aiSources.push({name:f.name,kind:"file",mime:k==="pdf"?"application/pdf":(f.type||EXT_MIME[e]),size:f.size,data:d.split(",")[1]})}
+  else if(e==="docx"||e==="pptx"){let t=await officeText(await f.arrayBuffer(),e);if(!t.trim())throw new Error("trống");aiSources.push({name:f.name,kind:"text",text:t})}
+  else if(/^(txt|md|csv)$/.test(e)||(f.type||"").startsWith("text/"))aiSources.push({name:f.name,kind:"text",text:await f.text()});
+  else toast(`“${f.name}”: chưa hỗ trợ định dạng này. Với .doc/.ppt cũ, hãy lưu lại thành .docx/.pptx hoặc PDF.`,"err")}
+ catch(err){console.error(err);toast(`Không đọc được “${f.name}”`,"err")}}
+ renderAI()}
+async function aiCollect(){let files=[],texts=[];
+ for(const x of aiSources){if(x.kind==="text")texts.push({name:x.name,text:x.text});else files.push({name:x.name,mime:x.mime,data:x.data})}
+ for(const m of matsOf(stLesson).filter(m=>aiUseMats[m.id]&&aiUsableMat(m))){if(m.kind==="note"){texts.push({name:m.name,text:m.text});continue}
+  let k=fkind(m),e=ext(m.name),b64=String(m.data||"").split(",")[1]||"";
+  if(k==="pdf")files.push({name:m.name,mime:"application/pdf",data:b64});else if(k==="image")files.push({name:m.name,mime:m.mime||EXT_MIME[e],data:b64});
+  else{try{texts.push({name:m.name,text:await officeText(b64ToBuf(b64),e)})}catch(err){throw new Error(`Không đọc được “${m.name}”`)}}}
+ if(aiPaste.trim())texts.push({name:"Nội dung dán thêm",text:aiPaste});
+ let text=texts.map(t=>`--- ${t.name} ---\n${t.text}`).join("\n\n");if(text.length>200000)text=text.slice(0,200000);
+ return{files,text,names:files.map(f=>f.name)}}
+
+/* Lệnh gửi AI */
+function buildPrompt(src,manual){let l=lessonById(stLesson),t=aiType,n=aiN;
+ const fmt={mc:"Câu 1: <nội dung câu hỏi>\nA. <phương án>\nB. <phương án>\nC. <phương án>\nD. <phương án>\nĐáp án: <một chữ cái A, B, C hoặc D>\nGợi ý: <gợi ý 1, chưa lộ đáp án>\nGợi ý: <gợi ý 2, rõ hơn>\nGiải thích: <lời giải ngắn gọn>",
+  tf:"Câu 1: <một phát biểu toán học để học sinh xét Đúng hay Sai>\nĐáp án: Đúng\nGợi ý: <gợi ý 1>\nGợi ý: <gợi ý 2>\nGiải thích: <vì sao phát biểu đúng/sai>\n\n(dòng Đáp án chỉ ghi một từ: Đúng hoặc Sai)",
+  short:"Câu 1: <câu hỏi có đáp án ngắn>\nĐáp án: <đáp án ngắn; nếu có nhiều cách viết cùng đúng thì ngăn cách bằng dấu |, ví dụ: 0,5 | 1/2>\nGợi ý: <gợi ý 1>\nGợi ý: <gợi ý 2>\nGiải thích: <lời giải ngắn gọn>"};
+ const rule={mc:"Mỗi câu có đúng 4 phương án A, B, C, D và chỉ 1 phương án đúng; phương án nhiễu hợp lý, dựa trên sai lầm học sinh hay mắc; đáp án đúng phân bố đều giữa A, B, C, D.",
+  tf:"Khoảng một nửa số phát biểu Đúng, một nửa Sai; phát biểu Sai phải sai rõ ràng ở một chi tiết cụ thể, không mơ hồ.",
+  short:"Đáp án là MỘT giá trị duy nhất, ngắn gọn để học sinh tự gõ: số nguyên, số thập phân (dùng dấu phẩy), phân số, tọa độ dạng (x; y) hoặc kí hiệu vectơ như AC."};
+ const lv={mix:"kết hợp Nhận biết, Thông hiểu và Vận dụng",nb:"Nhận biết",th:"Thông hiểu",vd:"Vận dụng"}[aiLevel];
+ let existing=questions.filter(q=>q.lesson===stLesson).slice(-40).map(q=>"- "+String(q.question).slice(0,110)).join("\n");
+ let hasSrc=src.files.length||src.text;
+ return `Bạn là giáo viên Toán THPT ở Việt Nam, đang soạn câu hỏi tự học cho học sinh lớp 10, Chương IV – Vectơ, ${stLesson===12?"phần Ôn tập cuối chương (bao quát toàn chương)":`Bài ${stLesson}: "${l.title}" (SGK trang ${l.pages})`}.
+
+NHIỆM VỤ: Soạn đúng ${n} câu hỏi dạng ${typeName[t].toUpperCase()}, mức độ: ${lv}.
+${hasSrc?`Bám sát nội dung TÀI LIỆU GỐC${src.files.length?(manual?` (tệp tôi đính kèm: ${src.names.join(", ")})`:" (các tệp đính kèm)"):""}${src.text?(src.files.length?" và phần văn bản ở cuối":" ở cuối tin nhắn này"):""}; không dùng kiến thức ngoài chương trình.`:"Bám sát chương trình SGK Toán 10 hiện hành."}${aiExtra.trim()?"\nYêu cầu thêm của giáo viên: "+aiExtra.trim():""}
+
+YÊU CẦU:
+- Kiến thức chính xác tuyệt đối, ngôn ngữ rõ ràng, phù hợp học sinh lớp 10.
+- ${rule[t]}
+- Viết kí hiệu toán bằng chữ và kí tự Unicode thông thường (ví dụ: vectơ AB, |a|, √2, x², 60°, a·b). KHÔNG dùng LaTeX, KHÔNG dùng markdown (không **, không #, không gạch đầu dòng).
+- Mỗi câu có 2 gợi ý tăng dần và 1 lời giải thích ngắn.
+- Không ghi mức độ vào câu hỏi.${existing?" Không trùng với các câu đã có sau:\n"+existing:""}
+
+ĐỊNH DẠNG BẮT BUỘC — chỉ trả về danh sách câu hỏi, không lời mở đầu hay kết luận, mỗi câu cách nhau một dòng trống:
+${fmt[t]}
+
+Câu 2: ...${src.text?"\n\n=== VĂN BẢN TÀI LIỆU GỐC ===\n"+src.text:""}`}
+
+async function callAI(prompt,files,signal,maxTok){let c=aiCfg(),r,j;
+ try{
+  if(c.provider==="gemini"){
+   let parts=[...files.map(f=>({inline_data:{mime_type:f.mime,data:f.data}})),{text:prompt}];
+   r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(c.model)}:generateContent?key=${encodeURIComponent(c.key)}`,{method:"POST",signal,headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{role:"user",parts}],generationConfig:{temperature:0.7,maxOutputTokens:maxTok||16384}})});
+  }else{
+   let content=[...files.map(f=>f.mime==="application/pdf"?{type:"document",source:{type:"base64",media_type:f.mime,data:f.data}}:{type:"image",source:{type:"base64",media_type:f.mime,data:f.data}}),{type:"text",text:prompt}];
+   r=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",signal,headers:{"content-type":"application/json","x-api-key":c.key,"anthropic-version":"2023-06-01","anthropic-dangerous-direct-browser-access":"true"},body:JSON.stringify({model:c.model,max_tokens:maxTok||8000,messages:[{role:"user",content}]})});
+  }
+ }catch(e){if(e.name==="AbortError")throw e;throw new Error("Không kết nối được tới máy chủ AI. Hãy kiểm tra mạng Internet.")}
+ j=await r.json().catch(()=>({}));
+ if(!r.ok){let m=j.error?.message||"";
+  if(r.status===400&&/key/i.test(m)||r.status===401||r.status===403)throw new Error("Khóa API không hợp lệ hoặc chưa được cấp quyền. Hãy kiểm tra lại trong ⚙ Cài đặt AI.");
+  if(r.status===404)throw new Error(`Không tìm thấy model “${c.model}”. Hãy chọn model khác trong ⚙ Cài đặt AI.`);
+  if(r.status===429)throw new Error("Đã hết lượt dùng tạm thời (giới hạn của gói miễn phí). Đợi khoảng 1 phút rồi thử lại, hoặc giảm số câu.");
+  if(r.status>=500||r.status===529)throw new Error("Máy chủ AI đang bận. Vui lòng thử lại sau ít phút.");
+  throw new Error(m||("Lỗi "+r.status))}
+ let text=c.provider==="gemini"?(j.candidates?.[0]?.content?.parts||[]).filter(p=>!p.thought).map(p=>p.text||"").join(""):(j.content||[]).filter(x=>x.type==="text").map(x=>x.text).join("");
+ if(!text.trim())throw new Error(j.promptFeedback?.blockReason?"AI từ chối xử lý nội dung này.":"AI không trả về nội dung. Hãy thử lại.");
+ return text}
+
+function cleanAI(t){return String(t).replace(/```[a-z]*\n?/gi,"").replace(/\*\*/g,"").replace(/^#+\s*/gm,"").replace(/^\s*[-•]\s+(?=(câu|đáp án|gợi ý|giải thích))/gim,"")}
+const LEVEL_RX=/^\s*[\(\[]?\s*(nhận biết|thông hiểu|vận dụng cao|vận dụng)\s*[\)\]]?\s*[:.\-–]?\s*/i;
+function aiLoad(text,type){let{qs,errors}=parseBulk(cleanAI(text));
+ if(!qs.length){setStatus(`<div class="feedback help">Không đọc được câu hỏi nào từ kết quả. ${errors.length?esc(errors[0]):"Có thể AI trả lời sai định dạng."} Hãy thử tạo lại.</div>`);renderAIResults();return false}
+ aiResults=qs.map(q=>({...q,question:q.question.replace(LEVEL_RX,""),options:q.options?q.options.slice():[],answerText:q.answerText||"",hints:[q.hints?.[0]||"",q.hints?.[1]||""],keep:true}));aiResultType=type;
+ let other=qs.filter(q=>q.type!==type).length;
+ setStatus(`<div class="feedback good">✅ AI đã tạo <b>${qs.length} câu</b>${qs.length!==aiN?` (yêu cầu ${aiN})`:""}. Hãy kiểm tra, sửa nếu cần rồi bấm <b>💾 Lưu</b> ở cuối danh sách.${other?` <br>Lưu ý: ${other} câu không đúng dạng đã chọn.`:""}${errors.length?` <br>${errors.length} câu sai định dạng đã bị bỏ qua.`:""}</div>`);
+ stQuestions();setTimeout(()=>document.getElementById("aiResults")?.scrollIntoView({behavior:"smooth",block:"start"}),50);return true}
+
+async function aiGenerate(){if(aiResults.length)return toast("Hãy lưu hoặc bỏ kết quả lượt trước","err");if(aiBusy)return;
+ let c=aiCfg();if(!c.key){aiShowManual=true;renderAI();return toast("Chưa có khóa API – dùng cách “Sao chép lệnh” bên dưới, hoặc mở ⚙ Cài đặt AI.","err")}
+ let src;try{src=await aiCollect()}catch(e){return toast(e.message,"err")}
+ if(!src.files.length&&!src.text.trim()&&!confirm("Chưa có tài liệu gốc. AI sẽ soạn theo kiến thức chung của bài. Tiếp tục?"))return;
+ if(src.files.reduce((a,f)=>a+f.data.length,0)>18*MB)return toast("Tài liệu quá lớn (trên khoảng 13 MB). Hãy bớt tệp hoặc tách phần cần dùng.","err");
+ let type=aiType,t0=Date.now(),tick=()=>setStatus(`<div class="aistatus"><span class="spin"></span><span style="flex:1">AI đang đọc tài liệu và biên soạn ${aiN} câu ${typeName[type].toLowerCase()}… ${Math.round((Date.now()-t0)/1000)} giây</span><button class="iconbtn" onclick="aiBusy&&aiBusy.abort()">Hủy</button></div>`);
+ aiBusy=new AbortController();renderAI();tick();let timer=setInterval(tick,1000),signal=aiBusy.signal;
+ try{let text=await callAI(buildPrompt(src,false),src.files,signal);clearInterval(timer);aiBusy=null;aiLoad(text,type)}
+ catch(e){clearInterval(timer);aiBusy=null;if(e.name==="AbortError"){setStatus("");toast("Đã hủy")}else setStatus(`<div class="feedback help">❌ ${esc(e.message)}</div>`);renderAI()}}
+async function aiCopyPrompt(){let src;try{src=await aiCollect()}catch(e){return toast(e.message,"err")}let t=buildPrompt(src,true);
+ try{await navigator.clipboard.writeText(t)}catch(e){let ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove()}
+ toast(src.files.length?`✅ Đã sao chép lệnh. Nhớ đính kèm: ${src.names.join(", ")}`:"✅ Đã sao chép lệnh. Hãy dán vào ChatGPT/Gemini/Claude.")}
+function aiReadManual(){if(aiResults.length)return toast("Hãy lưu hoặc bỏ kết quả lượt trước","err");if(!aiManualText.trim())return toast("Hãy dán câu trả lời của AI vào ô","err");if(aiLoad(aiManualText,aiType))aiManualText=""}
+
+/* Duyệt & lưu kết quả */
+function renderAIResults(){let el=document.getElementById("aiResults");if(!el)return;if(!aiResults.length){el.innerHTML="";return}
+ el.innerHTML=`<div class="airesults"><h3 style="margin:0 0 4px">Kết quả lượt này · ${aiResults.length} câu ${typeName[aiResultType].toLowerCase()}</h3><p class="muted" style="margin-top:0">Sửa trực tiếp nếu cần. Bỏ dấu ☑ ở câu không muốn dùng.</p>
+ ${aiResults.map((r,k)=>`<div class="qitem aicard ${r.keep?"":"off"}"><div class="qtop"><label class="check"><input type="checkbox" ${r.keep?"checked":""} onchange="aiResults[${k}].keep=this.checked;this.closest('.aicard').classList.toggle('off',!this.checked);aiUpdSave()"> <b>Câu ${k+1}</b></label><span class="pill">${typeName[r.type]}</span></div>
+  <textarea style="margin-top:8px" oninput="aiResults[${k}].question=this.value">${esc(r.question)}</textarea>
+  ${r.type==="mc"?r.options.map((o,j)=>`<div class="optrow ${r.answer===j?"correct":""}"><label class="radio" title="Chọn làm đáp án đúng"><input type="radio" name="ar${k}" ${r.answer===j?"checked":""} onchange="aiResults[${k}].answer=${j};renderAIResults()"><b>${L[j]}</b></label><input value="${esc(o)}" oninput="aiResults[${k}].options[${j}]=this.value">${r.answer===j?`<span class="tag">✔ Đúng</span>`:""}</div>`).join("")
+   :r.type==="tf"?`<div class="seg tf" style="margin-top:8px"><button class="${r.answer===0?"active t":""}" onclick="aiResults[${k}].answer=0;renderAIResults()">✔ Đúng</button><button class="${r.answer===1?"active f":""}" onclick="aiResults[${k}].answer=1;renderAIResults()">✘ Sai</button></div>`
+   :`<label>Đáp án</label><input value="${esc(r.answerText)}" oninput="aiResults[${k}].answerText=this.value">`}
+  <details><summary>💡 Gợi ý & giải thích</summary><label>Gợi ý 1</label><input value="${esc(r.hints[0])}" oninput="aiResults[${k}].hints[0]=this.value"><label>Gợi ý 2</label><input value="${esc(r.hints[1])}" oninput="aiResults[${k}].hints[1]=this.value"><label>Giải thích</label><textarea style="min-height:60px" oninput="aiResults[${k}].explanation=this.value">${esc(r.explanation)}</textarea></details></div>`).join("")}
+ <div class="savebar actions"><button class="green" id="aiSaveBtn" onclick="aiSave()"></button><button class="secondary" onclick="aiRegenerate()">🔄 Tạo lại</button><button class="danger" onclick="aiDiscard()">Bỏ kết quả</button></div></div>`;aiUpdSave()}
+function aiUpdSave(){let b=document.getElementById("aiSaveBtn"),n=aiResults.filter(r=>r.keep).length;if(b){b.textContent=`💾 Lưu ${n} câu vào ${lessonLabel(stLesson)}`;b.disabled=!n}}
+function aiSave(){let n=0,bad=0;
+ aiResults.filter(r=>r.keep).forEach(r=>{let q={lesson:stLesson,type:r.type,question:String(r.question).trim(),hints:r.hints.map(h=>String(h||"").trim()),explanation:String(r.explanation||"").trim()};
+  if(!q.question){bad++;return}
+  if(r.type==="mc"){let f=r.options.map((o,i)=>({o:String(o).trim(),i})).filter(x=>x.o),a=f.findIndex(x=>x.i===r.answer);if(f.length<2||a<0){bad++;return}q.options=f.map(x=>x.o);q.answer=a}
+  else if(r.type==="tf"){q.options=["Đúng","Sai"];q.answer=r.answer===1?1:0}
+  else{q.answerText=String(r.answerText||"").trim();if(!q.answerText){bad++;return}}
+  questions.push(q);n++});
+ if(!n)return toast("Không có câu hợp lệ để lưu","err");
+ saveQ();aiHistory.push({type:aiResultType,n,lesson:stLesson});aiResults=[];
+ const order=["mc","tf","short"];aiType=order[(order.indexOf(aiResultType)+1)%3];
+ aiStatusHTML=`<div class="feedback good">✅ Đã lưu ${n} câu${bad?` (bỏ qua ${bad} câu thiếu thông tin)`:""}. Mời chọn dạng tiếp theo — đã chuyển sẵn sang <b>${typeName[aiType]}</b>.</div>`;
+ toast(`✅ Đã lưu ${n} câu vào ${lessonLabel(stLesson)}`);studio()}
+function aiDiscard(){if(!confirm("Bỏ toàn bộ kết quả của lượt này?"))return;aiResults=[];setStatus("");stQuestions()}
+function aiRegenerate(){if(!confirm("Bỏ kết quả hiện tại và tạo lại?"))return;aiResults=[];setStatus("");if(aiCfg().key)aiGenerate();else{aiShowManual=true;stQuestions()}}
+
 /* --- Nhập nhanh nhiều câu --- */
 const SAMPLE=`Câu 1: Hai vectơ được gọi là bằng nhau khi nào?
 A. Có cùng độ dài
@@ -286,7 +478,7 @@ Gợi ý: |a| = √(x² + y²)`;
 const RX_HEAD=/^\s*(?:câu|cau|question)\s*\d+\s*[:.)\-–]?\s*/i,RX_OPT=/^\s*(\*)?\s*([A-F])\s*[.)]\s*(.+?)\s*(\*)?\s*$/,RX_ANS=/^\s*(?:đáp án|dap an|đ\/a|answer)(?:\s*đúng)?\s*[:：]\s*(.+)$/i,RX_HINT=/^\s*(?:gợi ý|goi y|hint)\s*\d*\s*[:：]\s*(.*)$/i,RX_EXP=/^\s*(?:giải thích|giai thich|lời giải|loi giai|explanation)\s*[:：]\s*(.*)$/i;
 function cut(s){return s.length>50?s.slice(0,50)+"…":s}
 function parseBulk(text){let lines=String(text||"").normalize("NFC").replace(/\r/g,"").split("\n"),blocks=[],cur=[],hasHead=lines.some(l=>RX_HEAD.test(l));
- for(const l of lines){if(hasHead){if(RX_HEAD.test(l)){if(cur.length)blocks.push(cur);cur=[l.replace(RX_HEAD,"")]}else if(cur.length||l.trim())cur.push(l)}else{if(!l.trim()){if(cur.length)blocks.push(cur);cur=[]}else cur.push(l)}}
+ let started=false;for(const l of lines){if(hasHead){if(RX_HEAD.test(l)){if(cur.length)blocks.push(cur);cur=[l.replace(RX_HEAD,"")];started=true}else if(started)cur.push(l)}else{if(!l.trim()){if(cur.length)blocks.push(cur);cur=[]}else cur.push(l)}}
  if(cur.length)blocks.push(cur);
  let qs=[],errors=[];
  blocks.forEach((bl,bi)=>{let qL=[],opts=[],star=-1,ans=null,hints=[],expl=[],mode="q";
