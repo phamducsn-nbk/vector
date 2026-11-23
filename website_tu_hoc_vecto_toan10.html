@@ -43,6 +43,14 @@ details{margin-top:14px;border:1px solid var(--border);border-radius:12px;paddin
 .drop.small{padding:18px;margin-top:8px}.tplbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.tplbtn{display:flex;align-items:center;gap:12px;text-align:left;background:white;color:#1e293b;border:1px solid var(--border);padding:12px 14px}.tplbtn:hover{border-color:#93c5fd;background:#f8fbff}.tplbtn .big{font-size:30px}.tplbtn small{display:block;color:var(--muted);font-weight:500;font-size:12px;margin-top:2px}.tplbtn.rec{border:2px solid #86efac}
 .imppreview{margin-top:18px;padding-top:16px;border-top:2px dashed #93c5fd}.lessonpill{background:#fef3c7;color:#92400e}
 .savebar{position:sticky;bottom:0;background:white;padding:12px 0 2px;border-top:1px solid var(--border);margin-top:10px;z-index:2}
+.hero-top{position:absolute;top:10px;right:20px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end;max-width:72%}.hero-top .hero-author{position:static}.hero-stats{font-size:12px;color:#fff;background:#ffffff26;border:1px solid #ffffff40;padding:3px 10px;border-radius:999px;font-weight:600;white-space:nowrap}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin:14px 0}.kpi{background:white;border:1px solid var(--border);border-radius:16px;padding:14px 16px}.kpi .v{font-size:26px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}.kpi .l{font-size:13px;color:var(--muted)}.kpi .s{font-size:12px;color:var(--muted);margin-top:2px}
+.chartbox h4{margin:0 0 2px;color:var(--ink);font-size:15px}.chartbox .sub{font-size:13px;color:var(--muted);margin-bottom:8px}.chart svg{width:100%;height:auto;display:block}.chart .hit:hover+.mk,.chart .hit:hover{opacity:.85}
+.antable{width:100%;border-collapse:collapse;font-size:14px}.antable th{position:sticky;top:0;z-index:1;background:#eff6ff;color:#1e40af;text-align:left;padding:9px 8px;cursor:pointer;white-space:nowrap;font-size:13px;user-select:none}.antable td{padding:8px;border-bottom:1px solid var(--border);vertical-align:middle;white-space:nowrap}.antable tr.click:hover td{background:#f8fbff;cursor:pointer}.antable .num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.tag{display:inline-block;padding:3px 8px;border-radius:999px;font-size:12px;font-weight:700;white-space:nowrap}.tag.up{background:#dcfce7;color:#166534}.tag.flat{background:#e0f2fe;color:#075985}.tag.down{background:#fee2e2;color:#991b1b}.tag.none{background:#f1f5f9;color:#475569}.tag.idle{background:#fef3c7;color:#92400e}
+.tablewrap{overflow:auto;max-height:600px;border:1px solid var(--border);border-radius:12px}.filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.filters select,.filters input{width:auto;padding:8px 10px}
+.commentbox{background:#f8fafc;border-left:4px solid var(--blue);border-radius:10px;padding:12px 14px;line-height:1.75}.srcbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:12px 14px;border-radius:14px;margin-bottom:6px}.srcbar.ok{background:#f0fdf4;border:1px solid #bbf7d0}.srcbar.local{background:#fffbeb;border:1px solid #fde68a}
+.codebox{font-family:ui-monospace,Consolas,monospace;font-size:12px;background:#0f172a;color:#e2e8f0;border-radius:12px;padding:12px;max-height:180px;overflow:auto;white-space:pre}
 .modal{position:fixed;inset:0;background:#0f172a99;display:grid;place-items:center;z-index:100;padding:20px}.modal-card{background:white;border-radius:22px;padding:26px;max-width:420px;width:100%;box-shadow:0 30px 80px #0f172a55}.modal-card h3{margin:0 0 4px;color:var(--ink)}.pwrow{display:flex;gap:8px}.pwerr{color:#b91c1c;font-size:14px;min-height:20px;margin-top:8px}
 .adminlink{display:block;width:100%;margin-top:10px;background:transparent;color:#1d4ed8;font-weight:600;font-size:14px;padding:8px}.adminlink:hover{background:#eff6ff}
 .vec{display:inline-block;position:relative;padding-top:.5em;line-height:1;font-style:normal}.vec::before{content:"";position:absolute;left:.04em;right:.1em;top:.2em;border-top:.075em solid currentColor}.vec::after{content:"";position:absolute;right:.06em;top:.2em;width:.26em;height:.26em;border-top:.075em solid currentColor;border-right:.075em solid currentColor;transform:translateY(-50%) rotate(45deg);transform-origin:center}
@@ -61,7 +69,7 @@ details{margin-top:14px;border:1px solid var(--border);border-radius:12px;paddin
 .parth{color:#1d4ed8;font-size:15px;letter-spacing:.3px;border-bottom:2px solid #dbeafe;padding-bottom:8px;margin-top:22px}.tq{padding:12px 0;border-bottom:1px dashed var(--border)}.tqh{margin-bottom:6px;line-height:1.55}
 .scorewrap{display:flex;align-items:center;gap:22px;flex-wrap:wrap}.scorebig{font-size:54px;font-weight:850;line-height:1;padding:18px 24px;border-radius:20px}.scorebig small{font-size:20px;color:var(--muted)}.scorebig.pass{background:#dcfce7;color:#15803d}.scorebig.fail{background:#fff7ed;color:#c2410c}
 .rv{border:1px solid var(--border);border-left:4px solid #94a3b8;border-radius:12px;padding:12px;margin:10px 0}.rv.ok{border-left-color:#22c55e}.rv.no{border-left-color:#f97316}.rvtag{font-size:12px;font-weight:700;color:var(--muted);margin-left:6px}.rvopt{padding:4px 8px;margin:3px 0;border-radius:8px;font-size:14px}.rvopt.right{background:#dcfce7;color:#166534;font-weight:650}.rvopt.wrong{background:#fee2e2;color:#991b1b}.rvexp{margin-top:8px}
-@media(max-width:600px){.tftable th:not(:first-child),.tftable td:not(:first-child){width:58px}.clock{font-size:18px;min-width:auto}.scorebig{font-size:40px}}
+@media(max-width:600px){.hero{padding-top:62px}.hero-top{left:16px;right:16px;max-width:none;justify-content:flex-start}.tftable th:not(:first-child),.tftable td:not(:first-child){width:58px}.clock{font-size:18px;min-width:auto}.scorebig{font-size:40px}}
 @media(max-width:1100px){.qgrid,.qgrid.wide{grid-template-columns:1fr}.sticky{position:static}}
 @media(max-width:600px){.tplbtns{grid-template-columns:1fr}}
 @media(max-width:850px){.hero-title{font-size:16px}.hero{padding-top:36px}.sidebar{position:relative;width:auto;bottom:auto}.main{margin-left:0;padding:16px}.top{align-items:flex-start;flex-direction:column}.sidebar nav{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}.brand{margin-bottom:8px}.mitem{flex-wrap:wrap}.pdfview{height:520px}}
@@ -137,10 +145,12 @@ const EMB=(()=>{try{return JSON.parse(document.getElementById("vec-data").textCo
 const STUDENT_ONLY=!!(EMB&&EMB.studentOnly)&&location.hash!=="#giaovien";
 let questions=[],materials=[];
 function cleanMats(list){return (list||[]).map(m=>({...m,id:String(m.id||newId()).replace(/[^\w-]/g,"")}))}
+let CFG=(()=>{try{return JSON.parse(localStorage.getItem("vec_cfg")||"{}")}catch(e){return{}}})();
+function saveCfg(){localStorage.setItem("vec_cfg",JSON.stringify(CFG))}
 const ready=(async()=>{
  let localAt=Number(localStorage.getItem("vec_savedAt")||0);
  if(EMB&&EMB.savedAt>localAt){
-  questions=EMB.questions||[];materials=cleanMats(EMB.materials);
+  questions=EMB.questions||[];materials=cleanMats(EMB.materials);if(EMB.cfg){CFG={...CFG,syncUrl:EMB.cfg.syncUrl||""};saveCfg()}
   localStorage.setItem("vec_questions",JSON.stringify(questions));localStorage.setItem("vec_savedAt",String(EMB.savedAt));
   try{await idbReplaceAll(materials)}catch(e){console.warn(e)}
  }else{
@@ -173,7 +183,7 @@ function qFields(q){let f=[["question","Câu hỏi"]];if(q.type==="mc")(q.option
 function getF(q,k){return typeof k==="string"?q[k]:k.length===2?(q[k[0]]||[])[k[1]]:((q[k[0]]||[])[k[1]]||{})[k[2]]}
 function setF(q,k,v){if(typeof k==="string")q[k]=v;else if(k.length===2){q[k[0]]=q[k[0]]||[];q[k[0]][k[1]]=v}else q[k[0]][k[1]][k[2]]=v}
 function convQ(q){let c=JSON.parse(JSON.stringify(q));for(const[k]of qFields(c)){let v=getF(c,k);if(v)setF(c,k,convVec(v).s)}return c}
-function hero(h,p,cls){return `<div class="hero ${cls||""}"><div class="hero-author">Tác giả: Phạm Thu Hường</div><div class="hero-title">HỖ TRỢ TỰ HỌC CHỦ ĐỀ VECTƠ</div><h1>${h}</h1><p>${p}</p></div>`}
+function hero(h,p,cls){let st=statsHTML();return `<div class="hero ${cls||""}"><div class="hero-top"><span class="hero-stats ${st?"":"hidden"}" title="Thống kê truy cập toàn trang">${st}</span><div class="hero-author">Tác giả: Phạm Thu Hường</div></div><div class="hero-title">HỖ TRỢ TỰ HỌC CHỦ ĐỀ VECTƠ</div><h1>${h}</h1><p>${p}</p></div>`}
 function setActive(key){document.querySelectorAll('#nav .navbtn').forEach(b=>b.classList.toggle('active',b.dataset.key===String(key)))}
 let toastTimer;function toast(msg,type){let t=document.getElementById("toast");t.textContent=msg;t.className="toast show "+(type||"");clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.className="toast",3200)}
 function newId(){return "m"+Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
@@ -203,8 +213,8 @@ const urlCache={};
 function blobUrl(m){if(urlCache[m.id])return urlCache[m.id];let [h,b]=String(m.data||",").split(","),bin=atob(b||""),arr=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)arr[i]=bin.charCodeAt(i);return urlCache[m.id]=URL.createObjectURL(new Blob([arr],{type:m.mime||EXT_MIME[ext(m.name)]||"application/octet-stream"}))}
 
 /* ===== Phần học sinh ===== */
-function loginStudent(){let n=document.getElementById("studentName").value.trim(),c=document.getElementById("studentClass").value.trim();if(!n||!c){alert("Vui lòng nhập họ tên và lớp.");return}student={name:n,class:c};document.getElementById("login").style.display="none";document.getElementById("app").style.display="block";document.getElementById("userchip").textContent=n+" · "+c;buildNav();home()}
-function logout(){if(!leaveTest())return;adminOK=false;try{sessionStorage.removeItem("vec_admin")}catch(e){}student=null;teacher=false;updateModeBtn();document.getElementById("app").style.display="none";document.getElementById("login").style.display="grid"}
+function loginStudent(){let n=document.getElementById("studentName").value.trim(),c=document.getElementById("studentClass").value.trim();if(!n||!c){alert("Vui lòng nhập họ tên và lớp.");return}student={name:n,class:c};startSession();document.getElementById("login").style.display="none";document.getElementById("app").style.display="block";document.getElementById("userchip").textContent=n+" · "+c;buildNav();home()}
+function logout(){if(!leaveTest())return;endSession();adminOK=false;try{sessionStorage.removeItem("vec_admin")}catch(e){}student=null;teacher=false;updateModeBtn();document.getElementById("app").style.display="none";document.getElementById("login").style.display="grid"}
 function buildNav(){let n=document.getElementById("nav");n.innerHTML=`<button class="navbtn" data-key="home" onclick="home()">🏠 Trang chủ</button>`+lessons.map(l=>`<button class="navbtn" data-key="${l.id}" onclick="navLesson(${l.id})">${l.icon} Bài ${l.id===12?"Ôn tập":l.id} · ${l.title}</button>`).join("")+`<button class="navbtn" data-key="report" onclick="report()">📊 Kết quả của em</button>`}
 function navLesson(id){if(teacher){stLesson=id;editIdx=null;draft=null;studio()}else openLesson(id)}
 function home(){if(!leaveTest())return;if(teacher)return studio();section="home";setActive("home");document.getElementById("pageTitle").textContent="Trang học tập";let done=JSON.parse(localStorage.getItem("vec_done_"+student.name)||"[]");document.getElementById("view").innerHTML=`${hero(`Xin chào, ${esc(student.name)}! 👋`,"Hãy chọn bài học và khám phá thế giới vectơ.")}<div class="grid"><div class="card"><div class="muted">Bài học trong chương</div><div class="stat">6</div></div><div class="card"><div class="muted">Bài đã hoàn thành</div><div class="stat">${done.length}/6</div></div><div class="card"><div class="muted">Lớp học</div><div class="stat">${esc(student.class)}</div></div></div><div class="section"><h3>📚 Các bài học</h3><div class="grid">${lessons.map(l=>`<div class="card lesson" onclick="openLesson(${l.id})"><div class="num">BÀI ${l.id===12?"ÔN TẬP":l.id}</div><h3>${l.icon} ${l.title}</h3><div class="muted">SGK trang ${l.pages}</div><div style="margin-top:14px"><span class="pill">Học · Luyện tập · Kiểm tra</span></div></div>`).join("")}</div></div>`}
@@ -241,7 +251,7 @@ function checkAnswer(i){let qs=getLessonQs(currentLesson),q=qs[i],key=currentLes
  else{tries++;attempts[key]=tries;let hint=tries<=2?mx(q.hints?.[tries-1]||"Em hãy xem lại nội dung kiến thức liên quan."):"",
   show=q.type==="tf"?q.items.map((it,k)=>`${AB[k]}) ${it.answer?"Đúng":"Sai"}`).join(" · "):`${L[q.answer]}. ${mx(q.options[q.answer])}`;
   f.innerHTML=`<div class="feedback help"><b>Chưa chính xác – hãy thử lại!</b><br>${extra}${hint}${tries>=3?`<div style="margin-top:8px"><b>Đáp án:</b> ${show}${q.explanation?`<br><b>Giải thích:</b> ${mx(q.explanation)}`:""}</div>`:""}</div>`;recordResponse(currentLesson,q,false,tries)}}
-function recordResponse(id,q,correct,attempt){scores.push({name:student.name,class:student.class,lesson:id,question:q.question,correct,attempt,date:new Date().toLocaleString()});localStorage.setItem("vec_scores",JSON.stringify(scores))}
+function recordResponse(id,q,correct,attempt){logEv({t:"prac",lesson:id,ok:correct?1:0,x:{a:attempt,type:q.type}});scores.push({name:student.name,class:student.class,lesson:id,question:q.question,correct,attempt,date:new Date().toLocaleString()});localStorage.setItem("vec_scores",JSON.stringify(scores))}
 let test=null,testTimeTouched=false;
 function renderTest(){let pool=getLessonQs(currentLesson),nm=pool.filter(q=>q.type==="mc").length,nt=pool.filter(q=>q.type==="tf").length,b=document.getElementById("lessonBody"),rv=currentLesson===12;
  if(!nm&&!nt){b.innerHTML=`<div class="contentbox">Chưa có câu hỏi kiểm tra cho bài này.</div>`;return}
@@ -287,7 +297,7 @@ function submitTest(auto){let t=test;if(!t||t.done)return;
   pts=mcC*0.25+tfRes.reduce((s2,nc,k)=>s2+tfPoints(nc,t.tf[k].items.length),0),max=t.mc.length*0.25+t.tf.length,score=max?Math.round(pts/max*1000)/100:0,
   tfN=t.tf.reduce((s2,q)=>s2+q.items.length,0),tfC=tfRes.reduce((a,b)=>a+b,0),used=Math.min(Date.now(),t.end)-t.start;
  let done=JSON.parse(localStorage.getItem("vec_done_"+student.name)||"[]");if(!done.includes(t.lesson)){done.push(t.lesson);localStorage.setItem("vec_done_"+student.name,JSON.stringify(done))}
- scores.push({name:student.name,class:student.class,lesson:t.lesson,test:true,score,mcC,mcN:t.mc.length,tfC,tfN,mins:t.mins,used:Math.round(used/1000),date:new Date().toLocaleString()});localStorage.setItem("vec_scores",JSON.stringify(scores));
+ logEv({t:"test",lesson:t.lesson,score,ok:mcC+tfC,n:t.mc.length+tfN,sec:Math.round(used/1000),x:{mcC,mcN:t.mc.length,tfC,tfN,mins:t.mins}});scores.push({name:student.name,class:student.class,lesson:t.lesson,test:true,score,mcC,mcN:t.mc.length,tfC,tfN,mins:t.mins,used:Math.round(used/1000),date:new Date().toLocaleString()});localStorage.setItem("vec_scores",JSON.stringify(scores));
  let msg=score>=8?"Xuất sắc! 🎉":score>=6.5?"Khá tốt! 👍":score>=5?"Đạt yêu cầu – cố gắng thêm nhé!":"Em cần ôn lại kiến thức và luyện tập thêm.";
  document.getElementById("lessonBody").innerHTML=`<div class="contentbox">${auto?`<div class="feedback help" style="margin:0 0 14px">⏰ Hết giờ! Bài làm đã được nộp tự động.</div>`:""}
  <div class="scorewrap"><div class="scorebig ${score>=5?"pass":"fail"}">${fmtPts(score)}<small>/10</small></div><div><h3 style="margin:0 0 6px">${msg}</h3>${t.mc.length?`<div>🔘 Phần I: đúng <b>${mcC}/${t.mc.length}</b> câu</div>`:""}${t.tf.length?`<div>✔ Phần II: đúng <b>${tfC}/${tfN}</b> ý</div>`:""}<div class="muted">⏱ Thời gian làm bài: ${fmtClock(used)} / ${t.mins} phút</div></div></div>
@@ -328,13 +338,13 @@ function toggleTeacher(){if(!leaveTest())return;if(teacher){teacher=false;update
 function previewLesson(){teacher=false;updateModeBtn();openLesson(stLesson);toast("Đang xem như học sinh. Bấm “⚙ Chế độ giáo viên” để quay lại thiết kế.")}
 async function studio(){if(!adminOK){teacher=false;updateModeBtn();return home()}await ready;section="studio";setActive(stLesson);document.getElementById("pageTitle").textContent="Chế độ giáo viên – Thiết kế bài học";
  let l=lessonById(stLesson),nm=matsOf(stLesson).length,nq=qCount(stLesson);
- let ck=runCheck(null).sum,tabs=[["materials",`📖 Tài liệu (${nm})`],["questions",`❓ Câu hỏi (${nq})`],["check",`🔍 Kiểm tra${ck.fix+ck.err+ck.warn?` (${ck.fix+ck.err+ck.warn})`:" ✓"}`],["share","💾 Sao lưu & gửi học sinh"]];
+ let ck=runCheck(null).sum,tabs=[["materials",`📖 Tài liệu (${nm})`],["questions",`❓ Câu hỏi (${nq})`],["check",`🔍 Kiểm tra${ck.fix+ck.err+ck.warn?` (${ck.fix+ck.err+ck.warn})`:" ✓"}`],["stats","📊 Phân tích học tập"],["share","💾 Sao lưu & gửi học sinh"]];
  document.getElementById("view").innerHTML=`${hero("⚙ Thiết kế bài học","① Chọn bài &nbsp;→&nbsp; ② Thêm tài liệu &nbsp;→&nbsp; ③ Tạo câu hỏi &nbsp;→&nbsp; ④ Gửi cho học sinh. Mọi thay đổi được lưu tự động.","teach")}
  <div class="chips">${lessons.map(x=>`<button class="chip ${x.id===stLesson?"active":""}" onclick="navLesson(${x.id})"><b>${x.icon} ${lessonLabel(x.id)}</b><small>📄 ${matsOf(x.id).length} tài liệu · ❓ ${qCount(x.id)} câu</small></button>`).join("")}</div>
  <div class="studio-head"><h3>${l.icon} ${lessonLabel(stLesson)}: ${esc(l.title)}</h3><div class="actions"><button class="secondary small" onclick="previewLesson()">👁 Xem thử như học sinh</button><button class="warn small" onclick="lockAdmin()" title="Thoát và yêu cầu mật khẩu cho lần sau">🔒 Khóa & thoát quản trị</button></div></div>
  <div class="tabs">${tabs.map(([k,t])=>`<button class="${stTab===k?"active":""}" onclick="stTab='${k}';studio()">${t}</button>`).join("")}</div>
  <div id="studioBody"></div>`;
- (({materials:stMaterials,questions:stQuestions,check:stCheck,share:stShare})[stTab]||stQuestions)()}
+ (({materials:stMaterials,questions:stQuestions,check:stCheck,stats:stStats,share:stShare})[stTab]||stQuestions)()}
 
 /* --- Tài liệu --- */
 function stMaterials(){let mats=matsOf(stLesson);
@@ -446,7 +456,7 @@ const XL_GUIDE=["HƯỚNG DẪN ĐIỀN TỆP MẪU – HỖ TRỢ TỰ HỌC CH
 function sheetXml(rows,opt){let cols=(opt.widths||[]).map((w,i)=>`<col min="${i+1}" max="${i+1}" width="${w}" customWidth="1"/>`).join("");
  let body=rows.map((row,ri)=>`<row r="${ri+1}">${(opt.pad?Array.from({length:Math.max(row.length,opt.pad)},(_,i)=>row[i]):row).map((v,ci)=>{let ref=String.fromCharCode(65+ci)+(ri+1),st=(opt.style||(()=>0))(ri,ci,row);if(v===""||v==null)return opt.pad?`<c r="${ref}" s="${st}"/>`:"";return typeof v==="number"?`<c r="${ref}" s="${st}"><v>${v}</v></c>`:`<c r="${ref}" s="${st}" t="inlineStr"><is><t xml:space="preserve">${xesc(v)}</t></is></c>`}).join("")}</row>`).join("");
  return `<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">${opt.freeze?`<sheetViews><sheetView workbookViewId="0"${opt.selected?' tabSelected="1"':""}><pane ySplit="1" topLeftCell="A2" activePane="bottomLeft" state="frozen"/></sheetView></sheetViews>`:`<sheetViews><sheetView workbookViewId="0"/></sheetViews>`}<cols>${cols}</cols><sheetData>${body}</sheetData>${opt.validations||""}</worksheet>`}
-function buildWorkbook(sheets){let all=[...sheets,{name:"Hướng dẫn",xml:sheetXml(XL_GUIDE.map(t=>[t]),{widths:[130],style:ri=>ri===0?4:5})}];
+function buildWorkbook(sheets,opt){let all=[...sheets,...(opt&&opt.noGuide?[]:[{name:"Hướng dẫn",xml:sheetXml(XL_GUIDE.map(t=>[t]),{widths:[130],style:ri=>ri===0?4:5})}])];
  sheets.forEach((sh,k)=>{let ansCols=sh.ansCols||[];sh.xml=sheetXml([sh.head,...sh.rows],{widths:sh.widths,freeze:true,selected:k===0,validations:sh.valid,pad:sh.head.length,style:(ri,ci,row)=>ri===0?(ansCols.includes(ci)?6:1):row[0]==="Ví dụ"?3:2})});
  let ct="",wb="",rels="";all.forEach((sh,k)=>{ct+=`<Override PartName="/xl/worksheets/sheet${k+1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`;wb+=`<sheet name="${xesc(sh.name)}" sheetId="${k+1}" r:id="rId${k+1}"/>`;rels+=`<Relationship Id="rId${k+1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${k+1}.xml"/>`});
  let files={
@@ -650,12 +660,185 @@ function applyFixes(){let{res}=runCheck(ckScope==="all"?"all":stLesson),n=0;
 function ckEdit(i){stLesson=questions[i].lesson;editIdx=null;draft=null;studio().then(()=>editQ(i))}
 function ckDel(i){if(!confirm("Xóa câu hỏi này?\n\n“"+questions[i].question+"”"))return;questions.splice(i,1);ckSel={};ckSus={};saveQ();toast("Đã xóa câu hỏi");studio()}
 
+/* ===== THỐNG KÊ TRUY CẬP & THU THẬP KẾT QUẢ (Google Sheets) ===== */
+const DEV=(()=>{let d=localStorage.getItem("vec_dev");if(!d){d="d"+Math.random().toString(36).slice(2,10);localStorage.setItem("vec_dev",d)}return d})();
+const syncUrl=()=>/^https:\/\/script\.google(usercontent)?\.com\/\S+$/.test(CFG.syncUrl||"")?CFG.syncUrl:"";
+const isAdminUser=()=>!!student&&student.class==="Quản trị";
+const qsJoin=(u,q)=>u+(u.includes("?")?"&":"?")+q;
+let SID=null,actSec=0,lastInput=Date.now(),lastTimeSent=0,flushTimer=null,flushing=false;
+function readJ(k,d){try{return JSON.parse(localStorage.getItem(k)||"null")??d}catch(e){return d}}
+function logEv(ev){ev.ts=Date.now();ev.dev=DEV;ev.sid=SID||"";if(student&&!isAdminUser()){ev.name=student.name;ev.cls=student.class}else if(ev.t!=="visit")return;
+ try{let a=readJ("vec_events",[]);a.push(ev);if(a.length>4000)a=a.slice(-4000);localStorage.setItem("vec_events",JSON.stringify(a))}catch(e){}
+ if(!syncUrl())return;try{let q=readJ("vec_queue",[]);q.push(ev);localStorage.setItem("vec_queue",JSON.stringify(q.slice(-1500)))}catch(e){}
+ clearTimeout(flushTimer);flushTimer=setTimeout(flush,ev.t==="prac"||ev.t==="time"?15000:800)}
+async function flush(beacon){let url=syncUrl();if(!url||flushing)return;let q=readJ("vec_queue",[]);if(!q.length)return;let part=q.slice(0,200),body=JSON.stringify({events:part});
+ const drop=()=>{try{localStorage.setItem("vec_queue",JSON.stringify(readJ("vec_queue",[]).slice(part.length)))}catch(e){}};
+ if(beacon===true){try{if(navigator.sendBeacon&&navigator.sendBeacon(url,new Blob([body],{type:"text/plain;charset=utf-8"})))drop()}catch(e){}return}
+ flushing=true;try{let r=await fetch(url,{method:"POST",body,headers:{"Content-Type":"text/plain;charset=utf-8"}}),j=await r.json();if(j&&j.ok){drop();if(q.length>part.length)setTimeout(flush,400)}}catch(e){}finally{flushing=false}}
+function startSession(){if(isAdminUser())return;SID="s"+Date.now().toString(36)+Math.random().toString(36).slice(2,6);actSec=0;lastTimeSent=0;lastInput=Date.now();logEv({t:"login"})}
+function sendTime(){if(!SID||actSec===lastTimeSent)return;lastTimeSent=actSec;logEv({t:"time",sec:actSec})}
+function endSession(){sendTime();clearTimeout(flushTimer);flush();SID=null}
+["mousemove","keydown","touchstart","scroll","click"].forEach(ev=>addEventListener(ev,()=>{lastInput=Date.now()},{passive:true}));
+setInterval(()=>{if(!SID||document.visibilityState!=="visible"||Date.now()-lastInput>120000)return;actSec+=15;if(actSec-lastTimeSent>=180)sendTime()},15000);
+addEventListener("visibilitychange",()=>{if(document.visibilityState==="hidden"){sendTime();clearTimeout(flushTimer);flush(true)}else loadStats()});
+addEventListener("pagehide",()=>{sendTime();clearTimeout(flushTimer);flush(true)});
+let STATS=readJ("vec_stats",null);
+const fmtN=n=>Number(n||0).toLocaleString("vi-VN");
+function statsHTML(){if(!syncUrl()||!STATS)return"";return `👁 ${fmtN(STATS.visits)} lượt truy cập · hôm nay ${fmtN(STATS.today)} · 🧑‍🎓 ${fmtN(STATS.students)} học sinh`}
+function paintStats(){let h=statsHTML();document.querySelectorAll(".hero-stats").forEach(e=>{e.innerHTML=h;e.classList.toggle("hidden",!h)})}
+async function loadStats(){let url=syncUrl();if(!url)return;try{let r=await fetch(qsJoin(url,"action=stats")),j=await r.json();if(j&&j.ok){STATS={visits:j.visits,today:j.today,students:j.students,at:Date.now()};localStorage.setItem("vec_stats",JSON.stringify(STATS));paintStats()}}catch(e){}}
+
+/* --- Mã Apps Script cho giáo viên --- */
+function secretKey(){let k=localStorage.getItem("vec_secret");if(!k){k=Array.from(crypto.getRandomValues(new Uint8Array(12)),b=>b.toString(16).padStart(2,"0")).join("");localStorage.setItem("vec_secret",k)}return k}
+function appsScript(secret){return ["// Hỗ trợ tự học – nhận lượt truy cập và kết quả học tập. Dán toàn bộ mã này vào Apps Script.",
+"const SECRET = '"+secret+"'; // mã bí mật để giáo viên đọc dữ liệu – không chia sẻ",
+"const SHEET = 'NhatKy';",
+"const HEAD = ['Thời gian', 'Loại', 'Học sinh', 'Lớp', 'Mã máy', 'Phiên', 'Bài', 'Điểm', 'Số đúng', 'Tổng', 'Giây', 'Chi tiết'];",
+"function sheet_() { const ss = SpreadsheetApp.getActiveSpreadsheet(); let s = ss.getSheetByName(SHEET); if (!s) { s = ss.insertSheet(SHEET); s.appendRow(HEAD); s.setFrozenRows(1); } return s; }",
+"function out_(o) { return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); }",
+"function day_() { return Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyyMMdd'); }",
+"function doPost(e) {",
+"  const lock = LockService.getScriptLock(); lock.waitLock(20000);",
+"  try {",
+"    const body = JSON.parse((e && e.postData && e.postData.contents) || '{}');",
+"    const evs = (Array.isArray(body.events) ? body.events : []).slice(0, 300);",
+"    const cut = (v, n) => String(v === null || v === undefined ? '' : v).slice(0, n);",
+"    const num = v => (v === null || v === undefined || v === '' || isNaN(v)) ? '' : Number(v);",
+"    const rows = evs.map(v => [new Date(Number(v.ts) || Date.now()), cut(v.t, 12), cut(v.name, 80), cut(v.cls, 30), cut(v.dev, 24), cut(v.sid, 24), num(v.lesson), num(v.score), num(v.ok), num(v.n), num(v.sec), cut(JSON.stringify(v.x || {}), 400)]);",
+"    if (rows.length) { const s = sheet_(); s.getRange(s.getLastRow() + 1, 1, rows.length, HEAD.length).setValues(rows); }",
+"    const vis = evs.filter(v => v.t === 'visit').length;",
+"    if (vis) { const p = PropertiesService.getScriptProperties(), k = 'd' + day_(); p.setProperty('visits', String(Number(p.getProperty('visits') || 0) + vis)); p.setProperty(k, String(Number(p.getProperty(k) || 0) + vis)); }",
+"    return out_({ ok: true, n: rows.length });",
+"  } catch (err) { return out_({ ok: false, error: String(err) }); } finally { lock.releaseLock(); }",
+"}",
+"function doGet(e) {",
+"  const q = (e && e.parameter) || {}, a = q.action || 'stats';",
+"  if (a === 'ping') return out_({ ok: true, app: 'tuhoc', v: 1, key: q.key === SECRET });",
+"  if (a === 'stats') {",
+"    const p = PropertiesService.getScriptProperties(), c = CacheService.getScriptCache();",
+"    let students = c.get('students');",
+"    if (students === null) { const s = sheet_(), n = s.getLastRow() - 1, seen = {}; if (n > 0) s.getRange(2, 3, n, 2).getValues().forEach(r => { if (r[0]) seen[String(r[0]).trim().toLowerCase() + '|' + String(r[1]).trim().toLowerCase()] = 1; }); students = String(Object.keys(seen).length); c.put('students', students, 600); }",
+"    return out_({ ok: true, visits: Number(p.getProperty('visits') || 0), today: Number(p.getProperty('d' + day_()) || 0), students: Number(students) });",
+"  }",
+"  if (a === 'data') {",
+"    if (q.key !== SECRET) return out_({ ok: false, error: 'key' });",
+"    const rows = sheet_().getDataRange().getValues().slice(1).map(r => { if (r[0] instanceof Date) r[0] = r[0].getTime(); return r; });",
+"    return out_({ ok: true, rows: rows });",
+"  }",
+"  return out_({ ok: false, error: 'action' });",
+"}"].join("\n")}
+async function copyText(t,msg){try{await navigator.clipboard.writeText(t)}catch(e){let ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove()}toast(msg)}
+async function testSync(){let u=(document.getElementById("syncIn")?.value||"").trim();if(!/^https:\/\/script\.google(usercontent)?\.com\/\S+$/.test(u))return toast("Đường link phải bắt đầu bằng https://script.google.com/…","err");
+ toast("Đang kiểm tra kết nối…");try{let r=await fetch(qsJoin(u,"action=ping&key="+encodeURIComponent(secretKey()))),j=await r.json();if(!j.ok||j.app!=="tuhoc")throw new Error("Link không phải mã Apps Script của trang này");if(!j.key)return toast("⚠ Kết nối được nhưng mã bí mật không khớp. Hãy sao chép lại mã Apps Script và triển khai lại.","err");toast("✅ Kết nối thành công!");return true}catch(e){toast("❌ Không kết nối được: "+(e.message||"kiểm tra lại link và quyền truy cập “Bất kỳ ai”"),"err");return false}}
+async function saveSync(){let u=(document.getElementById("syncIn")?.value||"").trim();if(u&&!(await testSync()))return;CFG.syncUrl=u;saveCfg();AN.rows=null;AN.setup=false;toast(u?"✅ Đã lưu. Nhớ tải lại bản gửi học sinh để bản đó cũng gửi dữ liệu.":"Đã ngắt kết nối Google Sheets");flush();loadStats();studio()}
+
+/* --- Phân tích học tập --- */
+let AN={rows:null,src:"",at:0,err:"",cls:"all",range:30,q:"",sel:null,sort:"name",dir:1,setup:false};
+const skey=(n,c)=>String(n||"").normalize("NFC").trim().replace(/\s+/g," ").toLowerCase()+"|"+String(c||"").trim().toUpperCase();
+const mean=a=>a.reduce((s,x)=>s+x,0)/a.length;
+const DAY=864e5,dayKey=ts=>{let d=new Date(ts);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+function fmtDur(s){s=Math.round(s||0);if(s<60)return s?"< 1 phút":"0 phút";let h=Math.floor(s/3600),m=Math.round((s%3600)/60);if(m===60){h++;m=0}return h?(m?`${h} giờ ${m} phút`:`${h} giờ`):`${m} phút`}
+function fmtDT(ts){return ts?new Date(ts).toLocaleString("vi-VN",{hour:"2-digit",minute:"2-digit",day:"2-digit",month:"2-digit",year:"numeric"}):""}
+function relDay(ts){let d=Math.floor((new Date(dayKey(Date.now())).getTime()-new Date(dayKey(ts)).getTime())/DAY);return d<=0?"hôm nay":d===1?"hôm qua":d+" ngày trước"}
+function localEvents(){return readJ("vec_events",[]).map(e=>({...e,lesson:e.lesson??null,score:e.score??null}))}
+async function anLoad(){let url=syncUrl();AN.err="";
+ if(url){try{let r=await fetch(qsJoin(url,"action=data&key="+encodeURIComponent(secretKey()))),j=await r.json();if(!j.ok)throw new Error(j.error==="key"?"Mã bí mật trên máy này không khớp với mã trong Apps Script (hãy sao chép lại mã và triển khai lại).":(j.error||"lỗi không rõ"));
+   const N=v=>v===""||v==null||isNaN(v)?null:Number(v);AN.rows=j.rows.map(r=>({ts:N(r[0])??Date.parse(r[0]),t:String(r[1]),name:String(r[2]||""),cls:String(r[3]||""),dev:r[4],sid:String(r[5]||""),lesson:N(r[6]),score:N(r[7]),ok:N(r[8]),n:N(r[9]),sec:N(r[10]),x:(()=>{try{return JSON.parse(r[11]||"{}")}catch(e){return{}}})()}));AN.src="sheet"}
+  catch(e){AN.err=e.message||"Không tải được dữ liệu từ Google Sheets";AN.rows=localEvents();AN.src="local"}}
+ else{AN.rows=localEvents();AN.src="local"}AN.at=Date.now();loadStats()}
+function trendOf(sc){if(sc.length<2)return{delta:null};let h=Math.floor(sc.length/2),a=mean(sc.slice(0,h)),b=mean(sc.slice(h));return{delta:Math.round((b-a)*100)/100,a,b}}
+function progressTag(s){if(s.last&&Date.now()-s.last>7*DAY&&s.tests.length===0)return{c:"idle",t:"⏸ Lâu chưa vào học"};if(!s.tests.length)return{c:"none",t:"– Chưa làm kiểm tra"};if(s.tests.length===1)return{c:"none",t:"• Mới có 1 bài"};let d=s.trend.delta;if(d>=1)return{c:"up",t:"▲ Tiến bộ rõ"};if(d>=0.3)return{c:"up",t:"▲ Có tiến bộ"};if(d>-0.3)return{c:"flat",t:"■ Ổn định"};return{c:"down",t:"▼ Giảm sút"}}
+function anStudents(rows){let by={};
+ for(const e of rows){if(!e.name||e.t==="visit")continue;let k=skey(e.name,e.cls),s=by[k]||(by[k]={key:k,name:e.name,cls:String(e.cls||"").trim().toUpperCase(),sess:{},tests:[],prac:0,pracOk:0,first:e.ts,last:e.ts,les:{}});
+  s.first=Math.min(s.first,e.ts);if(e.ts>=s.last){s.last=e.ts;s.name=e.name}
+  let ss=e.sid?(s.sess[e.sid]||(s.sess[e.sid]={sid:e.sid,start:e.ts,end:e.ts,sec:0,tests:0,prac:0})):null;
+  if(ss){ss.start=Math.min(ss.start,e.ts);ss.end=Math.max(ss.end,e.ts);if(e.t==="time")ss.sec=Math.max(ss.sec,e.sec||0)}
+  if(e.t==="prac"){s.prac++;s.pracOk+=e.ok?1:0;if(ss)ss.prac++}
+  if(e.t==="test"&&e.score!=null){s.tests.push(e);if(ss)ss.tests++;(s.les[e.lesson]=s.les[e.lesson]||[]).push(e.score)}}
+ return Object.values(by).map(s=>{let sessions=Object.values(s.sess).map(x=>({...x,dur:x.sec>0?x.sec:Math.min(7200,Math.round((x.end-x.start)/1000))})).sort((a,b)=>a.start-b.start);s.tests.sort((a,b)=>a.ts-b.ts);let sc=s.tests.map(x=>x.score);
+  let o={...s,sessions,visits:sessions.length,time:sessions.reduce((a,x)=>a+x.dur,0),avg:sc.length?mean(sc):null,best:sc.length?Math.max(...sc):null,firstScore:sc.length?sc[0]:null,lastScore:sc.length?sc.at(-1):null,trend:trendOf(sc),acc:s.prac?s.pracOk/s.prac:null,lesAvg:Object.entries(s.les).map(([l,a])=>({lesson:+l,avg:mean(a),n:a.length})).sort((a,b)=>a.lesson-b.lesson)};o.tag=progressTag(o);return o})}
+function anComment(s){let p=[];p.push(`Vào học <b>${s.visits}</b> lần, tổng thời gian <b>${fmtDur(s.time)}</b>${s.visits?` (trung bình ${fmtDur(s.time/s.visits)} mỗi lần)`:""}; lần gần nhất ${relDay(s.last)}.`);
+ if(s.prac)p.push(`Luyện tập <b>${s.prac}</b> lượt trả lời, đúng <b>${Math.round(s.acc*100)}%</b>.`);else p.push("Chưa luyện tập câu nào.");
+ if(!s.tests.length)p.push("Chưa làm bài kiểm tra nào – nên nhắc em làm ít nhất một bài để đánh giá.");
+ else if(s.tests.length===1)p.push(`Đã làm 1 bài kiểm tra, đạt <b>${fmtPts(s.lastScore)}</b> điểm. Cần thêm bài để đánh giá sự tiến bộ.`);
+ else{let d=s.trend.delta;p.push(`Làm <b>${s.tests.length}</b> bài kiểm tra: điểm lần đầu ${fmtPts(s.firstScore)}, gần nhất ${fmtPts(s.lastScore)}, cao nhất ${fmtPts(s.best)}, trung bình ${fmtPts(Math.round(s.avg*100)/100)}. Điểm trung bình nửa sau so với nửa đầu ${d>=0?"tăng":"giảm"} <b>${fmtPts(Math.abs(d))}</b> điểm (${fmtPts(Math.round(s.trend.a*100)/100)} → ${fmtPts(Math.round(s.trend.b*100)/100)}).`)}
+ let good=s.lesAvg.filter(x=>x.avg>=8),weak=s.lesAvg.filter(x=>x.avg<5);if(good.length)p.push(`Làm tốt: ${good.map(x=>`${lessonLabel(x.lesson)} (${fmtPts(Math.round(x.avg*100)/100)})`).join(", ")}.`);if(weak.length)p.push(`Cần ôn lại: ${weak.map(x=>`${lessonLabel(x.lesson)} (${fmtPts(Math.round(x.avg*100)/100)})`).join(", ")}.`);
+ let c=s.tag.c,end=c==="up"?"Nhận xét: em đang tiến bộ, nên khen ngợi và giao bài ở mức vận dụng.":c==="down"?"Nhận xét: kết quả đang đi xuống, nên trao đổi với em và cho luyện tập lại các bài yếu.":c==="flat"?"Nhận xét: kết quả ổn định; khuyến khích em thử đề dài hơn hoặc khó hơn.":c==="idle"?"Nhận xét: em đã lâu không vào học, nên nhắc nhở.":"";if(end)p.push(`<b>${end}</b>`);return p.join(" ")}
+/* biểu đồ SVG (một chuỗi số liệu, nét mảnh, có chú thích khi rê chuột) */
+const C_BAR="#2563eb",C_GRID="#e2e8f0",C_AX="#64748b";
+function niceMax(v){if(v<=5)return 5;let p=Math.pow(10,Math.floor(Math.log10(v))),m=v/p;return(m<=1?1:m<=2?2:m<=5?5:10)*p}
+function barSVG(items,o={}){let W=520,H=o.h||230,L=36,R=8,T=20,B=o.rot?62:30,n=items.length,mx=o.max||niceMax(Math.max(1,...items.map(i=>i.v))),pw=W-L-R,ph=H-T-B,bw=Math.max(4,Math.min(46,pw/n*0.62)),step=pw/Math.max(1,n),Y=v=>T+ph-(v/mx)*ph,every=Math.ceil(n/(o.rot?16:12));
+ let g="";for(let k=0;k<=4;k++){let v=mx*k/4,y=Y(v);g+=`<line x1="${L}" x2="${W-R}" y1="${y}" y2="${y}" stroke="${C_GRID}"/><text x="${L-6}" y="${y+4}" text-anchor="end" font-size="12.5" fill="${C_AX}">${o.fmt?o.fmt(v):fmtN(Math.round(v*10)/10)}</text>`}
+ let bars=items.map((it,i)=>{let cx=L+step*i+step/2,x=cx-bw/2,y=Y(it.v),h=T+ph-y,r=Math.min(4,bw/2,h);let path=h>0?`M${x} ${T+ph}V${y+r}Q${x} ${y} ${x+r} ${y}H${x+bw-r}Q${x+bw} ${y} ${x+bw} ${y+r}V${T+ph}Z`:"";
+  let lab=i%every===0?`<text x="${cx}" y="${T+ph+16}" text-anchor="${o.rot?"end":"middle"}" font-size="12.5" fill="${C_AX}"${o.rot?` transform="rotate(-40 ${cx} ${T+ph+16})"`:""}>${esc(it.l)}</text>`:"";
+  let val=n<=12&&it.v>0?`<text x="${cx}" y="${y-5}" text-anchor="middle" font-size="12.5" font-weight="700" fill="#334155">${o.fmt?o.fmt(it.v):fmtN(it.v)}</text>`:"";
+  return `<g><rect class="hit" x="${L+step*i}" y="${T}" width="${step}" height="${ph}" fill="transparent"><title>${esc(it.tip||it.l+": "+it.v)}</title></rect>${path?`<path d="${path}" fill="${o.color||C_BAR}" pointer-events="none"/>`:""}${val}${lab}</g>`}).join("");
+ return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.label||"")}">${g}<line x1="${L}" x2="${W-R}" y1="${T+ph}" y2="${T+ph}" stroke="#94a3b8"/>${bars}</svg>`}
+function lineSVG(pts,o={}){let W=520,H=o.h||250,L=36,R=12,T=22,B=30,mx=o.max||10,pw=W-L-R,ph=H-T-B,n=pts.length,X=i=>L+18+(n<=1?(pw-36)/2:(pw-36)*i/(n-1)),Y=v=>T+ph-(v/mx)*ph;
+ let g="";for(let k=0;k<=5;k++){let v=mx*k/5,y=Y(v);g+=`<line x1="${L}" x2="${W-R}" y1="${y}" y2="${y}" stroke="${C_GRID}"/><text x="${L-6}" y="${y+4}" text-anchor="end" font-size="12.5" fill="${C_AX}">${fmtN(v)}</text>`}
+ if(o.ref!=null)g+=`<line x1="${L}" x2="${W-R}" y1="${Y(o.ref)}" y2="${Y(o.ref)}" stroke="#94a3b8" stroke-dasharray="4 4"/><text x="${W-R}" y="${Y(o.ref)-5}" text-anchor="end" font-size="12.5" fill="${C_AX}">${esc(o.refLabel||"")}</text>`;
+ let line=n>1?`<polyline points="${pts.map((p,i)=>X(i)+","+Y(p.v)).join(" ")}" fill="none" stroke="${C_BAR}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`:"";
+ let every=Math.ceil(n/10),mk=pts.map((p,i)=>`<g><circle cx="${X(i)}" cy="${Y(p.v)}" r="5" fill="${C_BAR}" stroke="white" stroke-width="2"/>${i===0||i===n-1||n<=8?`<text x="${X(i)}" y="${Y(p.v)-10}" text-anchor="middle" font-size="12.5" font-weight="700" fill="#334155">${fmtPts(p.v)}</text>`:""}${i%every===0||i===n-1?`<text x="${X(i)}" y="${T+ph+16}" text-anchor="middle" font-size="12.5" fill="${C_AX}">${esc(p.l)}</text>`:""}<circle cx="${X(i)}" cy="${Y(p.v)}" r="14" fill="transparent"><title>${esc(p.tip||"")}</title></circle></g>`).join("");
+ return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(o.label||"")}">${g}<line x1="${L}" x2="${W-R}" y1="${T+ph}" y2="${T+ph}" stroke="#94a3b8"/>${line}${mk}</svg>`}
+function sparkSVG(sc){if(!sc.length)return'<span class="muted">—</span>';let W=96,H=26,n=sc.length,X=i=>4+(n<=1?(W-8)/2:(W-8)*i/(n-1)),Y=v=>H-4-(v/10)*(H-8);return `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" aria-hidden="true">${n>1?`<polyline points="${sc.map((v,i)=>X(i)+","+Y(v)).join(" ")}" fill="none" stroke="${C_BAR}" stroke-width="1.5"/>`:""}<circle cx="${X(n-1)}" cy="${Y(sc.at(-1))}" r="3" fill="${C_BAR}"/></svg>`}
+
+async function stStats(){let body=document.getElementById("studioBody");if(!AN.rows||Date.now()-AN.at>300000){body.innerHTML=`<div class="contentbox muted">⏳ Đang tải dữ liệu học tập…</div>`;await anLoad();if(stTab!=="stats")return}
+ let from=AN.range?Date.now()-AN.range*DAY:0,rows=AN.rows.filter(e=>e.ts>=from),all=anStudents(rows),classes=[...new Set(anStudents(AN.rows).map(s=>s.cls).filter(Boolean))].sort();
+ let list=all.filter(s=>(AN.cls==="all"||s.cls===AN.cls)&&(!AN.q||s.name.toLowerCase().includes(AN.q.toLowerCase())));
+ let keys=new Set(list.map(s=>s.key)),rowsF=rows.filter(e=>e.name&&keys.has(skey(e.name,e.cls))),tests=rowsF.filter(e=>e.t==="test"&&e.score!=null),visitsPage=rows.filter(e=>e.t==="visit").length;
+ let srcbar=AN.src==="sheet"?`<div class="srcbar ok">✅ <b>Nguồn dữ liệu: Google Sheets</b><span class="muted">cập nhật lúc ${new Date(AN.at).toLocaleTimeString("vi-VN",{hour:"2-digit",minute:"2-digit"})}</span><span style="flex:1"></span><button class="secondary small" onclick="AN.rows=null;stStats()">↻ Tải lại</button><button class="secondary small" onclick="AN.setup=!AN.setup;stStats()">⚙ Cài đặt kết nối</button></div>`
+  :`<div class="srcbar local">⚠ <b>${AN.err?esc(AN.err):"Chưa kết nối Google Sheets"}</b><span class="muted">Đang hiển thị dữ liệu của các học sinh đã học trên <b>máy này</b>.</span><span style="flex:1"></span><button class="small" onclick="AN.setup=!AN.setup;stStats()">⚙ Kết nối Google Sheets</button></div>`;
+ if(AN.sel&&!all.some(s=>s.key===AN.sel))AN.sel=null;
+ body.innerHTML=`${srcbar}${AN.setup?setupHTML():""}
+ <div class="contentbox"><div class="studio-head" style="margin:0"><h3>📊 Phân tích kết quả học tập</h3><div class="filters"><select onchange="AN.cls=this.value;AN.sel=null;stStats()"><option value="all">Tất cả các lớp</option>${classes.map(c=>`<option ${AN.cls===c?"selected":""}>${esc(c)}</option>`).join("")}</select><select onchange="AN.range=+this.value;stStats()">${[[7,"7 ngày qua"],[30,"30 ngày qua"],[90,"90 ngày qua"],[0,"Toàn bộ thời gian"]].map(([v,l])=>`<option value="${v}" ${AN.range===v?"selected":""}>${l}</option>`).join("")}</select><input placeholder="🔍 Tìm tên học sinh" value="${esc(AN.q)}" onchange="AN.q=this.value;stStats()"><button class="secondary small" onclick="anExport()">⬇ Tải báo cáo Excel</button></div></div>
+ <div class="kpis">${[["Học sinh",fmtN(list.length),classes.length?`${AN.cls==="all"?classes.length+" lớp":esc(AN.cls)}`:""],["Lượt vào học",fmtN(list.reduce((a,s)=>a+s.visits,0)),`${fmtN(visitsPage)} lượt mở trang`],["Tổng thời gian học",fmtDur(list.reduce((a,s)=>a+s.time,0)),list.length?`TB ${fmtDur(list.reduce((a,s)=>a+s.time,0)/list.length)}/em`:""],["Bài kiểm tra đã làm",fmtN(tests.length),`${list.filter(s=>s.tests.length).length} em đã làm`],["Điểm trung bình",tests.length?fmtPts(Math.round(mean(tests.map(e=>e.score))*100)/100):"—",tests.length?`${tests.filter(e=>e.score>=5).length}/${tests.length} bài đạt ≥ 5`:""]].map(([l,v,s])=>`<div class="kpi"><div class="l">${l}</div><div class="v">${v}</div><div class="s">${s}</div></div>`).join("")}</div>
+ ${AN.sel?detailHTML(all.find(s=>s.key===AN.sel)):overviewHTML(list,rowsF,tests,from)}</div>`}
+function overviewHTML(list,rowsF,tests,from){
+ let start=from||Math.min(Date.now()-29*DAY,...rowsF.map(e=>e.ts)),days=[];for(let d=new Date(dayKey(start)).getTime();d<=Date.now();d+=DAY)days.push(dayKey(d));if(days.length>90)days=days.slice(-90);
+ let byDay={};rowsF.filter(e=>e.t==="login").forEach(e=>{let k=dayKey(e.ts);byDay[k]=(byDay[k]||0)+1});
+ let dayItems=days.map(k=>({l:k.slice(8)+"/"+k.slice(5,7),v:byDay[k]||0,tip:`${k.slice(8)}/${k.slice(5,7)}/${k.slice(0,4)}: ${byDay[k]||0} lượt vào học`}));
+ let lesItems=lessons.map(l=>{let a=tests.filter(e=>e.lesson===l.id).map(e=>e.score);return{l:lessonLabel(l.id),v:a.length?Math.round(mean(a)*100)/100:0,tip:a.length?`${lessonLabel(l.id)}: điểm TB ${fmtPts(Math.round(mean(a)*100)/100)} (${a.length} bài)`:`${lessonLabel(l.id)}: chưa có bài kiểm tra`}});
+ let attn=list.filter(s=>s.tag.c==="down"||s.tag.c==="idle"||(s.avg!=null&&s.avg<5));
+ let S=AN.sort,D=AN.dir,val=s=>({name:s.name,cls:s.cls,visits:s.visits,time:s.time,last:s.last,acc:s.acc??-1,tests:s.tests.length,avg:s.avg??-1,delta:s.trend.delta??-99})[S];
+ list=list.slice().sort((a,b)=>{let x=val(a),y=val(b);return(typeof x==="string"?x.localeCompare(y,"vi"):x-y)*D});
+ let th=(k,l,num)=>`<th class="${num?"num":""}" onclick="AN.dir=AN.sort==='${k}'?-AN.dir:${num?-1:1};AN.sort='${k}';stStats()">${l}${S===k?(D>0?" ▲":" ▼"):""}</th>`;
+ return `<div class="grid2" style="margin-bottom:16px"><div class="chartbox"><h4>Lượt vào học theo ngày</h4><div class="sub">Số lần học sinh đăng nhập học, mỗi cột là một ngày</div><div class="chart">${barSVG(dayItems,{rot:dayItems.length>14,label:"Lượt vào học theo ngày"})}</div></div>
+ <div class="chartbox"><h4>Điểm kiểm tra trung bình theo bài</h4><div class="sub">Thang điểm 10 · rê chuột để xem số bài đã làm</div><div class="chart">${barSVG(lesItems,{max:10,fmt:v=>fmtPts(Math.round(v*10)/10),label:"Điểm trung bình theo bài"})}</div></div></div>
+ ${attn.length?`<div class="feedback help" style="margin-bottom:14px"><b>⚠ Cần chú ý (${attn.length} em):</b> ${attn.slice(0,12).map(s=>`<a href="#" onclick="AN.sel='${esc(s.key).replace(/'/g,"\\'")}';stStats();return false">${esc(s.name)}</a> <span class="muted">(${s.tag.c==="idle"?"lâu chưa vào học":s.tag.c==="down"?"điểm giảm":"điểm TB "+fmtPts(Math.round(s.avg*100)/100)})</span>`).join(", ")}${attn.length>12?"…":""}</div>`:""}
+ <h4 style="margin:6px 0 8px">Bảng theo dõi từng học sinh <span class="muted" style="font-weight:500">· bấm vào tên để xem chi tiết, bấm tiêu đề cột để sắp xếp</span></h4>
+ ${list.length?`<div class="tablewrap"><table class="antable"><thead><tr>${th("name","Học sinh")}${th("cls","Lớp")}${th("visits","Số lần học",1)}${th("time","Tổng thời gian",1)}${th("last","Lần gần nhất",1)}${th("acc","Luyện tập (đúng)",1)}${th("tests","Bài KT",1)}${th("avg","Điểm TB",1)}<th>Điểm các lần KT</th>${th("delta","Tiến bộ",1)}</tr></thead><tbody>${list.map(s=>`<tr class="click" onclick="AN.sel='${esc(s.key).replace(/'/g,"\\'")}';stStats();window.scrollTo({top:0,behavior:'smooth'})"><td><b>${esc(s.name)}</b></td><td>${esc(s.cls)}</td><td class="num">${s.visits}</td><td class="num">${fmtDur(s.time)}</td><td class="num" title="${fmtDT(s.last)}">${relDay(s.last)}</td><td class="num">${s.prac?`${Math.round(s.acc*100)}% <span class="muted">(${s.prac})</span>`:"—"}</td><td class="num">${s.tests.length}</td><td class="num"><b>${s.avg!=null?fmtPts(Math.round(s.avg*100)/100):"—"}</b></td><td>${sparkSVG(s.tests.map(x=>x.score))}</td><td><span class="tag ${s.tag.c}">${s.tag.t}${s.trend.delta!=null&&s.tests.length>1?` ${s.trend.delta>=0?"+":"−"}${fmtPts(Math.abs(s.trend.delta))}`:""}</span></td></tr>`).join("")}</tbody></table></div>`:`<p class="muted">Chưa có dữ liệu học tập trong khoảng thời gian này.</p>`}`}
+function detailHTML(s){let sc=s.tests;
+ return `<div class="actions" style="margin-bottom:10px"><button class="secondary small" onclick="AN.sel=null;stStats()">← Quay lại danh sách</button><h3 style="margin:0">🧑‍🎓 ${esc(s.name)} <span class="muted" style="font-weight:500">· Lớp ${esc(s.cls)}</span></h3><span class="tag ${s.tag.c}">${s.tag.t}</span></div>
+ <div class="kpis">${[["Số lần vào học",s.visits,`từ ${new Date(s.first).toLocaleDateString("vi-VN")}`],["Tổng thời gian",fmtDur(s.time),s.visits?`TB ${fmtDur(s.time/s.visits)}/lần`:""],["Luyện tập",s.prac?Math.round(s.acc*100)+"%":"—",s.prac?`đúng ${s.pracOk}/${s.prac} lượt`:"chưa luyện tập"],["Bài kiểm tra",sc.length,sc.length?`cao nhất ${fmtPts(s.best)}`:""],["Điểm TB",s.avg!=null?fmtPts(Math.round(s.avg*100)/100):"—",s.trend.delta!=null?`${s.trend.delta>=0?"▲ +":"▼ −"}${fmtPts(Math.abs(s.trend.delta))} so với ban đầu`:""]].map(([l,v,x])=>`<div class="kpi"><div class="l">${l}</div><div class="v">${v}</div><div class="s">${x}</div></div>`).join("")}</div>
+ <div class="commentbox"><b>📝 Nhận xét tự động:</b> ${anComment(s)}</div>
+ <div class="grid2" style="margin-top:16px"><div class="chartbox"><h4>Điểm qua các lần kiểm tra</h4><div class="sub">Thang 10 · đường nét đứt là mức 5 điểm</div><div class="chart">${sc.length?lineSVG(sc.map((e,i)=>({v:e.score,l:"Lần "+(i+1),tip:`Lần ${i+1} – ${fmtDT(e.ts)} – ${lessonLabel(e.lesson)}: ${fmtPts(e.score)} điểm`})),{ref:5,refLabel:"mức 5 điểm",label:"Điểm qua các lần kiểm tra"}):'<p class="muted">Chưa có bài kiểm tra.</p>'}</div></div>
+ <div class="chartbox"><h4>Điểm trung bình theo bài</h4><div class="sub">Chỉ tính các bài em đã kiểm tra</div><div class="chart">${s.lesAvg.length?barSVG(s.lesAvg.map(x=>({l:lessonLabel(x.lesson),v:Math.round(x.avg*100)/100,tip:`${lessonLabel(x.lesson)}: TB ${fmtPts(Math.round(x.avg*100)/100)} (${x.n} bài)`})),{max:10,fmt:v=>fmtPts(Math.round(v*10)/10),label:"Điểm trung bình theo bài"}):'<p class="muted">Chưa có dữ liệu.</p>'}</div></div></div>
+ <div class="grid2" style="margin-top:16px"><div><h4 style="margin:0 0 8px">Các lần kiểm tra</h4>${sc.length?`<div class="tablewrap" style="max-height:340px"><table class="antable"><thead><tr><th>Thời điểm</th><th>Bài</th><th class="num">Điểm</th><th class="num">Trắc nghiệm</th><th class="num">Đúng/Sai</th><th class="num">Thời gian làm</th></tr></thead><tbody>${sc.slice().reverse().map(e=>`<tr><td>${fmtDT(e.ts)}</td><td>${lessonLabel(e.lesson)}</td><td class="num"><b>${fmtPts(e.score)}</b></td><td class="num">${e.x&&e.x.mcN?`${e.x.mcC}/${e.x.mcN}`:"—"}</td><td class="num">${e.x&&e.x.tfN?`${e.x.tfC}/${e.x.tfN} ý`:"—"}</td><td class="num">${fmtDur(e.sec)}${e.x&&e.x.mins?` / ${e.x.mins} ph`:""}</td></tr>`).join("")}</tbody></table></div>`:'<p class="muted">Chưa có.</p>'}</div>
+ <div><h4 style="margin:0 0 8px">Các lần vào học</h4><div class="tablewrap" style="max-height:340px"><table class="antable"><thead><tr><th>Bắt đầu</th><th class="num">Thời lượng</th><th class="num">Luyện tập</th><th class="num">Kiểm tra</th></tr></thead><tbody>${s.sessions.slice().reverse().map(x=>`<tr><td>${fmtDT(x.start)}</td><td class="num">${fmtDur(x.dur)}</td><td class="num">${x.prac}</td><td class="num">${x.tests}</td></tr>`).join("")}</tbody></table></div></div></div>`}
+function setupHTML(){let u=CFG.syncUrl||"",code=appsScript(secretKey());
+ return `<div class="contentbox" style="border:2px solid #93c5fd"><h3>⚙ Kết nối Google Sheets (làm một lần, khoảng 10 phút)</h3><p class="muted" style="margin-top:-6px">Dữ liệu được lưu trong bảng tính Google của chính cô. Cần đăng nhập tài khoản Google trên trình duyệt.</p>
+ <ol style="line-height:1.9;padding-left:20px">
+ <li>Mở <a href="https://sheets.new" target="_blank" rel="noopener"><b>một Google Sheets mới</b></a> và đặt tên, ví dụ “Thống kê tự học Vectơ”.</li>
+ <li>Trên thanh menu chọn <b>Tiện ích mở rộng → Apps Script</b> (Extensions → Apps Script).</li>
+ <li>Xóa hết mã có sẵn trong khung soạn thảo, rồi bấm nút dưới đây và dán vào: <button class="small" onclick="copyText(appsScript(secretKey()),'✅ Đã sao chép mã Apps Script')">📋 Sao chép mã Apps Script</button><div class="codebox" style="margin-top:8px">${esc(code)}</div></li>
+ <li>Bấm biểu tượng 💾 <b>Lưu</b>. Sau đó bấm <b>Triển khai → Tác vụ triển khai mới</b> (Deploy → New deployment).</li>
+ <li>Bấm ⚙ cạnh “Chọn loại”, chọn <b>Ứng dụng web</b> (Web app). Đặt <b>Thực thi với tư cách: Tôi</b> (Me) và <b>Người có quyền truy cập: Bất kỳ ai</b> (Anyone). Bấm <b>Triển khai</b>.</li>
+ <li>Google hỏi cấp quyền: chọn tài khoản của cô → nếu hiện “Google chưa xác minh ứng dụng này”, bấm <b>Nâng cao → Chuyển tới … (không an toàn)</b> → <b>Cho phép</b>. Đây là mã của chính cô nên an toàn.</li>
+ <li>Sao chép <b>URL ứng dụng web</b> (dạng https://script.google.com/macros/s/…/exec), dán vào ô dưới, bấm <b>Lưu kết nối</b>.</li></ol>
+ <label>URL ứng dụng web</label><div style="display:flex;gap:8px;flex-wrap:wrap"><input id="syncIn" style="flex:1;min-width:260px" placeholder="https://script.google.com/macros/s/…/exec" value="${esc(u)}"><button class="secondary" onclick="testSync()">🔌 Kiểm tra</button><button class="green" onclick="saveSync()">💾 Lưu kết nối</button>${u?`<button class="danger small" onclick="document.getElementById('syncIn').value='';saveSync()">Ngắt kết nối</button>`:""}</div>
+ <div class="muted" style="margin-top:10px;line-height:1.6">🔒 Đoạn mã đã có sẵn <b>mã bí mật</b> riêng của máy này để chỉ cô đọc được kết quả; mã bí mật không nằm trong bản gửi học sinh. Nếu đổi sang máy khác, hãy dùng “Tải tệp sao lưu” rồi sao chép lại mã Apps Script trên máy mới.<br>Sau khi kết nối, nhớ <b>tải lại bản gửi học sinh</b> (tab Sao lưu & gửi học sinh) để bản đó cũng gửi dữ liệu về bảng tính. Nên thông báo cho học sinh biết kết quả học tập được ghi nhận để giáo viên theo dõi.</div></div>`}
+function anExport(){let from=AN.range?Date.now()-AN.range*DAY:0,rows=(AN.rows||[]).filter(e=>e.ts>=from),list=anStudents(rows).filter(s=>AN.cls==="all"||s.cls===AN.cls);if(!list.length)return toast("Chưa có dữ liệu để xuất","err");
+ let m=x=>Math.round(x*10)/10,sum={name:"Tổng hợp",head:["Học sinh","Lớp","Số lần vào học","Tổng thời gian (phút)","Lần gần nhất","Lượt luyện tập","Tỉ lệ đúng (%)","Số bài kiểm tra","Điểm TB","Điểm lần đầu","Điểm gần nhất","Thay đổi (nửa sau − nửa đầu)","Đánh giá"],rows:list.map(s=>[s.name,s.cls,s.visits,m(s.time/60),fmtDT(s.last),s.prac,s.prac?Math.round(s.acc*100):"",s.tests.length,s.avg!=null?Math.round(s.avg*100)/100:"",s.firstScore??"",s.lastScore??"",s.trend.delta??"",s.tag.t.replace(/^[^\p{L}]+/u,"")]),widths:[26,8,12,14,18,12,12,12,10,12,12,16,22],valid:""};
+ let tst={name:"Bài kiểm tra",head:["Thời điểm","Học sinh","Lớp","Bài","Điểm","TN đúng","TN tổng","ĐS ý đúng","ĐS tổng ý","Thời gian làm (phút)","Thời gian cho phép (phút)"],rows:list.flatMap(s=>s.tests.map(e=>[fmtDT(e.ts),s.name,s.cls,lessonLabel(e.lesson),e.score,e.x?.mcC??"",e.x?.mcN??"",e.x?.tfC??"",e.x?.tfN??"",m((e.sec||0)/60),e.x?.mins??""])),widths:[18,26,8,10,8,9,9,10,10,14,14],valid:""};
+ let ses={name:"Phiên học",head:["Bắt đầu","Học sinh","Lớp","Thời lượng (phút)","Lượt luyện tập","Bài kiểm tra"],rows:list.flatMap(s=>s.sessions.map(x=>[fmtDT(x.start),s.name,s.cls,m(x.dur/60),x.prac,x.tests])),widths:[18,26,8,14,14,12],valid:""};
+ download(buildWorkbook([sum,tst,ses],{noGuide:true}),"Bao-cao-hoc-tap-"+new Date().toISOString().slice(0,10)+".xlsx");toast("✅ Đã tải báo cáo Excel")}
+
 /* --- Sao lưu & gửi học sinh --- */
 function totalSize(){return materials.reduce((a,m)=>a+(m.data?m.data.length*0.75:0),0)}
 function stShare(){let sz=totalSize(),ck=runCheck("all").sum,bad=ck.fix+ck.err+ck.warn;
  document.getElementById("studioBody").innerHTML=`<div class="grid2">
  <div class="contentbox" style="border:2px solid ${bad?"#fcd34d":"#86efac"}"><h3>🔍 Bước 1 · Kiểm tra câu hỏi</h3>${bad?`<p>Còn <b>${ck.fix}</b> câu cần sửa kí hiệu vectơ, <b>${ck.warn}</b> câu cần xem lại và <b>${ck.err}</b> câu có lỗi.</p><button onclick="stTab='check';studio()">🔍 Kiểm tra và sửa ngay</button>`:`<p class="okline">✅ Đã kiểm tra: tất cả ${questions.length} câu hỏi đều ổn.</p><button class="secondary" onclick="stTab='check';studio()">Xem chi tiết</button>`}</div>
- <div class="contentbox" style="border:2px solid #86efac"><h3>📤 Bước 2 · Tạo trang web gửi học sinh</h3><p>Tải về <b>một tệp .html duy nhất</b> chứa sẵn toàn bộ tài liệu và câu hỏi của 6 bài. Gửi tệp này cho học sinh qua Zalo, Google Drive, Classroom…; học sinh mở bằng Chrome/Edge là học được ngay, không cần mạng (trừ video YouTube/Drive).</p>
+ <div class="contentbox" style="border:2px solid #86efac"><h3>📤 Bước 2 · Tạo trang web gửi học sinh</h3><div class="muted" style="margin:-4px 0 10px">${syncUrl()?"📊 Đã kết nối Google Sheets – bản gửi học sinh sẽ tự gửi lượt truy cập và kết quả học tập về bảng tính của cô.":`⚠ Chưa kết nối thống kê – bản gửi học sinh sẽ không đếm lượt truy cập. <a href="#" onclick="stTab='stats';AN.setup=true;studio();return false">Kết nối Google Sheets</a>`}</div><p>Tải về <b>một tệp .html duy nhất</b> chứa sẵn toàn bộ tài liệu và câu hỏi của 6 bài. Gửi tệp này cho học sinh qua Zalo, Google Drive, Classroom…; học sinh mở bằng Chrome/Edge là học được ngay, không cần mạng (trừ video YouTube/Drive).</p>
  <label class="check"><input type="checkbox" id="hideTeacher" checked> Ẩn nút “Chế độ giáo viên” trong bản của học sinh <span class="muted">(dù hiện nút, vẫn phải có mật khẩu mới vào được)</span></label>
  <div class="muted" style="margin:6px 0 14px">Dung lượng ước tính: <b>${fmtSize(ORIGINAL_HTML.length+sz*1.34)}</b>${sz>40*MB?` · <span style="color:#b45309">khá nặng, nên chuyển video sang link YouTube/Drive</span>`:""}</div>
  <button class="green" onclick="exportHTML()">⬇ Tải về trang web cho học sinh</button></div>
@@ -663,7 +846,7 @@ function stShare(){let sz=totalSize(),ck=runCheck("all").sum,bad=ck.fix+ck.err+c
  <div class="actions"><button onclick="exportData()">⬇ Tải tệp sao lưu</button><button class="secondary" onclick="document.getElementById('restoreIn').click()">📂 Khôi phục từ tệp</button></div></div>
  <div class="contentbox"><h3>📊 Tổng quan</h3><table class="table"><thead><tr><th>Bài</th><th>Tài liệu</th><th>Câu hỏi</th></tr></thead><tbody>${lessons.map(l=>`<tr><td>${l.icon} ${lessonLabel(l.id)}</td><td>${matsOf(l.id).length}</td><td>${qCount(l.id)}</td></tr>`).join("")}</tbody></table>
  <div style="margin-top:16px"><button class="danger small" onclick="resetAll()">↺ Xóa hết, quay về câu hỏi mẫu ban đầu</button></div></div></div>`}
-function bundle(extra){return Object.assign({app:"vecto10",savedAt:Date.now(),questions,materials},extra||{})}
+function bundle(extra){return Object.assign({app:"vecto10",savedAt:Date.now(),questions,materials,cfg:{syncUrl:CFG.syncUrl||""}},extra||{})}
 function exportHTML(){let ck=runCheck("all").sum;if(ck.fix+ck.err&&!confirm(`Còn ${ck.fix} câu chưa sửa kí hiệu vectơ và ${ck.err} câu có lỗi.\nNên bấm “Kiểm tra và sửa ngay” trước khi gửi.\n\nVẫn tải về?`))return;let data=bundle({studentOnly:document.getElementById("hideTeacher").checked}),json=JSON.stringify(data).replace(/</g,"\\u003c");
  let html=ORIGINAL_HTML.replace(/(<script id="vec-data" type="application\/json">)[\s\S]*?(<\/script>)/,(m,a,b)=>a+json+b);
  download(new Blob([html],{type:"text/html;charset=utf-8"}),"Vecto10-ban-hoc-sinh.html");
@@ -672,10 +855,11 @@ function exportData(){download(new Blob([JSON.stringify(bundle(),null,1)],{type:
 function importData(file){if(!file)return;let r=new FileReader();r.onload=async()=>{try{let d=JSON.parse(r.result),qs,mats=null;
   if(Array.isArray(d))qs=d;else if(d&&Array.isArray(d.questions)){qs=d.questions;mats=cleanMats(d.materials)}else return toast("Tệp không đúng định dạng","err");
   if(!confirm(`Tệp có ${qs.length} câu hỏi${mats?` và ${mats.length} tài liệu`:""}.\nKhôi phục sẽ THAY THẾ dữ liệu hiện tại. Tiếp tục?`))return;
-  questions=qs;saveQ();if(mats){materials=mats;Object.keys(urlCache).forEach(k=>delete urlCache[k]);try{await idbReplaceAll(mats)}catch(e){toast("Không lưu được tài liệu – bộ nhớ trình duyệt có thể đã đầy.","err")}}
+  questions=qs;saveQ();if(d&&d.cfg&&d.cfg.syncUrl){CFG.syncUrl=d.cfg.syncUrl;saveCfg()}if(mats){materials=mats;Object.keys(urlCache).forEach(k=>delete urlCache[k]);try{await idbReplaceAll(mats)}catch(e){toast("Không lưu được tài liệu – bộ nhớ trình duyệt có thể đã đầy.","err")}}
   toast("✅ Đã khôi phục dữ liệu");studio()}catch(e){toast("Không đọc được tệp","err")}};r.readAsText(file)}
 async function resetAll(){if(!confirm("Xóa TẤT CẢ câu hỏi và tài liệu, quay về câu hỏi mẫu ban đầu?\nNên tải tệp sao lưu trước."))return;questions=defaultQuestions.map(q=>({...q}));materials=[];try{await idbClear()}catch(e){}saveQ();editIdx=null;draft=null;toast("Đã quay về dữ liệu mẫu");studio()}
 
+logEv({t:"visit"});setTimeout(()=>flush().then(loadStats),1200);setInterval(loadStats,300000);
 if(STUDENT_ONLY){document.getElementById("modeBtn").classList.add("hidden");document.getElementById("adminLink").classList.add("hidden")}
 </script>
 </body>
