@@ -142,14 +142,16 @@ const idbAll=()=>idb("readonly",s=>s.getAll()),idbPut=m=>idb("readwrite",s=>s.pu
 async function idbReplaceAll(list){await idbClear();for(const m of list)await idbPut(m)}
 
 const EMB=(()=>{try{return JSON.parse(document.getElementById("vec-data").textContent)}catch(e){return null}})();
-const STUDENT_ONLY=!!(EMB&&EMB.studentOnly)&&location.hash!=="#giaovien";
+const LIVE=!!(EMB&&EMB.live);/* trang đang chạy từ link Google Apps Script */
+const STUDENT_ONLY=!LIVE&&!!(EMB&&EMB.studentOnly)&&location.hash!=="#giaovien";
 let questions=[],materials=[];
-function cleanMats(list){return (list||[]).map(m=>({...m,id:String(m.id||newId()).replace(/[^\w-]/g,"")}))}
+function cleanMats(list){return (list||[]).map(m=>({...m,id:String(m.id||newId()).replace(/[^\w-]/g,""),...(m.fileId?{fileId:String(m.fileId).replace(/[^\w-]/g,"")}:{})}))}
 let CFG=(()=>{try{return JSON.parse(localStorage.getItem("vec_cfg")||"{}")}catch(e){return{}}})();
 function saveCfg(){localStorage.setItem("vec_cfg",JSON.stringify(CFG))}
 const ready=(async()=>{
  let localAt=Number(localStorage.getItem("vec_savedAt")||0);
- if(EMB&&EMB.savedAt>localAt){
+ if(LIVE){questions=Array.isArray(EMB.questions)&&EMB.questions.length?EMB.questions:defaultQuestions.map(q=>({...q}));materials=cleanMats(EMB.materials);if(EMB.cfg&&EMB.cfg.syncUrl){CFG={...CFG,syncUrl:EMB.cfg.syncUrl};saveCfg()}}
+ else if(EMB&&EMB.savedAt>localAt){
   questions=EMB.questions||[];materials=cleanMats(EMB.materials);if(EMB.cfg){CFG={...CFG,syncUrl:EMB.cfg.syncUrl||""};saveCfg()}
   localStorage.setItem("vec_questions",JSON.stringify(questions));localStorage.setItem("vec_savedAt",String(EMB.savedAt));
   try{await idbReplaceAll(materials)}catch(e){console.warn(e)}
@@ -159,7 +161,7 @@ const ready=(async()=>{
  }
  questions=questions.map(migrateQ);
 })();
-function touch(){localStorage.setItem("vec_savedAt",String(Date.now()))}
+function touch(){localStorage.setItem("vec_savedAt",String(Date.now()));if(LIVE)schedulePush()}
 function saveQ(){localStorage.setItem("vec_questions",JSON.stringify(questions));touch()}
 
 let student=null,teacher=false,currentLesson=7,section="home",attempts={},scores=JSON.parse(localStorage.getItem("vec_scores")||"[]");
@@ -208,13 +210,13 @@ function fkind(m){let t=m.mime||"",e=ext(m.name);
 const ICON={image:"🖼️",pdf:"📕",video:"🎬",audio:"🎧",word:"📘",ppt:"📙",excel:"📗",other:"📎",link:"🔗",yt:"▶️",drive:"📁",note:"📝"};
 const KNAME={image:"Ảnh",pdf:"PDF",video:"Video",audio:"Âm thanh",word:"Word",ppt:"PowerPoint",excel:"Bảng tính",other:"Tệp"};
 function micon(m){if(m.kind==="note")return ICON.note;if(m.kind==="link")return ytId(m.url)?ICON.yt:driveId(m.url)?ICON.drive:ICON.link;return ICON[fkind(m)]}
-function mdesc(m){if(m.kind==="note")return"Ghi chú · "+(m.text||"").length+" ký tự";if(m.kind==="link")return ytId(m.url)?"Video YouTube":driveId(m.url)?"Google Drive":m.url;return KNAME[fkind(m)]+" · "+fmtSize(m.size)}
+function mdesc(m){if(m.kind==="note")return"Ghi chú · "+(m.text||"").length+" ký tự";if(m.kind==="link")return ytId(m.url)?"Video YouTube":driveId(m.url)?"Google Drive":m.url;return KNAME[fkind(m)]+" · "+fmtSize(m.size)+(m.kind==="drive"?" · Google Drive":"")}
 const urlCache={};
 function blobUrl(m){if(urlCache[m.id])return urlCache[m.id];let [h,b]=String(m.data||",").split(","),bin=atob(b||""),arr=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)arr[i]=bin.charCodeAt(i);return urlCache[m.id]=URL.createObjectURL(new Blob([arr],{type:m.mime||EXT_MIME[ext(m.name)]||"application/octet-stream"}))}
 
 /* ===== Phần học sinh ===== */
 function loginStudent(){let n=document.getElementById("studentName").value.trim(),c=document.getElementById("studentClass").value.trim();if(!n||!c){alert("Vui lòng nhập họ tên và lớp.");return}student={name:n,class:c};startSession();document.getElementById("login").style.display="none";document.getElementById("app").style.display="block";document.getElementById("userchip").textContent=n+" · "+c;buildNav();home()}
-function logout(){if(!leaveTest())return;endSession();adminOK=false;try{sessionStorage.removeItem("vec_admin")}catch(e){}student=null;teacher=false;updateModeBtn();document.getElementById("app").style.display="none";document.getElementById("login").style.display="grid"}
+function logout(){if(!leaveTest())return;endSession();adminOK=false;try{sessionStorage.removeItem("vec_admin");sessionStorage.removeItem("vec_wkey")}catch(e){}student=null;teacher=false;updateModeBtn();document.getElementById("app").style.display="none";document.getElementById("login").style.display="grid"}
 function buildNav(){let n=document.getElementById("nav");n.innerHTML=`<button class="navbtn" data-key="home" onclick="home()">🏠 Trang chủ</button>`+lessons.map(l=>`<button class="navbtn" data-key="${l.id}" onclick="navLesson(${l.id})">${l.icon} Bài ${l.id===12?"Ôn tập":l.id} · ${l.title}</button>`).join("")+`<button class="navbtn" data-key="report" onclick="report()">📊 Kết quả của em</button>`}
 function navLesson(id){if(teacher){stLesson=id;editIdx=null;draft=null;studio()}else openLesson(id)}
 function home(){if(!leaveTest())return;if(teacher)return studio();section="home";setActive("home");document.getElementById("pageTitle").textContent="Trang học tập";let done=JSON.parse(localStorage.getItem("vec_done_"+student.name)||"[]");document.getElementById("view").innerHTML=`${hero(`Xin chào, ${esc(student.name)}! 👋`,"Hãy chọn bài học và khám phá thế giới vectơ.")}<div class="grid"><div class="card"><div class="muted">Bài học trong chương</div><div class="stat">6</div></div><div class="card"><div class="muted">Bài đã hoàn thành</div><div class="stat">${done.length}/6</div></div><div class="card"><div class="muted">Lớp học</div><div class="stat">${esc(student.class)}</div></div></div><div class="section"><h3>📚 Các bài học</h3><div class="grid">${lessons.map(l=>`<div class="card lesson" onclick="openLesson(${l.id})"><div class="num">BÀI ${l.id===12?"ÔN TẬP":l.id}</div><h3>${l.icon} ${l.title}</h3><div class="muted">SGK trang ${l.pages}</div><div style="margin-top:14px"><span class="pill">Học · Luyện tập · Kiểm tra</span></div></div>`).join("")}</div></div>`}
@@ -224,6 +226,10 @@ function materialsHTML(id){let mats=matsOf(id),l=lessonById(id);return `<div cla
 function materialView(m){
  let head=extra=>`<div class="mview-h"><span style="font-size:22px">${micon(m)}</span><b>${esc(m.name)}</b><span class="spacer"></span>${extra||""}</div>`;
  if(m.kind==="note")return `<div class="mview">${head()}<div class="note">${mx(m.text)}</div></div>`;
+ if(m.kind==="drive"){let id=encodeURIComponent(m.fileId||""),k=fkind(m),btns=`<a class="btnlink" href="https://drive.google.com/file/d/${id}/view" target="_blank" rel="noopener">Mở trong tab mới ↗</a> <a class="btnlink" href="https://drive.google.com/uc?export=download&id=${id}" target="_blank" rel="noopener">⬇ Tải về</a>`;
+  if(k==="image")return `<div class="mview">${head(btns)}<img src="https://drive.google.com/thumbnail?id=${id}&sz=w2000" alt="${esc(m.name)}" loading="lazy"></div>`;
+  if(k==="other")return `<div class="mview">${head(btns)}<div class="muted">${esc(mdesc(m))}</div></div>`;
+  return `<div class="mview">${head(btns)}<iframe class="${k==="video"||k==="audio"?"ytview":"pdfview"}" src="https://drive.google.com/file/d/${id}/preview" allow="autoplay; fullscreen" allowfullscreen loading="lazy"></iframe></div>`}
  if(m.kind==="link"){let u=safeUrl(m.url),y=ytId(u),d=driveId(u),open=`<a class="btnlink" href="${esc(u)}" target="_blank" rel="noopener">Mở trong tab mới ↗</a>`;
   if(y)return `<div class="mview">${head(open)}<iframe class="ytview" src="https://www.youtube-nocookie.com/embed/${y}" allow="accelerometer; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe><div class="muted" style="margin-top:6px">Nếu video không phát được, em bấm “Mở trong tab mới”.</div></div>`;
   if(d)return `<div class="mview">${head(open)}<iframe class="ytview" src="https://drive.google.com/file/d/${d}/preview" allow="autoplay; fullscreen" allowfullscreen></iframe></div>`;
@@ -321,16 +327,17 @@ function sha256(msg){const P=[];for(let n=2;P.length<64;n++)if(P.every(q=>n%q))P
   for(let i=0;i<64;i++){const t1=(h+(r(e,6)^r(e,11)^r(e,25))+((e&f)^(~e&g))+K[i]+w[i])|0,t2=((r(a,2)^r(a,13)^r(a,22))+((a&b)^(a&c)^(b&c)))|0;h=g;g=f;f=e;e=(d+t1)|0;d=c;c=b;b=a;a=(t1+t2)|0}
   H[0]+=a;H[1]+=b;H[2]+=c;H[3]+=d;H[4]+=e;H[5]+=f;H[6]+=g;H[7]+=h}
  return [...H].map(x=>x.toString(16).padStart(8,"0")).join("")}
-let adminOK=sessionStorage.getItem("vec_admin")===ADMIN_HASH,adminNext=null,pwFails=0,pwLockUntil=0;
+const authKey=()=>{try{return sessionStorage.getItem("vec_wkey")||""}catch(e){return""}};
+let adminOK=sessionStorage.getItem("vec_admin")===ADMIN_HASH&&!!authKey(),adminNext=null,pwFails=0,pwLockUntil=0;
 function askAdmin(next){if(adminOK)return next();adminNext=next;let m=document.getElementById("pwModal");m.classList.remove("hidden");document.getElementById("pwErr").textContent="";let i=document.getElementById("pwIn");i.value="";i.type="password";setTimeout(()=>i.focus(),30)}
 function closeAdmin(){document.getElementById("pwModal").classList.add("hidden");adminNext=null}
 function checkAdmin(){let err=document.getElementById("pwErr"),now=Date.now();
  if(now<pwLockUntil){err.textContent=`Nhập sai quá nhiều lần. Vui lòng thử lại sau ${Math.ceil((pwLockUntil-now)/1000)} giây.`;return}
  let v=document.getElementById("pwIn").value;if(!v){err.textContent="Hãy nhập mật khẩu.";return}
- if(sha256("vecto10:"+v)===ADMIN_HASH){adminOK=true;pwFails=0;try{sessionStorage.setItem("vec_admin",ADMIN_HASH)}catch(e){}let next=adminNext;closeAdmin();toast("🔓 Đã đăng nhập quản trị");next&&next()}
+ if(sha256("vecto10:"+v)===ADMIN_HASH){adminOK=true;pwFails=0;try{sessionStorage.setItem("vec_admin",ADMIN_HASH);sessionStorage.setItem("vec_wkey",sha256("save:"+v))}catch(e){}let next=adminNext;closeAdmin();toast("🔓 Đã đăng nhập quản trị");next&&next()}
  else{pwFails++;document.getElementById("pwIn").select();if(pwFails>=5){pwLockUntil=now+30000;pwFails=0;err.textContent="Sai mật khẩu 5 lần. Tạm khóa 30 giây."}else err.textContent=`Mật khẩu không đúng (lần ${pwFails}/5).`}}
 function adminFromLogin(){student={name:"Giáo viên",class:"Quản trị"};document.getElementById("login").style.display="none";document.getElementById("app").style.display="block";document.getElementById("userchip").textContent="🔐 Giáo viên · Quản trị";buildNav();teacher=true;updateModeBtn();stLesson=7;editIdx=null;draft=null;studio()}
-function lockAdmin(){adminOK=false;try{sessionStorage.removeItem("vec_admin")}catch(e){}teacher=false;updateModeBtn();toast("🔒 Đã khóa chế độ giáo viên");if(student&&student.class==="Quản trị")logout();else home()}
+function lockAdmin(){adminOK=false;try{sessionStorage.removeItem("vec_admin");sessionStorage.removeItem("vec_wkey")}catch(e){}teacher=false;updateModeBtn();toast("🔒 Đã khóa chế độ giáo viên");if(student&&student.class==="Quản trị")logout();else home()}
 
 /* ===== CHẾ ĐỘ GIÁO VIÊN ===== */
 function updateModeBtn(){document.getElementById("modeBtn").textContent=teacher?"← Về chế độ học sinh":"⚙ Chế độ giáo viên"}
@@ -338,10 +345,10 @@ function toggleTeacher(){if(!leaveTest())return;if(teacher){teacher=false;update
 function previewLesson(){teacher=false;updateModeBtn();openLesson(stLesson);toast("Đang xem như học sinh. Bấm “⚙ Chế độ giáo viên” để quay lại thiết kế.")}
 async function studio(){if(!adminOK){teacher=false;updateModeBtn();return home()}await ready;section="studio";setActive(stLesson);document.getElementById("pageTitle").textContent="Chế độ giáo viên – Thiết kế bài học";
  let l=lessonById(stLesson),nm=matsOf(stLesson).length,nq=qCount(stLesson);
- let ck=runCheck(null).sum,tabs=[["materials",`📖 Tài liệu (${nm})`],["questions",`❓ Câu hỏi (${nq})`],["check",`🔍 Kiểm tra${ck.fix+ck.err+ck.warn?` (${ck.fix+ck.err+ck.warn})`:" ✓"}`],["stats","📊 Phân tích học tập"],["share","💾 Sao lưu & gửi học sinh"]];
+ let ck=runCheck(null).sum,tabs=[["materials",`📖 Tài liệu (${nm})`],["questions",`❓ Câu hỏi (${nq})`],["check",`🔍 Kiểm tra${ck.fix+ck.err+ck.warn?` (${ck.fix+ck.err+ck.warn})`:" ✓"}`],["stats","📊 Phân tích học tập"],["share",LIVE?"🔗 Link học sinh & sao lưu":"🔗 Link học sinh & sao lưu"]];
  document.getElementById("view").innerHTML=`${hero("⚙ Thiết kế bài học","① Chọn bài &nbsp;→&nbsp; ② Thêm tài liệu &nbsp;→&nbsp; ③ Tạo câu hỏi &nbsp;→&nbsp; ④ Gửi cho học sinh. Mọi thay đổi được lưu tự động.","teach")}
  <div class="chips">${lessons.map(x=>`<button class="chip ${x.id===stLesson?"active":""}" onclick="navLesson(${x.id})"><b>${x.icon} ${lessonLabel(x.id)}</b><small>📄 ${matsOf(x.id).length} tài liệu · ❓ ${qCount(x.id)} câu</small></button>`).join("")}</div>
- <div class="studio-head"><h3>${l.icon} ${lessonLabel(stLesson)}: ${esc(l.title)}</h3><div class="actions"><button class="secondary small" onclick="previewLesson()">👁 Xem thử như học sinh</button><button class="warn small" onclick="lockAdmin()" title="Thoát và yêu cầu mật khẩu cho lần sau">🔒 Khóa & thoát quản trị</button></div></div>
+ ${LIVE?`<div class="muted" data-ss="1" style="margin:-6px 0 10px">${saveStateHTML()}</div>`:""}<div class="studio-head"><h3>${l.icon} ${lessonLabel(stLesson)}: ${esc(l.title)}</h3><div class="actions"><button class="secondary small" onclick="previewLesson()">👁 Xem thử như học sinh</button><button class="warn small" onclick="lockAdmin()" title="Thoát và yêu cầu mật khẩu cho lần sau">🔒 Khóa & thoát quản trị</button></div></div>
  <div class="tabs">${tabs.map(([k,t])=>`<button class="${stTab===k?"active":""}" onclick="${k==="stats"?"AN.rows=null;":""}stTab='${k}';studio()">${t}</button>`).join("")}</div>
  <div id="studioBody"></div>`;
  (({materials:stMaterials,questions:stQuestions,check:stCheck,stats:stStats,share:stShare})[stTab]||stQuestions)()}
@@ -361,6 +368,9 @@ function stMaterials(){let mats=matsOf(stLesson);
 function readDataURL(f){return new Promise((res,rej)=>{let r=new FileReader();r.onload=()=>res(r.result);r.onerror=()=>rej(r.error);r.readAsDataURL(f)})}
 function nextOrder(){return materials.reduce((a,m)=>Math.max(a,m.order||0),0)+1}
 async function addFiles(fileList){let files=[...(fileList||[])];if(!files.length)return;
+ if(LIVE){let big=files.filter(f=>f.size>30*MB);if(big.length)toast(`Tệp quá lớn (trên 30 MB): ${big.map(f=>f.name).join(", ")}. Hãy tải lên YouTube/Google Drive rồi dùng nút “Thêm link”.`,"err");files=files.filter(f=>f.size<=30*MB);let ord=nextOrder(),ok=0;
+  for(const[k,f]of files.entries()){try{toast(`☁ Đang tải lên Google Drive (${k+1}/${files.length}): ${f.name}`);let d=await readDataURL(f),mime=f.type||EXT_MIME[ext(f.name)]||"application/octet-stream",id=await uploadFile(f.name,mime,d.split(",")[1]||"");materials.push({id:newId(),lesson:stLesson,kind:"drive",fileId:id,name:f.name,mime,size:f.size,order:ord++,added:Date.now()});ok++}catch(e){toast("Không tải lên được “"+f.name+"”: "+gasMsg(e),"err")}}
+  if(ok){touch();toast(`✅ Đã thêm ${ok} tệp vào ${lessonLabel(stLesson)} (lưu trên Google Drive)`)}return studio()}
  let big=files.filter(f=>f.size>15*MB);
  if(big.length&&!confirm(`Có ${big.length} tệp lớn hơn 15 MB:\n${big.map(f=>"• "+f.name+" ("+fmtSize(f.size)+")").join("\n")}\n\nTệp lớn sẽ làm trang gửi học sinh rất nặng. Với video, nên tải lên YouTube hoặc Google Drive rồi dùng nút “Thêm link”.\n\nVẫn thêm các tệp này?`))return;
  toast(`Đang tải ${files.length} tệp…`);let ord=nextOrder(),ok=0;
@@ -377,7 +387,7 @@ async function saveAdd(kind,id){let m=id?materials.find(x=>x.id===id):null,v=x=>
  else{if(!m)return;let name=v("aName");if(!name)return toast("Tên không được để trống","err");m.name=name}
  if(!materials.includes(m))materials.push(m);
  try{await idbPut(m);touch();toast("✅ Đã lưu tài liệu")}catch(e){toast("Không lưu được – bộ nhớ trình duyệt có thể đã đầy.","err")}studio()}
-async function delMat(id){let m=materials.find(x=>x.id===id);if(!m||!confirm(`Xóa tài liệu “${m.name}”?`))return;materials=materials.filter(x=>x!==m);try{await idbDel(id)}catch(e){}touch();toast("Đã xóa tài liệu");studio()}
+async function delMat(id){let m=materials.find(x=>x.id===id);if(!m||!confirm(`Xóa tài liệu “${m.name}”?`))return;if(m.kind==="drive"&&syncUrl()&&authKey())gasPost({action:"delfile",key:authKey(),id:m.fileId}).catch(()=>{});materials=materials.filter(x=>x!==m);try{await idbDel(id)}catch(e){}touch();toast("Đã xóa tài liệu");studio()}
 async function moveMat(id,dir){let list=matsOf(stLesson),i=list.findIndex(m=>m.id===id),j=i+dir;if(j<0||j>=list.length)return;let a=list[i],b=list[j],t=a.order;a.order=b.order;b.order=t;if(a.order===b.order)a.order+=dir;try{await idbPut(a);await idbPut(b)}catch(e){}touch();studio()}
 
 /* --- Câu hỏi --- */
@@ -695,48 +705,93 @@ function paintStats(){let h=statsHTML();document.querySelectorAll(".hero-stats")
 async function loadStats(){let url=syncUrl();if(!url)return;try{let r=await fetch(qsJoin(url,"action=stats")),j=await readGas(r);if(j&&j.ok){STATS={visits:j.visits,today:j.today,students:j.students,at:Date.now()};localStorage.setItem("vec_stats",JSON.stringify(STATS));paintStats()}}catch(e){}}
 
 /* --- Mã Apps Script cho giáo viên --- */
-function secretKey(){let k=localStorage.getItem("vec_secret");if(!k){k=Array.from(crypto.getRandomValues(new Uint8Array(12)),b=>b.toString(16).padStart(2,"0")).join("");localStorage.setItem("vec_secret",k)}return k}
-function appsScript(secret){return ["// Hỗ trợ tự học – nhận lượt truy cập và kết quả học tập. Dán toàn bộ mã này vào Apps Script.",
-"const SECRET = '"+secret+"'; // mã bí mật để giáo viên đọc dữ liệu – không chia sẻ",
-"const SHEET = 'NhatKy';",
-"const HEAD = ['Thời gian', 'Loại', 'Học sinh', 'Lớp', 'Mã máy', 'Phiên', 'Bài', 'Điểm', 'Số đúng', 'Tổng', 'Giây', 'Chi tiết'];",
-"function sheet_() { const ss = SpreadsheetApp.getActiveSpreadsheet(); let s = ss.getSheetByName(SHEET); if (!s) { s = ss.insertSheet(SHEET); s.appendRow(HEAD); s.setFrozenRows(1); } return s; }",
-"function out_(o) { return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); }",
-"function day_() { return Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyyMMdd'); }",
-"function doPost(e) {",
-"  const lock = LockService.getScriptLock(); lock.waitLock(20000);",
-"  try {",
-"    const body = JSON.parse((e && e.postData && e.postData.contents) || '{}');",
-"    const evs = (Array.isArray(body.events) ? body.events : []).slice(0, 300);",
-"    const cut = (v, n) => String(v === null || v === undefined ? '' : v).slice(0, n);",
-"    const num = v => (v === null || v === undefined || v === '' || isNaN(v)) ? '' : Number(v);",
-"    const rows = evs.map(v => [new Date(Number(v.ts) || Date.now()), cut(v.t, 12), cut(v.name, 80), cut(v.cls, 30), cut(v.dev, 24), cut(v.sid, 24), num(v.lesson), num(v.score), num(v.ok), num(v.n), num(v.sec), cut(JSON.stringify(v.x || {}), 400)]);",
-"    if (rows.length) { const s = sheet_(); s.getRange(s.getLastRow() + 1, 1, rows.length, HEAD.length).setValues(rows); }",
-"    const vis = evs.filter(v => v.t === 'visit').length;",
-"    if (vis) { const p = PropertiesService.getScriptProperties(), k = 'd' + day_(); p.setProperty('visits', String(Number(p.getProperty('visits') || 0) + vis)); p.setProperty(k, String(Number(p.getProperty(k) || 0) + vis)); }",
-"    return out_({ ok: true, n: rows.length });",
-"  } catch (err) { return out_({ ok: false, error: String(err) }); } finally { lock.releaseLock(); }",
-"}",
-"function doGet(e) {",
-"  const q = (e && e.parameter) || {}, a = q.action || 'stats';",
-"  if (a === 'ping') return out_({ ok: true, app: 'tuhoc', v: 1, key: q.key === SECRET });",
-"  if (a === 'stats') {",
-"    const p = PropertiesService.getScriptProperties(), c = CacheService.getScriptCache();",
-"    let students = c.get('students');",
-"    if (students === null) { const s = sheet_(), n = s.getLastRow() - 1, seen = {}; if (n > 0) s.getRange(2, 3, n, 2).getValues().forEach(r => { if (r[0]) seen[String(r[0]).trim().toLowerCase() + '|' + String(r[1]).trim().toLowerCase()] = 1; }); students = String(Object.keys(seen).length); c.put('students', students, 600); }",
-"    return out_({ ok: true, visits: Number(p.getProperty('visits') || 0), today: Number(p.getProperty('d' + day_()) || 0), students: Number(students) });",
-"  }",
-"  if (a === 'data') {",
-"    if (q.key !== SECRET) return out_({ ok: false, error: 'key' });",
-"    const rows = sheet_().getDataRange().getValues().slice(1).map(r => { if (r[0] instanceof Date) r[0] = r[0].getTime(); return r; });",
-"    return out_({ ok: true, rows: rows });",
-"  }",
-"  return out_({ ok: false, error: 'action' });",
-"}"].join("\n")}
+function secretKey(){return authKey()}
+function appsScript(key){return `// HỖ TRỢ TỰ HỌC – mã máy chủ (phiên bản 2): phục vụ trang web, lưu câu hỏi, tài liệu, lượt truy cập và kết quả học tập.
+// Dán toàn bộ mã này vào tệp Code.gs. Trang web nằm trong tệp HTML tên "index" (xem hướng dẫn trong chế độ quản trị).
+const KEY = '${key}'; // khóa ghi dữ liệu, sinh từ mật khẩu quản trị – không chia sẻ
+const SHEET = 'NhatKy', CONTENT = 'NoiDung', FOLDER = 'TaiLieu_TuHoc', TITLE = 'Hỗ trợ tự học chủ đề Vectơ';
+const HEAD = ['Thời gian', 'Loại', 'Học sinh', 'Lớp', 'Mã máy', 'Phiên', 'Bài', 'Điểm', 'Số đúng', 'Tổng', 'Giây', 'Chi tiết'];
+const MARK = '<script id="vec-data" type="application/json">', CLOSE = '</' + 'script>';
+function ss_() { return SpreadsheetApp.getActiveSpreadsheet(); }
+function sheet_() { let s = ss_().getSheetByName(SHEET); if (!s) { s = ss_().insertSheet(SHEET); s.appendRow(HEAD); s.setFrozenRows(1); } return s; }
+function out_(o) { return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); }
+function day_() { return Utilities.formatDate(new Date(), Session.getScriptTimeZone(), 'yyyyMMdd'); }
+function readContent_() { const s = ss_().getSheetByName(CONTENT); if (!s || s.getLastRow() < 1) return null; const txt = s.getRange(1, 1, s.getLastRow(), 1).getValues().map(function (r) { return String(r[0]).replace(/^~/, ''); }).join(''); try { return JSON.parse(txt); } catch (e) { return null; } }
+function writeContent_(obj) { const s = ss_().getSheetByName(CONTENT) || ss_().insertSheet(CONTENT); const str = JSON.stringify(obj), parts = []; for (let i = 0; i < str.length; i += 40000) parts.push(['~' + str.slice(i, i + 40000)]); s.clear(); s.getRange('A:A').setNumberFormat('@'); if (parts.length) s.getRange(1, 1, parts.length, 1).setValues(parts); }
+function folder_() { const it = DriveApp.getFoldersByName(FOLDER); return it.hasNext() ? it.next() : DriveApp.createFolder(FOLDER); }
+function page_() {
+  const c = readContent_() || {};
+  let html = HtmlService.createHtmlOutputFromFile('index').getContent();
+  const data = JSON.stringify({ live: true, savedAt: c.savedAt || 0, questions: c.questions || null, materials: c.materials || [], cfg: { syncUrl: ScriptApp.getService().getUrl() } }).split('<').join(String.fromCharCode(92) + 'u003c');
+  const i = html.indexOf(MARK), j = i < 0 ? -1 : html.indexOf(CLOSE, i);
+  if (i >= 0 && j > i) html = html.slice(0, i + MARK.length) + data + html.slice(j);
+  return HtmlService.createHtmlOutput(html).setTitle(TITLE).addMetaTag('viewport', 'width=device-width, initial-scale=1').setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+function doGet(e) {
+  const q = (e && e.parameter) || {}, a = q.action || '';
+  if (!a) { try { return page_(); } catch (err) { return HtmlService.createHtmlOutput('<p style="font-family:sans-serif;padding:20px">Trang chưa sẵn sàng: chưa có tệp <b>index</b> trong Apps Script. (' + err + ')</p>'); } }
+  if (a === 'ping') { let page = true; try { HtmlService.createHtmlOutputFromFile('index'); } catch (err) { page = false; } return out_({ ok: true, app: 'tuhoc', v: 2, key: q.key === KEY, page: page, url: ScriptApp.getService().getUrl() }); }
+  if (a === 'stats') {
+    const p = PropertiesService.getScriptProperties(), c = CacheService.getScriptCache();
+    let students = c.get('students');
+    if (students === null) { const s = sheet_(), n = s.getLastRow() - 1, seen = {}; if (n > 0) s.getRange(2, 3, n, 2).getValues().forEach(function (r) { if (r[0]) seen[String(r[0]).trim().toLowerCase() + '|' + String(r[1]).trim().toLowerCase()] = 1; }); students = String(Object.keys(seen).length); c.put('students', students, 600); }
+    return out_({ ok: true, visits: Number(p.getProperty('visits') || 0), today: Number(p.getProperty('d' + day_()) || 0), students: Number(students) });
+  }
+  if (a === 'content') return out_({ ok: true, content: readContent_() });
+  if (a === 'data') {
+    if (q.key !== KEY) return out_({ ok: false, error: 'key' });
+    const rows = sheet_().getDataRange().getValues().slice(1).map(function (r) { if (r[0] instanceof Date) r[0] = r[0].getTime(); return r; });
+    return out_({ ok: true, rows: rows });
+  }
+  return out_({ ok: false, error: 'action' });
+}
+function doPost(e) {
+  let b;
+  try { b = JSON.parse((e && e.postData && e.postData.contents) || '{}'); } catch (err) { return out_({ ok: false, error: 'json' }); }
+  const a = b.action || 'log';
+  if (a !== 'log' && b.key !== KEY) return out_({ ok: false, error: 'key' });
+  if (a === 'upload') {
+    const f = folder_().createFile(Utilities.newBlob(Utilities.base64Decode(b.data || ''), b.mime || 'application/octet-stream', String(b.name || 'tai-lieu').slice(0, 200)));
+    let shared = true; try { f.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW); } catch (err) { shared = false; }
+    return out_({ ok: true, id: f.getId(), shared: shared });
+  }
+  if (a === 'delfile') { try { DriveApp.getFileById(String(b.id)).setTrashed(true); } catch (err) {} return out_({ ok: true }); }
+  const lock = LockService.getScriptLock(); lock.waitLock(20000);
+  try {
+    if (a === 'save') { const c = b.content || {}; c.savedAt = Date.now(); writeContent_(c); return out_({ ok: true, savedAt: c.savedAt }); }
+    const evs = (Array.isArray(b.events) ? b.events : []).slice(0, 300);
+    const cut = function (v, n) { return String(v === null || v === undefined ? '' : v).slice(0, n); };
+    const num = function (v) { return (v === null || v === undefined || v === '' || isNaN(v)) ? '' : Number(v); };
+    const rows = evs.map(function (v) { return [new Date(Number(v.ts) || Date.now()), cut(v.t, 12), cut(v.name, 80), cut(v.cls, 30), cut(v.dev, 24), cut(v.sid, 24), num(v.lesson), num(v.score), num(v.ok), num(v.n), num(v.sec), cut(JSON.stringify(v.x || {}), 400)]; });
+    if (rows.length) { const s = sheet_(); s.getRange(s.getLastRow() + 1, 1, rows.length, HEAD.length).setValues(rows); }
+    const vis = evs.filter(function (v) { return v.t === 'visit'; }).length;
+    if (vis) { const p = PropertiesService.getScriptProperties(), k = 'd' + day_(); p.setProperty('visits', String(Number(p.getProperty('visits') || 0) + vis)); p.setProperty(k, String(Number(p.getProperty(k) || 0) + vis)); }
+    return out_({ ok: true, n: rows.length });
+  } catch (err) { return out_({ ok: false, error: String(err) }); } finally { lock.releaseLock(); }
+}
+`}
+function pageCode(){return ORIGINAL_HTML.replace(/(<script id="vec-data" type="application\/json">)[\s\S]*?(<\/script>)/,(m,a,b)=>a+"null"+b)}
 async function copyText(t,msg){try{await navigator.clipboard.writeText(t)}catch(e){let ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();document.execCommand("copy");ta.remove()}toast(msg)}
 async function testSync(){let u=(document.getElementById("syncIn")?.value||"").trim();if(!/^https:\/\/script\.google(usercontent)?\.com\/\S+$/.test(u))return toast("Đường link phải bắt đầu bằng https://script.google.com/…","err");
- toast("Đang kiểm tra kết nối…");try{let r=await fetch(qsJoin(u,"action=ping&key="+encodeURIComponent(secretKey()))),j=await r.json();if(!j.ok||j.app!=="tuhoc")throw new Error("Link không phải mã Apps Script của trang này");if(!j.key)return toast("⚠ Kết nối được nhưng mã bí mật không khớp. Hãy sao chép lại mã Apps Script và triển khai lại.","err");toast("✅ Kết nối thành công!");return true}catch(e){toast("❌ Không kết nối được: "+(e.message||"kiểm tra lại link và quyền truy cập “Bất kỳ ai”"),"err");return false}}
-async function saveSync(){let u=(document.getElementById("syncIn")?.value||"").trim();if(u&&!(await testSync()))return;CFG.syncUrl=u;saveCfg();backfill();AN.rows=null;AN.setup=false;toast(u?"✅ Đã lưu. Nhớ tải lại bản gửi học sinh để bản đó cũng gửi dữ liệu.":"Đã ngắt kết nối Google Sheets");flush();loadStats();studio()}
+ toast("Đang kiểm tra kết nối…");try{let j=await gasPing(u);if(!j.key){toast("⚠ Kết nối được nhưng khóa quản trị không khớp. Hãy sao chép lại mã Code.gs và triển khai lại (Quản lý bản triển khai → Chỉnh sửa → Phiên bản mới).","err");return false}if(!(j.v>=2))toast("⚠ Apps Script đang dùng mã cũ – hãy dán mã Code.gs mới để dùng được một link duy nhất.","err");else if(!j.page)toast("✅ Kết nối được. ⚠ Chưa có tệp HTML “index” trong Apps Script nên link học sinh chưa mở được trang – xem bước 4.","err");else toast("✅ Kết nối thành công! Link học sinh đã sẵn sàng.");return true}catch(e){toast("❌ Không kết nối được: "+gasMsg(e),"err");return false}}
+async function saveSync(){let u=(document.getElementById("syncIn")?.value||"").trim();if(u&&!(await testSync()))return;CFG.syncUrl=u;saveCfg();backfill();AN.rows=null;AN.setup=false;toast(u?"✅ Đã lưu kết nối. Tiếp theo: vào tab “🔗 Link học sinh” để đưa nội dung lên Google.":"Đã ngắt kết nối Google Sheets");flush();loadStats();studio()}
+
+/* --- Lưu nội dung lên Google (chế độ một link) --- */
+let pushTimer=null,pushState="",pushing=false,pushAgain=false;
+function schedulePush(){clearTimeout(pushTimer);setSaveState("pending");pushTimer=setTimeout(pushContent,1200)}
+function setSaveState(s,msg){pushState=s;document.querySelectorAll("[data-ss]").forEach(el=>el.innerHTML=saveStateHTML(msg))}
+function saveStateHTML(msg){if(!LIVE)return"";if(pushState==="saving"||pushState==="pending")return"☁ Đang lưu lên Google…";if(pushState==="err")return `<span style="color:#b91c1c">⚠ Chưa lưu được lên Google: ${esc(msg||"")} <a href="#" onclick="pushContent();return false">Thử lại</a></span>`;if(pushState==="ok")return"☁ Đã lưu lên Google – học sinh thấy ngay khi mở lại link";return"☁ Nội dung được lưu trên Google"}
+async function gasPost(obj){let r=await fetch(syncUrl(),{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(obj)}),j=await readGas(r);if(!j||!j.ok)throw new Error(j&&j.error==="key"?"Khóa quản trị không khớp với mã Apps Script – hãy sao chép lại mã Code.gs và triển khai lại.":(j&&j.error)||"Máy chủ không nhận dữ liệu");return j}
+async function uploadFile(name,mime,b64){let j=await gasPost({action:"upload",key:authKey(),name,mime,data:b64});if(j.shared===false)toast("⚠ Đã lưu “"+name+"” lên Drive nhưng tài khoản không cho chia sẻ công khai – học sinh có thể không xem được.","err");return j.id}
+async function pushContent(){if(!syncUrl())return false;if(!authKey()){setSaveState("err","hãy đăng nhập quản trị");return false}if(pushing){pushAgain=true;return}pushing=true;setSaveState("saving");
+ try{let files=materials.filter(m=>m.kind==="file"&&m.data);for(const[k,m]of files.entries()){toast(`☁ Đang đưa tài liệu lên Google Drive (${k+1}/${files.length}): ${m.name}`);let id=await uploadFile(m.name,m.mime||EXT_MIME[ext(m.name)]||"application/octet-stream",String(m.data).split(",")[1]||"");Object.assign(m,{kind:"drive",fileId:id});delete m.data;try{await idbPut(m)}catch(e){}}
+  await gasPost({action:"save",key:authKey(),content:{questions,materials:materials.filter(m=>m.kind!=="file").map(({data,...m})=>m)}});setSaveState("ok");return true}
+ catch(e){setSaveState("err",gasMsg(e));toast("⚠ Chưa lưu được lên Google: "+gasMsg(e),"err");return false}
+ finally{pushing=false;if(pushAgain){pushAgain=false;setTimeout(pushContent,300)}}}
+addEventListener("beforeunload",e=>{if(LIVE&&(pushState==="pending"||pushState==="saving")){e.preventDefault();e.returnValue=""}});
+async function migrateToGoogle(){if(!syncUrl())return toast("Hãy kết nối Google Sheets trước","err");let nf=materials.filter(m=>m.kind==="file").length;if(!confirm(`Đưa ${questions.filter(usable).length} câu hỏi và ${materials.length} tài liệu${nf?` (${nf} tệp sẽ được tải lên Google Drive)`:""} lên Google?\nNội dung đang có trên link học sinh sẽ được THAY bằng nội dung trên máy này.`))return;
+ if(await pushContent()){toast("✅ Đã đưa nội dung lên Google. Từ nay hãy mở link học sinh để soạn tiếp.");studio()}}
+async function gasPing(u){let r=await fetch(qsJoin(u,"action=ping&key="+encodeURIComponent(authKey()))),j=await readGas(r);if(!j.ok||j.app!=="tuhoc")throw new Error("Link không phải mã Apps Script của trang này");return j}
 
 /* --- Phân tích học tập --- */
 let AN={rows:null,src:"",at:0,err:"",cls:"all",range:30,q:"",sel:null,sort:"name",dir:1,setup:false};
@@ -822,18 +877,19 @@ function detailHTML(s){let sc=s.tests;
  <div class="chartbox"><h4>Điểm trung bình theo bài</h4><div class="sub">Chỉ tính các bài em đã kiểm tra</div><div class="chart">${s.lesAvg.length?barSVG(s.lesAvg.map(x=>({l:lessonLabel(x.lesson),v:Math.round(x.avg*100)/100,tip:`${lessonLabel(x.lesson)}: TB ${fmtPts(Math.round(x.avg*100)/100)} (${x.n} bài)`})),{max:10,fmt:v=>fmtPts(Math.round(v*10)/10),label:"Điểm trung bình theo bài"}):'<p class="muted">Chưa có dữ liệu.</p>'}</div></div></div>
  <div class="grid2" style="margin-top:16px"><div><h4 style="margin:0 0 8px">Các lần kiểm tra</h4>${sc.length?`<div class="tablewrap" style="max-height:340px"><table class="antable"><thead><tr><th>Thời điểm</th><th>Bài</th><th class="num">Điểm</th><th class="num">Trắc nghiệm</th><th class="num">Đúng/Sai</th><th class="num">Thời gian làm</th></tr></thead><tbody>${sc.slice().reverse().map(e=>`<tr><td>${fmtDT(e.ts)}</td><td>${lessonLabel(e.lesson)}</td><td class="num"><b>${fmtPts(e.score)}</b></td><td class="num">${e.x&&e.x.mcN?`${e.x.mcC}/${e.x.mcN}`:"—"}</td><td class="num">${e.x&&e.x.tfN?`${e.x.tfC}/${e.x.tfN} ý`:"—"}</td><td class="num">${fmtDur(e.sec)}${e.x&&e.x.mins?` / ${e.x.mins} ph`:""}</td></tr>`).join("")}</tbody></table></div>`:'<p class="muted">Chưa có.</p>'}</div>
  <div><h4 style="margin:0 0 8px">Các lần vào học</h4><div class="tablewrap" style="max-height:340px"><table class="antable"><thead><tr><th>Bắt đầu</th><th class="num">Thời lượng</th><th class="num">Luyện tập</th><th class="num">Kiểm tra</th></tr></thead><tbody>${s.sessions.slice().reverse().map(x=>`<tr><td>${fmtDT(x.start)}</td><td class="num">${fmtDur(x.dur)}</td><td class="num">${x.prac}</td><td class="num">${x.tests}</td></tr>`).join("")}</tbody></table></div></div></div>`}
-function setupHTML(){let u=CFG.syncUrl||"",code=appsScript(secretKey());
- return `<div class="contentbox" style="border:2px solid #93c5fd"><h3>⚙ Kết nối Google Sheets (làm một lần, khoảng 10 phút)</h3><p class="muted" style="margin-top:-6px">Dữ liệu được lưu trong bảng tính Google của chính cô. Cần đăng nhập tài khoản Google trên trình duyệt.</p>
+function setupHTML(){let u=CFG.syncUrl||"",code=appsScript(authKey());
+ return `<div class="contentbox" style="border:2px solid #93c5fd"><h3>⚙ Tạo link duy nhất và kết nối Google (làm một lần, khoảng 15 phút)</h3><p class="muted" style="margin-top:-6px">Mọi thứ nằm trong tài khoản Google của cô: trang web chạy bằng Apps Script, câu hỏi và kết quả học tập lưu trong Google Sheets, tài liệu lưu trên Google Drive.</p>
  <ol style="line-height:1.9;padding-left:20px">
- <li>Mở <a href="https://sheets.new" target="_blank" rel="noopener"><b>một Google Sheets mới</b></a> và đặt tên, ví dụ “Thống kê tự học Vectơ”.</li>
- <li>Trên thanh menu chọn <b>Tiện ích mở rộng → Apps Script</b> (Extensions → Apps Script).</li>
- <li>Xóa hết mã có sẵn trong khung soạn thảo, rồi bấm nút dưới đây và dán vào: <button class="small" onclick="copyText(appsScript(secretKey()),'✅ Đã sao chép mã Apps Script')">📋 Sao chép mã Apps Script</button><div class="codebox" style="margin-top:8px">${esc(code)}</div></li>
- <li>Bấm biểu tượng 💾 <b>Lưu</b>. Sau đó bấm <b>Triển khai → Tác vụ triển khai mới</b> (Deploy → New deployment).</li>
- <li>Bấm ⚙ cạnh “Chọn loại”, chọn <b>Ứng dụng web</b> (Web app). Đặt <b>Thực thi với tư cách: Tôi</b> (Me) và <b>Người có quyền truy cập: Bất kỳ ai</b> (Anyone). Bấm <b>Triển khai</b>.</li>
- <li>Google hỏi cấp quyền: chọn tài khoản của cô → nếu hiện “Google chưa xác minh ứng dụng này”, bấm <b>Nâng cao → Chuyển tới … (không an toàn)</b> → <b>Cho phép</b>. Đây là mã của chính cô nên an toàn.</li>
- <li>Sao chép <b>URL ứng dụng web</b> (dạng https://script.google.com/macros/s/…/exec), dán vào ô dưới, bấm <b>Lưu kết nối</b>.</li></ol>
- <label>URL ứng dụng web</label><div style="display:flex;gap:8px;flex-wrap:wrap"><input id="syncIn" style="flex:1;min-width:260px" placeholder="https://script.google.com/macros/s/…/exec" value="${esc(u)}"><button class="secondary" onclick="testSync()">🔌 Kiểm tra</button><button class="green" onclick="saveSync()">💾 Lưu kết nối</button>${u?`<button class="danger small" onclick="document.getElementById('syncIn').value='';saveSync()">Ngắt kết nối</button>`:""}</div>
- <div class="muted" style="margin-top:10px;line-height:1.6">🔒 Đoạn mã đã có sẵn <b>mã bí mật</b> riêng của máy này để chỉ cô đọc được kết quả; mã bí mật không nằm trong bản gửi học sinh. Nếu đổi sang máy khác, hãy dùng “Tải tệp sao lưu” rồi sao chép lại mã Apps Script trên máy mới.<br>Sau khi kết nối, nhớ <b>tải lại bản gửi học sinh</b> (tab Sao lưu & gửi học sinh) để bản đó cũng gửi dữ liệu về bảng tính. Nên thông báo cho học sinh biết kết quả học tập được ghi nhận để giáo viên theo dõi.</div></div>`}
+ <li>Mở <a href="https://sheets.new" target="_blank" rel="noopener"><b>một Google Sheets mới</b></a> (hoặc bảng tính đã tạo trước đây) và đặt tên, ví dụ “Tự học Vectơ”.</li>
+ <li>Trên menu chọn <b>Tiện ích mở rộng → Apps Script</b> (Extensions → Apps Script).</li>
+ <li>Trong tệp <b>Code.gs</b>: xóa hết mã có sẵn, bấm nút dưới đây và dán vào: <button class="small" onclick="copyText(appsScript(authKey()),'✅ Đã sao chép mã Code.gs')">📋 Sao chép mã Code.gs</button><div class="codebox" style="margin-top:8px">${esc(code)}</div></li>
+ <li>Thêm trang web: bấm dấu <b>＋</b> cạnh chữ “Tệp” (Files) → <b>HTML</b> → đặt tên đúng là <b>index</b> → xóa nội dung có sẵn → ${LIVE?`dán mã trang web. <span class="muted">(Nút sao chép mã trang web chỉ có khi mở tệp .html gốc trên máy tính.)</span>`:`bấm <button class="small" onclick="copyText(pageCode(),'✅ Đã sao chép mã trang web')">📋 Sao chép mã trang web</button> và dán vào.`} Bấm 💾 <b>Lưu</b>.</li>
+ <li><b>Triển khai → Tác vụ triển khai mới</b> (Deploy → New deployment) → bấm ⚙ chọn <b>Ứng dụng web</b> → <b>Thực thi với tư cách: Tôi</b> → <b>Người có quyền truy cập: Bất kỳ ai</b> → <b>Triển khai</b>.</li>
+ <li>Cấp quyền: chọn tài khoản → nếu thấy “Google chưa xác minh ứng dụng này” bấm <b>Nâng cao → Chuyển tới … (không an toàn)</b> → <b>Cho phép</b> (mã của chính cô; cần quyền Sheets và Drive để lưu câu hỏi, tài liệu).</li>
+ <li>Sao chép <b>URL ứng dụng web</b> (https://script.google.com/macros/s/…/exec), dán vào ô dưới, bấm <b>Lưu kết nối</b>. <b>Đây chính là link duy nhất gửi cho học sinh.</b></li></ol>
+ <div class="feedback help" style="margin:4px 0 12px">💡 Khi cần cập nhật mã sau này (Code.gs hoặc index), đừng tạo triển khai mới mà vào <b>Triển khai → Quản lý các bản triển khai → ✏ Chỉnh sửa → Phiên bản: Phiên bản mới → Triển khai</b>. Như vậy link học sinh giữ nguyên.</div>
+ <label>URL ứng dụng web</label><div style="display:flex;gap:8px;flex-wrap:wrap"><input id="syncIn" style="flex:1;min-width:260px" placeholder="https://script.google.com/macros/s/…/exec" value="${esc(u)}"><button class="secondary" onclick="testSync()">🔌 Kiểm tra</button><button class="green" onclick="saveSync()">💾 Lưu kết nối</button>${u&&!LIVE?`<button class="danger small" onclick="document.getElementById('syncIn').value='';saveSync()">Ngắt kết nối</button>`:""}</div>
+ <div class="muted" style="margin-top:10px;line-height:1.6">🔒 Mã Code.gs chứa <b>khóa ghi dữ liệu sinh từ mật khẩu quản trị</b>: chỉ người đăng nhập đúng mật khẩu mới sửa được nội dung và xem được kết quả học tập, trên bất kỳ máy nào. Không chia sẻ mã Code.gs. Nên thông báo cho học sinh biết kết quả học tập được ghi nhận để giáo viên theo dõi.</div></div>`}
 function anExport(){let from=AN.range?Date.now()-AN.range*DAY:0,rows=(AN.rows||[]).filter(e=>e.ts>=from),list=anStudents(rows).filter(s=>AN.cls==="all"||s.cls===AN.cls);if(!list.length)return toast("Chưa có dữ liệu để xuất","err");
  let m=x=>Math.round(x*10)/10,sum={name:"Tổng hợp",head:["Học sinh","Lớp","Số lần vào học","Tổng thời gian (phút)","Lần gần nhất","Lượt luyện tập","Tỉ lệ đúng (%)","Số bài kiểm tra","Điểm TB","Điểm lần đầu","Điểm gần nhất","Thay đổi (nửa sau − nửa đầu)","Đánh giá"],rows:list.map(s=>[s.name,s.cls,s.visits,m(s.time/60),fmtDT(s.last),s.prac,s.prac?Math.round(s.acc*100):"",s.tests.length,s.avg!=null?Math.round(s.avg*100)/100:"",s.firstScore??"",s.lastScore??"",s.trend.delta??"",s.tag.t.replace(/^[^\p{L}]+/u,"")]),widths:[26,8,12,14,18,12,12,12,10,12,12,16,22],valid:""};
  let tst={name:"Bài kiểm tra",head:["Thời điểm","Học sinh","Lớp","Bài","Điểm","TN đúng","TN tổng","ĐS ý đúng","ĐS tổng ý","Thời gian làm (phút)","Thời gian cho phép (phút)"],rows:list.flatMap(s=>s.tests.map(e=>[fmtDT(e.ts),s.name,s.cls,lessonLabel(e.lesson),e.score,e.x?.mcC??"",e.x?.mcN??"",e.x?.tfC??"",e.x?.tfN??"",m((e.sec||0)/60),e.x?.mins??""])),widths:[18,26,8,10,8,9,9,10,10,14,14],valid:""};
@@ -842,15 +898,23 @@ function anExport(){let from=AN.range?Date.now()-AN.range*DAY:0,rows=(AN.rows||[
 
 /* --- Sao lưu & gửi học sinh --- */
 function totalSize(){return materials.reduce((a,m)=>a+(m.data?m.data.length*0.75:0),0)}
-function stShare(){let sz=totalSize(),ck=runCheck("all").sum,bad=ck.fix+ck.err+ck.warn;
+function stShare(){let sz=totalSize(),ck=runCheck("all").sum,bad=ck.fix+ck.err+ck.warn,u=syncUrl(),nf=materials.filter(m=>m.kind==="file").length;
+ let link=LIVE?`<div class="contentbox" style="border:2px solid #86efac"><h3>🔗 Link duy nhất cho học sinh</h3><p>Gửi link này cho học sinh <b>một lần</b>. Mọi thay đổi của cô được tự lưu lên Google; học sinh mở lại link (hoặc tải lại trang) là thấy nội dung mới – không cần gửi tệp.</p>
+  <div style="display:flex;gap:8px;flex-wrap:wrap"><input readonly value="${esc(u)}" style="flex:1;min-width:260px" onclick="this.select()"><button onclick="copyText('${esc(u)}','✅ Đã sao chép link học sinh')">📋 Sao chép link</button><a class="btnlink" style="padding:11px 14px" href="${esc(u)}" target="_blank" rel="noopener">Mở thử ↗</a></div>
+  <div class="muted" data-ss="1" style="margin-top:10px">${saveStateHTML()}</div><button class="secondary small" style="margin-top:8px" onclick="pushContent().then(ok=>ok&&toast('✅ Đã lưu toàn bộ nội dung lên Google'))">☁ Lưu lại toàn bộ lên Google ngay</button></div>`
+ :`<div class="contentbox" style="border:2px solid #86efac"><h3>🔗 Tạo link duy nhất cho học sinh (khuyên dùng)</h3><p>Thay vì gửi tệp mỗi lần sửa, trang web sẽ chạy tại <b>một link cố định</b> trên Google của cô; cô soạn ngay trên link đó, học sinh luôn thấy nội dung mới nhất.</p>
+  <ol style="line-height:1.9;padding-left:20px;margin:0 0 10px">
+  <li>${u?`✅ Đã kết nối: <span class="mono" style="word-break:break-all">${esc(u)}</span>`:`Kết nối Google: <button class="small" onclick="stTab='stats';AN.setup=true;studio()">⚙ Mở hướng dẫn cài đặt</button>`}</li>
+  <li>Đưa câu hỏi và tài liệu đang có trên máy này lên Google: <button class="small green" ${u?"":"disabled"} onclick="migrateToGoogle()">🚀 Đưa nội dung lên Google</button>${nf?` <span class="muted">(${nf} tệp sẽ được tải lên Google Drive)</span>`:""}</li>
+  <li>Mở link ở trên ${u?`(<a href="${esc(u)}" target="_blank" rel="noopener">mở ngay ↗</a>)`:""}, đăng nhập quản trị ngay trên link đó để soạn tiếp, và gửi link cho học sinh.</li></ol>
+  <div class="muted">Từ đây không cần dùng tệp .html trên máy nữa (chỉ giữ lại để dự phòng).</div></div>`;
  document.getElementById("studioBody").innerHTML=`<div class="grid2">
- <div class="contentbox" style="border:2px solid ${bad?"#fcd34d":"#86efac"}"><h3>🔍 Bước 1 · Kiểm tra câu hỏi</h3>${bad?`<p>Còn <b>${ck.fix}</b> câu cần sửa kí hiệu vectơ, <b>${ck.warn}</b> câu cần xem lại và <b>${ck.err}</b> câu có lỗi.</p><button onclick="stTab='check';studio()">🔍 Kiểm tra và sửa ngay</button>`:`<p class="okline">✅ Đã kiểm tra: tất cả ${questions.length} câu hỏi đều ổn.</p><button class="secondary" onclick="stTab='check';studio()">Xem chi tiết</button>`}</div>
- <div class="contentbox" style="border:2px solid #86efac"><h3>📤 Bước 2 · Tạo trang web gửi học sinh</h3><div class="muted" style="margin:-4px 0 10px">${syncUrl()?"📊 Đã kết nối Google Sheets – bản gửi học sinh sẽ tự gửi lượt truy cập và kết quả học tập về bảng tính của cô.":`⚠ Chưa kết nối thống kê – bản gửi học sinh sẽ không đếm lượt truy cập. <a href="#" onclick="stTab='stats';AN.setup=true;studio();return false">Kết nối Google Sheets</a>`}</div><p>Tải về <b>một tệp .html duy nhất</b> chứa sẵn toàn bộ tài liệu và câu hỏi của 6 bài. Gửi tệp này cho học sinh qua Zalo, Google Drive, Classroom…; học sinh mở bằng Chrome/Edge là học được ngay, không cần mạng (trừ video YouTube/Drive).</p>
- <label class="check"><input type="checkbox" id="hideTeacher" checked> Ẩn nút “Chế độ giáo viên” trong bản của học sinh <span class="muted">(dù hiện nút, vẫn phải có mật khẩu mới vào được)</span></label>
- <div class="muted" style="margin:6px 0 14px">Dung lượng ước tính: <b>${fmtSize(ORIGINAL_HTML.length+sz*1.34)}</b>${sz>40*MB?` · <span style="color:#b45309">khá nặng, nên chuyển video sang link YouTube/Drive</span>`:""}</div>
- <button class="green" onclick="exportHTML()">⬇ Tải về trang web cho học sinh</button></div>
- <div class="contentbox"><h3>💾 Sao lưu dữ liệu</h3><p>Lưu toàn bộ câu hỏi và tài liệu ra một tệp để cất giữ, hoặc chuyển sang máy tính khác.</p><p class="muted">Dữ liệu hiện chỉ nằm trên trình duyệt này. Nếu xóa lịch sử duyệt web, dữ liệu có thể mất – nên sao lưu thường xuyên.</p>
- <div class="actions"><button onclick="exportData()">⬇ Tải tệp sao lưu</button><button class="secondary" onclick="document.getElementById('restoreIn').click()">📂 Khôi phục từ tệp</button></div></div>
+ <div class="contentbox" style="border:2px solid ${bad?"#fcd34d":"#86efac"}"><h3>🔍 Kiểm tra câu hỏi trước khi học sinh dùng</h3>${bad?`<p>Còn <b>${ck.fix}</b> câu cần sửa kí hiệu vectơ, <b>${ck.warn}</b> câu cần xem lại và <b>${ck.err}</b> câu có lỗi.</p><button onclick="stTab='check';studio()">🔍 Kiểm tra và sửa ngay</button>`:`<p class="okline">✅ Đã kiểm tra: tất cả ${questions.length} câu hỏi đều ổn.</p><button class="secondary" onclick="stTab='check';studio()">Xem chi tiết</button>`}</div>
+ ${link}
+ <div class="contentbox"><h3>💾 Sao lưu dữ liệu</h3><p>Lưu toàn bộ câu hỏi và danh sách tài liệu ra một tệp để cất giữ hoặc khôi phục khi cần.</p>
+ <div class="actions"><button onclick="exportData()">⬇ Tải tệp sao lưu</button><button class="secondary" onclick="document.getElementById('restoreIn').click()">📂 Khôi phục từ tệp</button></div>
+ <details style="margin-top:14px"><summary>Cách khác: tải tệp .html để học không cần mạng</summary><p class="muted">Chỉ dùng khi học sinh không có Internet. Tệp này là bản chụp tại thời điểm tải, sửa câu hỏi xong phải gửi lại.</p>
+ <label class="check"><input type="checkbox" id="hideTeacher" checked> Ẩn nút “Chế độ giáo viên” trong tệp</label><div class="muted" style="margin:6px 0 10px">Dung lượng ước tính: ${fmtSize(ORIGINAL_HTML.length+sz*1.34)}</div><button class="secondary" onclick="exportHTML()">⬇ Tải tệp .html cho học sinh</button></details></div>
  <div class="contentbox"><h3>📊 Tổng quan</h3><table class="table"><thead><tr><th>Bài</th><th>Tài liệu</th><th>Câu hỏi</th></tr></thead><tbody>${lessons.map(l=>`<tr><td>${l.icon} ${lessonLabel(l.id)}</td><td>${matsOf(l.id).length}</td><td>${qCount(l.id)}</td></tr>`).join("")}</tbody></table>
  <div style="margin-top:16px"><button class="danger small" onclick="resetAll()">↺ Xóa hết, quay về câu hỏi mẫu ban đầu</button></div></div></div>`}
 function bundle(extra){return Object.assign({app:"vecto10",savedAt:Date.now(),questions,materials,cfg:{syncUrl:CFG.syncUrl||""}},extra||{})}
